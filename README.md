@@ -53,3 +53,11 @@ python3 -m http.server 8080
 2. استبدال طبقة `localStorage` في `index.html` باستدعاءات Supabase (الدخول، والقراءة والكتابة عبر RLS).
 3. نقل العمليات الحساسة (إرسال الطلب وخصم المخزون، الجرد، تغيير الأدوار) إلى دوال في قاعدة البيانات.
 4. ربط الطابعات وشاشات المطبخ فعلياً، ثم الرواتب والاشتراكات.
+
+## Live setup (Supabase)
+
+- Backend: Supabase project `mrlkatgniijrlkkkqfgk` (schema in `backend/supabase/schema.sql`, RLS on every table, security-definer RPCs).
+- Public sign-up is disabled. The first authenticated user with no membership becomes the platform admin (`me()` bootstrap).
+- The admin creates cafés and staff accounts (username + password) from the admin console; staff sign in and land directly in their café.
+- LIVE mode activates automatically on github.io / localhost; elsewhere the app runs as a local demo.
+- Limits: tenant data is one JSON blob per café (last-write-wins, polled every 10 s). Table-by-table RPCs are planned for phase 2.
