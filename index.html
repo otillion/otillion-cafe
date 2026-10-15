@@ -201,6 +201,13 @@ td.n,th.n{text-align:end;font-variant-numeric:tabular-nums}
 .inl{display:flex;gap:10px;flex-wrap:wrap;align-items:end}
 .sec{display:grid;gap:18px}
 .gt{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.sep{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px}.sep:before,.sep:after{content:"";flex:1;height:1px;background:var(--line)}
+.adm{max-width:1040px;margin:0 auto;padding-block:32px;display:grid;gap:20px}
+.adm .row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;display:grid;gap:4px}.kpi b{font-family:var(--display);font-size:24px;font-weight:600}
+.cafehd{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+@media(max-width:720px){.rgrid{grid-template-columns:minmax(0,1fr)}}
 </style>
 </head>
 <body>
@@ -219,7 +226,7 @@ var RANK={owner:5,manager:4,accountant:3,cashier:2,kitchen:1};
 var DEMO_PIN="1234",AUTOLOCK=5*60*1000,STEP_MS=2*60*1000;
 /* every mutating action maps to the permission it needs; the UI hiding a button is never the only check */
 var NEED={add:"pos",inc:"pos",dec:"pos",send:"pos",openPay:"pos",payN:"pos",paySel:"pos",doPay:"pos",openMove:"pos",doMove:"pos",openMerge:"pos",doMerge:"pos",newTake:"pos",openTable:"pos",backTables:"pos",
- void:"void",kadv:"kitchen",openRecv:"stockEdit",doRecv:"stockEdit",applyCount:"stockEdit",shift:"staffAll",lvOk:"staffAll",lvNo:"staffAll",invite:"settings",setPin:"settings",toggleActive:"settings",goBranch:"overview",clock:"staff",lvReq:"staff"};
+ void:"void",kadv:"kitchen",openRecv:"stockEdit",doRecv:"stockEdit",applyCount:"stockEdit",shift:"staffAll",lvOk:"staffAll",lvNo:"staffAll",invite:"adminOnly",setPin:"settings",toggleActive:"settings",goBranch:"overview",clock:"staff",lvReq:"staff"};
 var PINNED={void:1,applyCount:1,invite:1,toggleActive:1};
 var MODALA={payN:"pay",paySel:"pay",doPay:"pay",doMove:"move",doMerge:"merge",doRecv:"recv",pinSubmit:"pin"};
 var POSA={add:1,inc:1,dec:1,void:1,send:1,openPay:1,openMove:1,openMerge:1};
@@ -248,7 +255,14 @@ var PRINTERS=["Mutfak-1","Bar-1","Kasa-1","Depo-1"];
 /* ---------- i18n ---------- */
 var I={tr:{
  brandTag:"Kafeler ve işletmeler için kasa, mutfak, stok, personel ve uzaktan izleme sistemi",
- signIn:"Hesabınızla giriş yapın",google:"Google ile devam et",
+ signIn:"Hesabınızla giriş yapın",
+ loginStaff:"Kafe ve personel girişi",userPh:"Kullanıcı adı",passPh:"Şifre",signInBtn:"Giriş yap",orAdmin:"veya ana yönetici girişi",badLogin:"Kullanıcı adı veya şifre hatalı",accOff:"Hesap veya işletme durduruldu. Yönetimle iletişime geçin.",adminNote:"Demo: buradaki Google girişi simüledir. Gerçek sürümde sunucu yönetici e-postasını doğrular.",
+ adminTitle:"Ana yönetici",adminSub:"İşletmeleri ve personel hesaplarını oluşturun ve yönetin",adminView:"Tüm işletmeler",admKpiCafes:"İşletmeler",admKpiAcc:"Hesaplar",admKpiSales:"Bugünkü ciro",admKpiOpen:"Açık adisyon",
+ admOpen:"Aç",admSuspend:"İşletmeyi durdur",admResume:"İşletmeyi aç",suspended:"Durduruldu",noAcc:"Henüz hesap yok",colStatus:"Durum",colLastIn:"Son giriş",never:"Henüz girmedi",newPw:"Yeni şifre",resetPw:"Sıfırla",delAcc:"Sil",delConfirm:"Silmeyi onayla",
+ newCafe:"Yeni işletme oluştur",cafeName:"İşletme adı",cafeBr:"Şubeler (virgülle ayırın)",cafePin:"Yönetici PIN (4-8 rakam)",cafePinHint:"PIN yalnızca işletme yöneticisinde kalır; iptal ve sayım gibi hassas işlemleri onaylar.",
+ newAcc:"Hesap oluştur",accCafe:"İşletme",accName:"Görünen ad",accUser:"Kullanıcı adı (küçük harf, rakam, . _ -)",accPass:"Şifre (en az 8 karakter)",gen:"Üret",accCreated:"Hesap oluşturuldu",userTaken:"Bu kullanıcı adı alınmış",userBad:"Kullanıcı adı: 3-24 küçük harf, rakam, . _ -",passBad:"Şifre en az 8 karakter olmalı ve kullanıcı adından farklı olmalı",pwChanged:"Şifre değiştirildi",cafeCreated:"İşletme oluşturuldu",pinWeak:"PIN çok kolay, başka seçin",
+ l_login:"Giriş yapıldı",l_loginfail:"Başarısız giriş denemesi",l_pwreset:"Şifre sıfırlandı: {who}",l_acc_new:"Yeni hesap: {who}",l_acc_del:"Hesap silindi: {who}",l_adminin:"Ana yönetici girdi",
+google:"Google ile devam et",
  demoNote:"Demo sürümü: giriş simüle edilir, veriler yalnızca bu tarayıcıda saklanır. Canlı sürümde Google ile güvenli giriş ve işletme başına ayrı veri alanı kullanılır.",
  feat1:"Masalar, adisyon ve ödeme",feat2:"Mutfak ve bar ekranı",feat3:"Reçeteye göre stok düşümü",feat4:"Çok şubeli uzaktan izleme",feat5:"Vardiya, devam ve izin yönetimi",
  wsTitle:"Çalışma alanınızı seçin",wsSub:"Tek hesapla birden fazla işletmeye girebilirsiniz. Her işletmenin verisi diğerlerinden tamamen ayrıdır.",
@@ -298,7 +312,14 @@ var I={tr:{
  l_denied:"Yetkisiz deneme: {x}",l_pinfail:"Hatalı PIN denemesi",l_role:"Rol değişti: {who} → {r}",l_elevate:"Yetki yükseltildi: {r}",l_lock:"Ekran kilitlendi",l_unlock:"Kilit açıldı",l_active:"{who}: {s}",l_setpin:"Yönetici PIN'i değişti"},
 ar:{
  brandTag:"نظام كاشير ومطبخ ومخزون وموظفين ومراقبة عن بُعد للكافيهات والشركات",
- signIn:"سجّل الدخول بحسابك",google:"المتابعة عبر Google",
+ signIn:"سجّل الدخول بحسابك",
+ loginStaff:"دخول الكافيه والموظفين",userPh:"اسم المستخدم",passPh:"كلمة السر",signInBtn:"دخول",orAdmin:"أو دخول الأدمن الرئيسي",badLogin:"اسم المستخدم أو كلمة السر غير صحيحة",accOff:"الحساب أو الكافيه موقوف. تواصل مع الإدارة.",adminNote:"نسخة تجريبية: الدخول عبر Google هنا محاكى. في النسخة الفعلية يتحقق الخادم من إيميل الأدمن.",
+ adminTitle:"الأدمن الرئيسي",adminSub:"أنشئ المنشآت وحسابات الموظفين وتحكّم بها",adminView:"كل المنشآت",admKpiCafes:"المنشآت",admKpiAcc:"الحسابات",admKpiSales:"مبيعات اليوم",admKpiOpen:"فواتير مفتوحة",
+ admOpen:"فتح",admSuspend:"إيقاف المنشأة",admResume:"تفعيل المنشأة",suspended:"موقوفة",noAcc:"لا توجد حسابات بعد",colStatus:"الحالة",colLastIn:"آخر دخول",never:"لم يدخل بعد",newPw:"كلمة سر جديدة",resetPw:"تعيين",delAcc:"حذف",delConfirm:"تأكيد الحذف",
+ newCafe:"إنشاء منشأة جديدة",cafeName:"اسم الكافيه",cafeBr:"الفروع (افصل بفاصلة)",cafePin:"رمز المدير (4-8 أرقام)",cafePinHint:"الرمز يبقى عند مدير المنشأة؛ يعتمد العمليات الحساسة كالإلغاء والجرد.",
+ newAcc:"إنشاء حساب",accCafe:"المنشأة",accName:"الاسم الظاهر",accUser:"اسم المستخدم (حروف صغيرة وأرقام . _ -)",accPass:"كلمة السر (8 أحرف على الأقل)",gen:"توليد",accCreated:"تم إنشاء الحساب",userTaken:"اسم المستخدم مستخدم",userBad:"اسم المستخدم: 3-24 حرف صغير أو رقم أو . _ -",passBad:"كلمة السر 8 أحرف على الأقل ومختلفة عن اسم المستخدم",pwChanged:"تم تغيير كلمة السر",cafeCreated:"تم إنشاء المنشأة",pinWeak:"الرمز سهل التخمين، اختر غيره",
+ l_login:"تسجيل دخول",l_loginfail:"محاولة دخول فاشلة",l_pwreset:"إعادة تعيين كلمة سر: {who}",l_acc_new:"حساب جديد: {who}",l_acc_del:"حذف حساب: {who}",l_adminin:"دخول الأدمن الرئيسي",
+google:"المتابعة عبر Google",
  demoNote:"نسخة تجريبية: تسجيل الدخول محاكى والبيانات تُحفظ في هذا المتصفح فقط. في النسخة الفعلية يكون الدخول عبر Google ومساحة بيانات منفصلة لكل منشأة.",
  feat1:"الطاولات والفواتير والدفع",feat2:"شاشة المطبخ والبار",feat3:"خصم المخزون حسب الوصفة",feat4:"مراقبة عن بُعد لعدة فروع",feat5:"الدوام والورديات والإجازات",
  wsTitle:"اختر مساحة العمل",wsSub:"بحساب واحد تقدر تدخل أكثر من منشأة، وبيانات كل منشأة منفصلة تماماً عن الباقي.",
@@ -391,16 +412,30 @@ var isoDay=function(off){var d=new Date();d.setDate(d.getDate()+off);return d.ge
 function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
 
 var S,tt;
-var U={screen:"pos",posTable:null,cat:"all",pane:"menu",kds:"kitchen",period:"today",stockTab:"stock",staffTab:"att",modal:null,toast:null,menu:false,counts:{},rb:"all",stepUp:0,locked:false,fails:0,lockUntil:0,last:Date.now()};
+var U={screen:"pos",posTable:null,cat:"all",pane:"menu",kds:"kitchen",period:"today",stockTab:"stock",staffTab:"att",modal:null,toast:null,menu:false,counts:{},rb:"all",stepUp:0,locked:false,fails:0,lockUntil:0,lf:0,lfUntil:0,adSel:null,delC:null,last:Date.now()};
 var T=function(){return S.tenants[S.tid];};
 var B=function(){return T().branches[S.bid];};
 var can=function(p){return PERM[S.role].indexOf(p)>=0;};
+/* ---------- platform admin + accounts ---------- */
+var ADMINA={createCafe:1,createAcc:1,resetPw:1,toggleAcc:1,delAcc:1,toggleCafe:1,enter:1};
+var isAdmin=function(){return !!(S.sess&&S.sess.k==="admin");};
+var accOf=function(){return S.sess&&S.sess.k==="user"?S.accounts.filter(function(a){return a.id===S.sess.id;})[0]:null;};
+function staffOfAcc(a){var T1=S.tenants[a.tid];return T1?T1.staff.filter(function(x){return x.id===a.sid;})[0]:null;}
+function accRole(a){var st=staffOfAcc(a);return st&&ROLES.indexOf(st.role)>=0?st.role:a.role;}
+function accLive(a){var st=staffOfAcc(a),T1=S.tenants[a.tid];return !!(T1&&!T1.suspended&&a.active!==false&&st&&st.active!==false);}
+function myRole(){if(isAdmin())return "owner";var a=accOf();return a?accRole(a):T().myRole;}
+function rnd(){var a=new Uint32Array(3);try{crypto.getRandomValues(a);}catch(e){a=[Math.random()*4294967296,Math.random()*4294967296,Math.random()*4294967296];}return Array.prototype.map.call(a,function(x){return (x>>>0).toString(36);}).join("");}
+function hashPw(pw,salt){return hashPin("pw:"+pw,salt);}
+function weakPin(p){return /^(\d)\1+$/.test(p)||"0123456789".indexOf(p)>=0||"9876543210".indexOf(p)>=0||p==="1234";}
+function tlog(tid,k,p){var T1=S.tenants[tid];if(!T1)return;T1.log.unshift({ts:Date.now(),user:"Admin",br:null,k:k,p:p||{}});if(T1.log.length>200)T1.log.pop();}
+function forceOut(){S.signedIn=false;S.tid=null;S.sess=null;U.modal=null;U.locked=false;U.stepUp=0;U.menu=false;U.posTable=null;}
+function genPw(){var c="abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789",o="",a=new Uint32Array(12);try{crypto.getRandomValues(a);}catch(e){for(var i=0;i<12;i++)a[i]=Math.random()*4294967296;}for(var j=0;j<12;j++)o+=c.charAt((a[j]>>>0)%c.length);return o;}
 var t=function(k,p){var s=I[S.lang]&&I[S.lang][k];if(s==null)s=I.tr[k];if(s==null)s=k;return p?s.replace(/\{(\w+)\}/g,function(m,x){return p[x]!=null?p[x]:m;}):s;};
 var nm=function(o){return o.name[S.lang]||o.name.tr;};
 var menuItem=function(id){return T().menu.filter(function(m){return m.id===id;})[0];};
 var invItem=function(id){return B().inv.filter(function(m){return m.id===id;})[0];};
 var multi=function(){return T().order.length>1;};
-function actor(){var m=T().staff.filter(function(x){return x.role===S.role;})[0];return m?m.name:"Demo Hesap";}
+function actor(){var ac=accOf();if(ac)return ac.name;if(isAdmin())return "Admin";var m=T().staff.filter(function(x){return x.role===S.role;})[0];return m?m.name:"Demo Hesap";}
 function log(k,p){var L=T().log;L.unshift({ts:Date.now(),user:actor(),br:S.bid,k:k,p:p||{}});if(L.length>200)L.pop();}
 var tblLabel=function(k){return k==="TA"?t("take"):(String(k).indexOf("TA")===0?t("take")+" #"+k.slice(2):t("tableN")+" "+k);};
 var unitL=function(u){return t("u_"+u);};
@@ -474,7 +509,7 @@ function demoTickets(bid,specs){
  specs.forEach(function(s){if(s[0]==="TA")s[0]="TA"+(b.counter++);mk(s[0],s[1],s[2],s[3]||{});});
 }
 function seed(){
- S={v:3,lang:"ar",theme:"",signedIn:false,tid:null,bid:null,role:"owner",order:["mavi","liman"],tenants:{}};
+ S={v:4,lang:"ar",theme:"",signedIn:false,sess:null,accounts:[],tid:null,bid:null,role:"owner",order:["mavi","liman"],tenants:{}};
  S.tenants.mavi=makeTenant("mavi","Mavi Kahve","owner",[["b1","Üniversite",11,0.6],["b2","Marina",29,0.45]],true);
  S.tenants.liman=makeTenant("liman","Liman Café","manager",[["b1","Merkez",23,0.55]],true);
  S.tid="mavi";S.role="owner";
@@ -484,7 +519,7 @@ function seed(){
  S.tid="liman";S.role="manager";demoTickets("b1",[["3",[["flat",1],["tiramisu",1]],true,{bar:["prep",4],kitchen:["new",2]}],["6",[["lemonade",2]],false]]);
  S.tid=null;S.bid=null;S.role="owner";return S;
 }
-function load(){try{var raw=localStorage.getItem(LS);if(raw){var s=JSON.parse(raw);if(s&&s.v===3&&s.tenants)return s;}}catch(e){}return seed();}
+function load(){try{var raw=localStorage.getItem(LS);if(raw){var s=JSON.parse(raw);if(s&&s.v===4&&s.tenants&&Array.isArray(s.accounts))return s;}}catch(e){}return seed();}
 function save(){try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}}
 
 /* ---------- domain ---------- */
@@ -523,25 +558,39 @@ function attStatus(id){
  var sf=T().staff.filter(function(x){return x.id===id;})[0];if(sf&&sf.active===false)return "inactive";if(onLeave(id))return "leave";if(attOpen(id))return "working";if(attToday(id).length)return "done";
  if(code==="o")return "off";if((code==="m"&&h>=9)||(code==="e"&&h>=16))return "absent";return "up";
 }
-function selfStaff(){return T().staff.filter(function(x){return x.role===S.role&&T().shifts[x.id];})[0];}
+function selfStaff(){var ac=accOf();if(ac)return staffOfAcc(ac);return T().staff.filter(function(x){return x.role===S.role&&T().shifts[x.id];})[0];}
 
 /* ---------- views ---------- */
 function seg(g,cur,opts){return '<div class="seg" role="group">'+opts.map(function(o){return '<button data-act="set" data-g="'+g+'" data-v="'+o[0]+'" aria-pressed="'+(o[0]===cur)+'">'+o[1]+'</button>';}).join("")+'</div>';}
 function langSeg(){return '<div class="seg" role="group" aria-label="'+t("langBtn")+'"><button data-act="lang" data-v="ar" aria-pressed="'+(S.lang==="ar")+'">العربية</button><button data-act="lang" data-v="tr" aria-pressed="'+(S.lang==="tr")+'">Türkçe</button></div>';}
 function viewLogin(){
  return '<main class="login"><section class="hero"><div class="lang-row">'+langSeg()+'</div><h1 class="wordmark">Otillion</h1><p class="lead">'+t("brandTag")+'</p><ul class="feats">'+["feat1","feat2","feat3","feat4","feat5"].map(function(k){return '<li>'+ic("check")+'<span>'+t(k)+'</span></li>';}).join("")+'</ul></section>'+
- '<section class="signcard"><h2>'+t("signIn")+'</h2><button class="btn gbtn" data-act="login"><span class="g">G</span>'+t("google")+'</button><p class="note">'+t("demoNote")+'</p></section></main>';
+ '<section class="signcard"><h2>'+t("loginStaff")+'</h2><div class="field"><label for="lgUser">'+t("userPh")+'</label><input id="lgUser" autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="24"></div><div class="field"><label for="lgPass">'+t("passPh")+'</label><input id="lgPass" type="password" autocomplete="current-password" maxlength="64"></div><button class="btn pri gbtn" data-act="userLogin">'+t("signInBtn")+'</button><div class="sep"><span>'+t("orAdmin")+'</span></div><button class="btn gbtn" data-act="adminLogin"><span class="g">G</span>'+t("google")+'</button><p class="note">'+t("adminNote")+'</p></section></main>';
 }
 function tenantStats(T0){
  var d0=dayStart(Date.now()),rev=0,open=0;
  T0.order.forEach(function(id){var b=T0.branches[id];b.sales.forEach(function(s){if(s.ts>=d0)rev+=s.total;});open+=Object.keys(b.tickets).length;});
  return {rev:rev,open:open};
 }
-function viewWorkspaces(){
- return '<main class="wsp"><div class="row"><div class="brand">'+CUP+'Otillion</div><div style="display:flex;gap:10px;align-items:center">'+langSeg()+'<button class="icon" data-act="logout" aria-label="'+t("signOut")+'" title="'+t("signOut")+'">'+ic("logout","flip")+'</button></div></div>'+
- '<div><h1>'+t("wsTitle")+'</h1><p class="muted">'+t("wsSub")+'</p></div><div class="wlist">'+S.order.map(function(id){var T0=S.tenants[id],st=tenantStats(T0);
-  return '<button class="witem" data-act="enter" data-id="'+id+'"><span><b>'+esc(T0.name)+'</b><br><span class="muted">'+T0.order.length+' '+t("wsBranches")+' · '+t("wsToday")+' '+money0(st.rev)+' · '+st.open+' '+t("wsOpen")+'</span></span><span class="pill acc">'+t("r_"+T0.myRole)+'</span></button>';}).join("")+'</div>'+
- '<div class="field"><h3>'+t("wsNew")+'</h3><div class="wnew"><input id="wsName" placeholder="'+t("wsNamePh")+'" maxlength="40"><input id="wsPin" type="password" inputmode="numeric" maxlength="8" autocomplete="off" placeholder="'+t("pinNew")+'"><button class="btn pri" data-act="createWs">'+ic("plus")+t("wsCreate")+'</button></div><p class="note">'+t("wsNewHint")+' '+t("pinRule")+'</p><p class="note">'+t("demoPinNote",{p:DEMO_PIN})+'</p></div></main>';
+function viewAdmin(){
+ var tot={acc:S.accounts.length,rev:0,open:0};
+ S.order.forEach(function(id){var st=tenantStats(S.tenants[id]);tot.rev+=st.rev;tot.open+=st.open;});
+ var kp=[["admKpiCafes",S.order.length],["admKpiAcc",tot.acc],["admKpiSales",money0(tot.rev)],["admKpiOpen",tot.open]].map(function(x){return '<div class="kpi"><span class="muted">'+t(x[0])+'</span><b class="num">'+x[1]+'</b></div>';}).join("");
+ var cafes=S.order.map(function(id){
+  var T0=S.tenants[id],st=tenantStats(T0),accs=S.accounts.filter(function(a){return a.tid===id;});
+  var rows=accs.map(function(a){var br=T0.branches[a.br];
+   return '<tr><td><b>'+esc(a.name)+'</b><br><span class="muted">@'+esc(a.user)+'</span></td><td>'+t("r_"+accRole(a))+'</td><td>'+esc(br?br.name:"-")+'</td><td>'+(accLive(a)?'<span class="pill ok">'+t("activeW")+'</span>':'<span class="pill out">'+t("inactive")+'</span>')+'</td><td class="num">'+(a.last?dm(a.last):t("never"))+'</td><td><div class="inl"><input id="rp-'+a.id+'" type="text" autocomplete="off" placeholder="'+t("newPw")+'" style="width:150px"><button class="btn sm" data-act="resetPw" data-id="'+a.id+'">'+t("resetPw")+'</button><button class="btn sm" data-act="toggleAcc" data-id="'+a.id+'">'+t(a.active===false?"activate":"deactivate")+'</button><button class="btn sm" data-act="delAcc" data-id="'+a.id+'">'+(U.delC===a.id?t("delConfirm"):t("delAcc"))+'</button></div></td></tr>';}).join("");
+  return '<section class="panel"><div class="cafehd"><div><h3>'+esc(T0.name)+(T0.suspended?' <span class="pill out">'+t("suspended")+'</span>':'')+'</h3><span class="muted">'+T0.order.length+' '+t("wsBranches")+' · '+t("wsToday")+' '+money0(st.rev)+' · '+st.open+' '+t("wsOpen")+'</span></div><div class="inl"><button class="btn sm pri" data-act="enter" data-id="'+id+'">'+t("admOpen")+'</button><button class="btn sm" data-act="toggleCafe" data-id="'+id+'">'+t(T0.suspended?"admResume":"admSuspend")+'</button></div></div>'+
+   (accs.length?'<div class="tw"><table><thead><tr><th>'+t("colStaff")+'</th><th>'+t("colRole")+'</th><th>'+t("colBranch")+'</th><th>'+t("colStatus")+'</th><th>'+t("colLastIn")+'</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div>':'<p class="muted" style="margin:0">'+t("noAcc")+'</p>')+'</section>';}).join("");
+ var sel=U.adSel&&S.tenants[U.adSel]?U.adSel:S.order[0],TS=S.tenants[sel];
+ var accForm=TS?'<section class="panel"><h3>'+t("newAcc")+'</h3><div class="field"><label for="acTid">'+t("accCafe")+'</label><select id="acTid" data-change="acCafe">'+S.order.map(function(id){return '<option value="'+id+'"'+(id===sel?" selected":"")+'>'+esc(S.tenants[id].name)+'</option>';}).join("")+'</select></div>'+
+  '<div class="field"><label for="acName">'+t("accName")+'</label><input id="acName" maxlength="30" autocomplete="off"></div><div class="field"><label for="acUser">'+t("accUser")+'</label><input id="acUser" maxlength="24" autocomplete="off" autocapitalize="none" spellcheck="false"></div>'+
+  '<div class="field"><label for="acPass">'+t("accPass")+'</label><div class="inl"><input id="acPass" type="text" maxlength="64" autocomplete="off" style="flex:1;min-width:150px"><button class="btn sm" data-act="genPw" type="button">'+t("gen")+'</button></div></div>'+
+  '<div class="inl"><div class="field"><label for="acRole">'+t("colRole")+'</label><select id="acRole">'+ROLES.map(function(r){return '<option value="'+r+'"'+(r==="cashier"?" selected":"")+'>'+t("r_"+r)+'</option>';}).join("")+'</select></div><div class="field"><label for="acBr">'+t("colBranch")+'</label><select id="acBr">'+TS.order.map(function(id){return '<option value="'+id+'">'+esc(TS.branches[id].name)+'</option>';}).join("")+'</select></div></div>'+
+  '<button class="btn pri" data-act="createAcc">'+ic("plus")+t("wsCreate")+'</button></section>':'';
+ var cafeForm='<section class="panel"><h3>'+t("newCafe")+'</h3><div class="field"><label for="cfName">'+t("cafeName")+'</label><input id="cfName" maxlength="40" autocomplete="off"></div><div class="field"><label for="cfBr">'+t("cafeBr")+'</label><input id="cfBr" maxlength="120" autocomplete="off" placeholder="Merkez, Marina"></div><div class="field"><label for="cfPin">'+t("cafePin")+'</label><input id="cfPin" type="password" inputmode="numeric" maxlength="8" autocomplete="off"></div><button class="btn pri" data-act="createCafe">'+ic("plus")+t("wsCreate")+'</button><p class="note">'+t("cafePinHint")+'</p></section>';
+ return '<main class="adm"><div class="row"><div class="brand">'+CUP+'Otillion</div><div style="display:flex;gap:10px;align-items:center">'+langSeg()+'<button class="icon" data-act="logout" aria-label="'+t("signOut")+'" title="'+t("signOut")+'">'+ic("logout","flip")+'</button></div></div>'+
+  '<div><h1>'+t("adminTitle")+'</h1><p class="muted">'+t("adminSub")+'</p></div><div class="kpis">'+kp+'</div>'+cafes+'<div class="rgrid">'+cafeForm+accForm+'</div></main>';
 }
 function viewApp(){
  var T0=T(),allowed=SCREENS.filter(can),low=0,newK=0;
@@ -554,9 +603,12 @@ function viewApp(){
  var scr=U.screen,body="";
  if(!can(scr)){scr=allowed[0];U.screen=scr;}
  body=scr==="overview"?viewOverview():scr==="pos"?viewPOS():scr==="kitchen"?viewKitchen():scr==="stock"?viewStock():scr==="reports"?viewReports():scr==="staff"?viewStaff():viewSettings();
- var menu=U.menu?'<div class="menu" role="menu"><div class="who"><b>Demo Hesap</b><span class="muted">demo@otillion.app</span></div><div class="field"><label for="roleSel">'+t("roleDemo")+'</label><select id="roleSel" data-change="role">'+ROLES.filter(function(r){return RANK[r]<=RANK[T0.myRole];}).map(function(r){return '<option value="'+r+'"'+(r===S.role?" selected":"")+'>'+t("r_"+r)+'</option>';}).join("")+'</select></div><button class="btn" data-act="lock">'+ic("lock")+t("lockBtn")+'</button><button class="btn" data-act="wsHome">'+ic("swap")+t("switchWs")+'</button><button class="btn" data-act="logout">'+ic("logout","flip")+t("signOut")+'</button></div>':'';
+ var acc=accOf();
+ var whoH=acc?'<div class="who"><b>'+esc(acc.name)+'</b><span class="muted">@'+esc(acc.user)+' · '+t("r_"+myRole())+'</span></div>':'<div class="who"><b>'+t("adminTitle")+'</b><span class="muted">'+t("adminView")+'</span></div>';
+ var roleH=acc?'':'<div class="field"><label for="roleSel">'+t("roleDemo")+'</label><select id="roleSel" data-change="role">'+ROLES.filter(function(r){return RANK[r]<=RANK[myRole()];}).map(function(r){return '<option value="'+r+'"'+(r===S.role?" selected":"")+'>'+t("r_"+r)+'</option>';}).join("")+'</select></div>';
+ var menu=U.menu?'<div class="menu" role="menu">'+whoH+roleH+(acc?'<button class="btn" data-act="lock">'+ic("lock")+t("lockBtn")+'</button>':'<button class="btn" data-act="wsHome">'+ic("swap")+t("switchWs")+'</button>')+'<button class="btn" data-act="logout">'+ic("logout","flip")+t("signOut")+'</button></div>':'';
  return '<div class="shell"><aside class="side"><div class="brand">'+CUP+'Otillion</div><button class="wsbtn" data-act="wsHome"><b>'+esc(T0.name)+'</b><small>'+esc(br.name)+' · '+t("r_"+S.role)+'</small></button><nav class="nav">'+nav+'</nav></aside>'+
- '<main><header class="top"><button class="wsbtn mws" data-act="wsHome" style="width:auto"><b>'+esc(T0.name)+'</b><small>'+esc(br.name)+'</small></button><h1>'+t("nav_"+scr)+'</h1><div class="tr">'+brSel+langSeg()+'<button class="icon" data-act="theme" aria-label="'+t("themeBtn")+'">'+ic(dark?"sun":"moon")+'</button><button class="avatar" data-act="menuToggle" aria-label="menu">D</button>'+menu+'</div></header>'+body+'</main></div>'+
+ '<main><header class="top"><button class="wsbtn mws" data-act="wsHome" style="width:auto"><b>'+esc(T0.name)+'</b><small>'+esc(br.name)+'</small></button><h1>'+t("nav_"+scr)+'</h1><div class="tr">'+brSel+langSeg()+'<button class="icon" data-act="theme" aria-label="'+t("themeBtn")+'">'+ic(dark?"sun":"moon")+'</button><button class="avatar" data-act="menuToggle" aria-label="menu">'+esc(((acc||{name:"A"}).name||"A").charAt(0).toUpperCase())+'</button>'+menu+'</div></header>'+body+'</main></div>'+
  '<nav class="tabbar">'+nav+'</nav>';
 }
 /* overview (remote monitoring) */
@@ -729,8 +781,7 @@ function viewStaff(){
   var pr=workers.filter(function(x){return agg[x.name];}).map(function(x){var a=agg[x.name],hh=hoursIn(x.id,from);return {x:x,a:a,h:hh};}).sort(function(a,c){return c.a.r-a.a.r;});
   h='<div class="tw"><table><thead><tr><th>'+t("colStaff")+'</th><th>'+t("colBranch")+'</th><th class="n">'+t("colOrders")+'</th><th class="n">'+t("colRev")+'</th><th class="n">'+t("colAvg")+'</th><th class="n">'+t("colHours")+'</th><th class="n">'+t("colRevH")+'</th></tr></thead><tbody>'+pr.map(function(p){return '<tr><td><b>'+esc(p.x.name)+'</b></td><td>'+bn(p.x.br)+'</td><td class="n">'+p.a.n+'</td><td class="n">'+money0(p.a.r)+'</td><td class="n">'+money0(p.a.r/p.a.n)+'</td><td class="n">'+num(p.h,1)+'</td><td class="n">'+(p.h>0?money0(p.a.r/p.h):"—")+'</td></tr>';}).join("")+'</tbody></table></div><p class="note">'+t("week")+'</p>';
  }else{
-  h='<div class="tw"><table><thead><tr><th>'+t("colStaff")+'</th><th>'+t("colRole")+'</th><th>'+t("colBranch")+'</th><th>'+t("colStart")+'</th><th></th></tr></thead><tbody>'+T0.staff.map(function(x){return '<tr><td><b>'+esc(x.name)+'</b><br><span class="muted">'+esc(x.email)+(x.invited?' · '+t("invited"):'')+'</span></td><td>'+roleCell(x)+'</td><td><select data-change="staffBr" data-s="'+x.id+'">'+T0.order.map(function(id){return '<option value="'+id+'"'+(x.br===id?" selected":"")+'>'+esc(T0.branches[id].name)+'</option>';}).join("")+'</select></td><td class="num">'+esc(x.start)+'</td><td>'+activeCell(x)+'</td></tr>';}).join("")+'</tbody></table></div>'+
-  '<div class="panel" style="margin-top:16px"><div class="inl"><div class="field"><label for="invEmail">Email</label><input id="invEmail" type="email" placeholder="'+t("emailPh")+'"></div><div class="field"><label for="invRole">'+t("colRole")+'</label><select id="invRole">'+ROLES.filter(function(r){return r!=="owner";}).map(function(r){return '<option value="'+r+'">'+t("r_"+r)+'</option>';}).join("")+'</select></div><button class="btn pri" data-act="invite">'+t("invite")+'</button></div></div>';
+  h='<div class="tw"><table><thead><tr><th>'+t("colStaff")+'</th><th>'+t("colRole")+'</th><th>'+t("colBranch")+'</th><th>'+t("colStart")+'</th><th></th></tr></thead><tbody>'+T0.staff.map(function(x){return '<tr><td><b>'+esc(x.name)+'</b><br><span class="muted">'+esc(x.email)+(x.invited?' · '+t("invited"):'')+'</span></td><td>'+roleCell(x)+'</td><td><select data-change="staffBr" data-s="'+x.id+'">'+T0.order.map(function(id){return '<option value="'+id+'"'+(x.br===id?" selected":"")+'>'+esc(T0.branches[id].name)+'</option>';}).join("")+'</select></td><td class="num">'+esc(x.start)+'</td><td>'+activeCell(x)+'</td></tr>';}).join("")+'</tbody></table></div>';
  }
  return '<div class="bar">'+seg("staffTab",U.staffTab,tabs)+'</div>'+h;
 }
@@ -762,15 +813,16 @@ function logText(l){
  Object.keys(p).forEach(function(k){p[k]=esc(p[k]);});
  return (T().order.length>1&&b?'<span class="muted">'+esc(b.name)+' · </span>':'')+t("l_"+l.k,p);
 }
-function viewLock(){return '<main class="login" style="grid-template-columns:1fr;max-width:420px"><section class="signcard"><div class="brand">'+CUP+'Otillion</div><h2>'+t("lockTitle")+'</h2><p class="note">'+esc(T().name)+' · '+t("lockHint")+'</p><div class="field"><label for="lockPin">'+t("pinPh")+'</label><input id="lockPin" type="password" inputmode="numeric" autocomplete="off" maxlength="8"></div><button class="btn pri" data-act="unlock">'+ic("lock")+t("unlock")+'</button></section></main>';}
+function viewLock(){return '<main class="login" style="grid-template-columns:1fr;max-width:420px"><section class="signcard"><div class="brand">'+CUP+'Otillion</div><h2>'+t("lockTitle")+'</h2><p class="note">'+esc(T().name)+' · '+t("lockHint")+'</p><div class="field"><label for="lockPin">'+t(accOf()?"passPh":"pinPh")+'</label><input id="lockPin" type="password" autocomplete="off" maxlength="64"></div><button class="btn pri" data-act="unlock">'+ic("lock")+t("unlock")+'</button></section></main>';}
 function toastHtml(){return U.toast?'<div class="toast" role="status">'+esc(U.toast)+'</div>':"";}
 function render(){
- var h=!S.signedIn?viewLogin():!S.tid?viewWorkspaces():(U.locked?viewLock():viewApp());
+ if(S.signedIn&&S.sess&&S.sess.k==="user"){var a0=accOf();if(!a0||!accLive(a0))forceOut();}
+ var h=!S.signedIn?viewLogin():!S.tid?(isAdmin()?viewAdmin():viewLogin()):(U.locked?viewLock():viewApp());
  $("#app").innerHTML=h+modalHtml()+toastHtml();
  var r=document.documentElement;r.lang=S.lang;r.dir=S.lang==="ar"?"rtl":"ltr";
  if(S.theme)r.setAttribute("data-theme",S.theme);
 }
-function enter(id){S.tid=id;var T0=T();S.role=T0.myRole;S.bid=T0.order[0];U.screen=SCREENS.filter(can)[0];U.posTable=null;U.modal=null;U.rb="all";U.counts={};}
+function enter(id){S.tid=id;var T0=T(),ac=accOf();S.role=myRole();S.bid=(ac&&T0.branches[ac.br])?ac.br:T0.order[0];U.screen=SCREENS.filter(can)[0];U.posTable=null;U.modal=null;U.rb="all";U.counts={};}
 function cleanTicket(){var b=B(),k=U.posTable;if(k&&b.tickets[k]&&!b.tickets[k].lines.length&&!b.tickets[k].payments.length)delete b.tickets[k];}
 
 /* ---------- actions ---------- */
@@ -779,11 +831,37 @@ function act(a,d,el){
  switch(a){
  case "lang":S.lang=d.v;break;
  case "theme":{var dark=S.theme?S.theme==="dark":window.matchMedia("(prefers-color-scheme: dark)").matches;S.theme=dark?"light":"dark";break;}
- case "login":S.signedIn=true;break;
- case "logout":S.signedIn=false;S.tid=null;U.menu=false;U.modal=null;U.stepUp=0;U.locked=false;break;
- case "enter":if(S.tenants[d.id])enter(d.id);break;
- case "createWs":{var nme=(($("#wsName")||{}).value||"").trim(),pn=(($("#wsPin")||{}).value||"");if(!nme)break;if(!/^\d{4,8}$/.test(pn)){toast(t("pinRule"));break;}var id="w"+Date.now().toString(36);S.tenants[id]=makeTenant(id,nme.slice(0,40),"owner",[["b1","Merkez",0,0.6]],false,pn);S.order.push(id);enter(id);break;}
- case "wsHome":if(S.tid)cleanTicket();S.tid=null;U.menu=false;U.posTable=null;U.modal=null;break;
+ case "adminLogin":S.signedIn=true;S.sess={k:"admin"};S.tid=null;U.last=Date.now();break;
+ case "userLogin":{var un=(($("#lgUser")||{}).value||"").trim().toLowerCase(),pw=($("#lgPass")||{}).value||"";
+  if(Date.now()<U.lfUntil){toast(t("pinLock",{s:Math.ceil((U.lfUntil-Date.now())/1000)}));break;}
+  var ac=S.accounts.filter(function(x){return x.user===un;})[0],hh=hashPw(pw,ac?ac.salt:"none");
+  if(!ac||hh!==ac.hash){U.lf++;if(ac)tlog(ac.tid,"loginfail",{});if(U.lf>=5){U.lf=0;U.lfUntil=Date.now()+60000;toast(t("pinLock",{s:60}));}else toast(t("badLogin"));break;}
+  if(!accLive(ac)){toast(t("accOff"));break;}
+  U.lf=0;ac.last=Date.now();S.signedIn=true;S.sess={k:"user",id:ac.id};U.last=Date.now();enter(ac.tid);log("login",{});break;}
+ case "createCafe":{var cn=(($("#cfName")||{}).value||"").trim().slice(0,40),cb=(($("#cfBr")||{}).value||"").split(",").map(function(x){return x.trim().slice(0,30);}).filter(Boolean).slice(0,6),cp=($("#cfPin")||{}).value||"";
+  if(!cn)break;if(!cb.length)cb=["Merkez"];if(!/^\d{4,8}$/.test(cp)){toast(t("pinRule"));break;}if(weakPin(cp)){toast(t("pinWeak"));break;}
+  var cid="w"+Date.now().toString(36);S.tenants[cid]=makeTenant(cid,cn,"owner",cb.map(function(n,i){return ["b"+(i+1),n,0,0.6];}),false,cp);S.order.push(cid);
+  var st0=S.tenants[cid].staff[0];st0.name="Owner";st0.email="";U.adSel=cid;toast(t("cafeCreated"));break;}
+ case "createAcc":{var ct=($("#acTid")||{}).value,T1=S.tenants[ct];if(!T1)break;
+  var nm1=(($("#acName")||{}).value||"").trim().slice(0,30),us=(($("#acUser")||{}).value||"").trim().toLowerCase(),pw1=($("#acPass")||{}).value||"",ro=($("#acRole")||{}).value,brn=($("#acBr")||{}).value;
+  if(!nm1)break;if(!/^[a-z0-9._-]{3,24}$/.test(us)){toast(t("userBad"));break;}
+  if(S.accounts.some(function(x){return x.user===us;})){toast(t("userTaken"));break;}
+  if(pw1.length<8||pw1.length>64||pw1.toLowerCase()===us){toast(t("passBad"));break;}
+  if(ROLES.indexOf(ro)<0||!T1.branches[brn])break;
+  var salt=rnd(),sid="u"+rnd().slice(0,8);
+  T1.staff.push({id:sid,name:nm1,email:"@"+us,role:ro,br:brn,start:isoDay(0),active:true});T1.shifts[sid]=["m","m","m","m","m","o","o"];T1.att[sid]=[];
+  S.accounts.push({id:"a"+rnd().slice(0,8),tid:ct,user:us,salt:salt,hash:hashPw(pw1,salt),name:nm1,role:ro,br:brn,sid:sid,active:true,ts:Date.now(),last:0});
+  tlog(ct,"acc_new",{who:nm1});toast(t("accCreated")+": @"+us);break;}
+ case "resetPw":{var ac3=S.accounts.filter(function(x){return x.id===d.id;})[0],np=($("#rp-"+d.id)||{}).value||"";if(!ac3)break;
+  if(np.length<8||np.length>64||np.toLowerCase()===ac3.user){toast(t("passBad"));break;}
+  ac3.salt=rnd();ac3.hash=hashPw(np,ac3.salt);tlog(ac3.tid,"pwreset",{who:ac3.name});toast(t("pwChanged"));break;}
+ case "toggleAcc":{var ac4=S.accounts.filter(function(x){return x.id===d.id;})[0];if(!ac4)break;ac4.active=ac4.active===false;tlog(ac4.tid,"active",{who:ac4.name,s:ac4.active===false?"off":"on"});break;}
+ case "delAcc":{if(U.delC!==d.id){U.delC=d.id;break;}U.delC=null;var ix2=S.accounts.map(function(x){return x.id;}).indexOf(d.id);if(ix2<0)break;
+  var ad=S.accounts[ix2],sf=staffOfAcc(ad);if(sf)sf.active=false;tlog(ad.tid,"acc_del",{who:ad.name});S.accounts.splice(ix2,1);break;}
+ case "toggleCafe":{var tc=S.tenants[d.id];if(tc){tc.suspended=!tc.suspended;}break;}
+ case "logout":S.signedIn=false;S.sess=null;S.tid=null;U.menu=false;U.modal=null;U.stepUp=0;U.locked=false;break;
+ case "enter":if(S.tenants[d.id]){enter(d.id);log("adminin",{});}break;
+  case "wsHome":if(!isAdmin())break;if(S.tid)cleanTicket();S.tid=null;U.menu=false;U.posTable=null;U.modal=null;break;
  case "menuToggle":U.menu=!U.menu;break;
  case "nav":if(U.screen==="pos")cleanTicket();U.screen=d.v;U.posTable=null;U.modal=null;break;
  case "goBranch":if(!T().branches[d.id])break;S.bid=d.id;U.screen=can("pos")?"pos":U.screen;U.posTable=null;break;
@@ -820,7 +898,11 @@ function act(a,d,el){
  case "lvOk":case "lvNo":{var lv=T().leaves.filter(function(x){return String(x.id)===d.id;})[0];if(lv){lv.status=a==="lvOk"?"approved":"rejected";log(a==="lvOk"?"leave_ok":"leave_no",{who:T().staff.filter(function(x){return x.id===lv.sid;})[0].name});}break;}
  case "invite":{var em=(d.email||"").trim();if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)||ROLES.indexOf(d.role)<0||d.role==="owner"){toast(t("emailPh"));break;}T().staff.push({id:"m"+Date.now().toString(36),name:em.split("@")[0].slice(0,30),email:em.slice(0,80),role:d.role,br:S.bid,start:isoDay(0),invited:true,active:true});log("invite",{email:em});break;}
  case "lock":U.locked=true;U.menu=false;U.stepUp=0;U.modal=null;log("lock",{});break;
- case "unlock":{if(pinCheck(($("#lockPin")||{}).value)){U.locked=false;U.last=Date.now();log("unlock",{});}break;}
+ case "unlock":{var v0=($("#lockPin")||{}).value||"",ac2=accOf();
+  if(ac2){if(Date.now()<U.lfUntil){toast(t("pinLock",{s:Math.ceil((U.lfUntil-Date.now())/1000)}));break;}
+   if(hashPw(v0,ac2.salt)===ac2.hash){U.lf=0;U.locked=false;U.last=Date.now();log("unlock",{});}
+   else{U.lf++;log("pinfail",{});if(U.lf>=5){U.lf=0;U.lfUntil=Date.now()+60000;toast(t("pinLock",{s:60}));}else toast(t("badLogin"));}}
+  else if(pinCheck(v0)){U.locked=false;U.last=Date.now();log("unlock",{});}break;}
  case "pinSubmit":{var pm=U.modal;if(!pm||pm.type!=="pin")break;if(pinCheck(($("#pinIn")||{}).value)){U.stepUp=Date.now()+STEP_MS;U.modal=null;if(pm.a==="chg")applyChange(pm.d);else run(pm.a,pm.d);}break;}
  case "setPin":{var cur=($("#pinCur")||{}).value,n1=($("#pinNew")||{}).value||"",n2=($("#pinNew2")||{}).value||"";if(!pinCheck(cur))break;if(!/^\d{4,8}$/.test(n1)||n1!==n2){toast(t("pinRule"));break;}T().pinSalt=Math.random().toString(36).slice(2)+S.tid;T().pinHash=hashPin(n1,T().pinSalt);U.stepUp=0;log("setpin",{});toast(t("pinChanged"));break;}
  case "toggleActive":{var sx=T().staff.filter(function(x){return x.id===d.s;})[0];if(!sx||sx.id==="m0"||sx.role==="owner")break;sx.active=sx.active===false;log("active",{who:sx.name,s:sx.active===false?"off":"on"});break;}
@@ -838,7 +920,7 @@ function pinCheck(pin){
 }
 function applyChange(d){
  var T0=T();
- if(d.c==="role"){if(ROLES.indexOf(d.v)<0||RANK[d.v]>RANK[T0.myRole])return;if(RANK[d.v]>RANK[S.role])log("elevate",{r:d.v});if(RANK[d.v]<RANK[S.role])U.stepUp=0;S.role=d.v;if(!can("overview")&&!can("staffAll"))S.bid=T0.order[0];if(!can(U.screen))U.screen=SCREENS.filter(can)[0];U.posTable=null;U.menu=false;}
+ if(d.c==="role"){if(ROLES.indexOf(d.v)<0||RANK[d.v]>RANK[myRole()])return;if(RANK[d.v]>RANK[S.role])log("elevate",{r:d.v});if(RANK[d.v]<RANK[S.role])U.stepUp=0;S.role=d.v;if(!can("overview")&&!can("staffAll"))S.bid=T0.order[0];if(!can(U.screen))U.screen=SCREENS.filter(can)[0];U.posTable=null;U.menu=false;}
  else if(d.c==="branch"){if(!T0.branches[d.v])return;cleanTicket();S.bid=d.v;U.posTable=null;U.modal=null;}
  else if(d.c==="rb")U.rb=d.v;
  else if(d.c==="printer"){if(PRINTERS.indexOf(d.v)<0||["bar","kitchen","receipt"].indexOf(d.st)<0)return;B().printers[d.st]=d.v;log("printer",{st:d.st,p:d.v});}
@@ -846,6 +928,8 @@ function applyChange(d){
  else if(d.c==="staffRole"){var s2=T0.staff.filter(function(x){return x.id===d.s;})[0];if(!s2||s2.id==="m0"||s2.role==="owner"||d.v==="owner"||ROLES.indexOf(d.v)<0)return;s2.role=d.v;log("role",{who:s2.name,r:d.v});}
 }
 function run(a,d){
+ if(ADMINA[a]&&!isAdmin())return deny(a);
+ if(a!=="delAcc")U.delC=null;
  var need=NEED[a];
  if(need&&!can(need))return deny(a);
  if(a==="nav"&&!can(d.v))return deny(a);
@@ -860,15 +944,16 @@ document.addEventListener("click",function(e){
  if(U.menu&&!e.target.closest(".menu,.avatar")){U.menu=false;if(!el){render();return;}}
  if(!el)return;if(el.dataset.act==="overlay"&&e.target!==el)return;
  var d={},k;for(k in el.dataset)d[k]=el.dataset[k];var a=d.act;
- if(a==="invite"){d.email=($("#invEmail")||{}).value||"";d.role=($("#invRole")||{}).value||"";}
+ if(a==="genPw"){var pv=$("#acPass");if(pv&&isAdmin())pv.value=genPw();return;}
  if(U.locked&&a!=="unlock"&&a!=="logout"&&a!=="lang"&&a!=="theme")return;
  run(a,d);save();render();
 });
 document.addEventListener("change",function(e){
  U.last=Date.now();var el=e.target,c=el.dataset&&el.dataset.change;if(!c||U.locked)return;
  var d={c:c,v:el.value,st:el.dataset.st,s:el.dataset.s};
- if(CNEED[c]&&!can(CNEED[c]))deny(c);
- else if(c==="role"){if(RANK[d.v]>RANK[T().myRole])deny(c);else if(RANK[d.v]>RANK[S.role]&&!stepOk())U.modal={type:"pin",a:"chg",d:d};else applyChange(d);}
+ if(c==="acCafe"){if(isAdmin()&&S.tenants[el.value])U.adSel=el.value;}
+ else if(CNEED[c]&&!can(CNEED[c]))deny(c);
+ else if(c==="role"){if(!isAdmin()||RANK[d.v]>RANK[myRole()])deny(c);else if(RANK[d.v]>RANK[S.role]&&!stepOk())U.modal={type:"pin",a:"chg",d:d};else applyChange(d);}
  else if((c==="printer"||c==="staffBr"||c==="staffRole")&&!stepOk())U.modal={type:"pin",a:"chg",d:d};
  else applyChange(d);
  save();render();
@@ -880,11 +965,12 @@ document.addEventListener("input",function(e){
 document.addEventListener("keydown",function(e){
  U.last=Date.now();
  if(e.key==="Escape"&&(U.modal||U.menu)&&!U.locked){U.modal=null;U.menu=false;render();return;}
- if(e.key!=="Enter")return;var id=e.target.id,a=(id==="wsName"||id==="wsPin")?"createWs":id==="pinIn"?"pinSubmit":id==="lockPin"?"unlock":null;
+ if(e.key!=="Enter")return;var id=e.target.id,a=(id==="lgUser"||id==="lgPass")?"userLogin":id==="pinIn"?"pinSubmit":id==="lockPin"?"unlock":null;
  if(a){run(a,{});save();render();}
 });
 setInterval(function(){
- if(S.signedIn&&S.tid&&!U.locked&&S.role!=="kitchen"&&Date.now()-U.last>AUTOLOCK){U.locked=true;U.stepUp=0;U.modal=null;U.menu=false;log("lock",{});save();render();return;}
+ if(S.signedIn&&isAdmin()&&Date.now()-U.last>10*60000){forceOut();save();render();return;}
+ if(S.signedIn&&S.tid&&!isAdmin()&&!U.locked&&S.role!=="kitchen"&&Date.now()-U.last>AUTOLOCK){U.locked=true;U.stepUp=0;U.modal=null;U.menu=false;log("lock",{});save();render();return;}
  var a=document.activeElement;if(S.signedIn&&S.tid&&!U.locked&&!U.modal&&!(a&&(a.tagName==="INPUT"||a.tagName==="SELECT"))&&(U.screen==="kitchen"||U.screen==="pos"||U.screen==="overview"))render();
 },15000);
 S=load();render();
