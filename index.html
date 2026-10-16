@@ -217,22 +217,22 @@ td.n,th.n{text-align:end;font-variant-numeric:tabular-nums}
 "use strict";
 var LS="otillion-demo-v3";
 var ROLES=["owner","manager","cashier","kitchen","accountant"];
-var SCREENS=["overview","pos","kitchen","stock","reports","staff","settings"];
+var SCREENS=["overview","pos","kitchen","stock","reports","staff","manage","settings"];
 var PERM={
- owner:["overview","pos","kitchen","stock","stockEdit","costView","reports","staff","staffAll","settings","void"],
- manager:["overview","pos","kitchen","stock","stockEdit","costView","reports","staff","staffAll","void"],
+ owner:["overview","pos","kitchen","stock","stockEdit","costView","reports","staff","staffAll","manage","settings","void"],
+ manager:["overview","pos","kitchen","stock","stockEdit","costView","reports","staff","staffAll","manage","void"],
  cashier:["pos","kitchen","staff"],kitchen:["kitchen","staff"],accountant:["overview","reports","stock","costView"]};
 var RANK={owner:5,manager:4,accountant:3,cashier:2,kitchen:1};
 var DEMO_PIN="1234",AUTOLOCK=5*60*1000,STEP_MS=2*60*1000;
 /* every mutating action maps to the permission it needs; the UI hiding a button is never the only check */
-var NEED={add:"pos",inc:"pos",dec:"pos",send:"pos",openPay:"pos",payN:"pos",paySel:"pos",doPay:"pos",openMove:"pos",doMove:"pos",openMerge:"pos",doMerge:"pos",newTake:"pos",openTable:"pos",backTables:"pos",
+var NEED={tblSet:"manage",itemAdd:"manage",itemDel:"manage",add:"pos",inc:"pos",dec:"pos",send:"pos",openPay:"pos",payN:"pos",paySel:"pos",doPay:"pos",openMove:"pos",doMove:"pos",openMerge:"pos",doMerge:"pos",newTake:"pos",openTable:"pos",backTables:"pos",
  void:"void",kadv:"kitchen",openRecv:"stockEdit",doRecv:"stockEdit",applyCount:"stockEdit",shift:"staffAll",lvOk:"staffAll",lvNo:"staffAll",invite:"adminOnly",setPin:"settings",toggleActive:"settings",goBranch:"overview",clock:"staff",lvReq:"staff"};
 var PINNED={void:1,applyCount:1,invite:1,toggleActive:1};
 var MODALA={payN:"pay",paySel:"pay",doPay:"pay",doMove:"move",doMerge:"merge",doRecv:"recv",pinSubmit:"pin"};
 var POSA={add:1,inc:1,dec:1,void:1,send:1,openPay:1,openMove:1,openMerge:1};
 var SETK={cat:1,pane:1,kds:1,period:1,stockTab:1,staffTab:1};
-var CNEED={branch:"overview",rb:"reports",printer:"settings",staffBr:"settings",staffRole:"settings"};
-var MATRIX=["pos","kitchen","stock","stockEdit","void","costView","reports","overview","staff","staffAll","settings"];
+var CNEED={itemPrice:"manage",itemName:"manage",branch:"overview",rb:"reports",printer:"settings",staffBr:"settings",staffRole:"settings"};
+var MATRIX=["pos","kitchen","stock","stockEdit","void","costView","reports","overview","staff","staffAll","manage","settings"];
 var PINLIST=["void","applyCount","invite","staffRole","staffBr","printer","toggleActive","elevate"];
 function sha256(msg){
  var K=[0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
@@ -271,7 +271,7 @@ google:"Google ile devam et",
  wsToday:"Bugün",wsOpen:"açık adisyon",wsBranches:"şube",wsNew:"Yeni işletme ekle",wsNamePh:"İşletme adı",wsCreate:"Oluştur",wsNewHint:"Hazır menü, stok ve reçete şablonuyla boş bir alan açılır.",
  signOut:"Çıkış yap",switchWs:"İşletme değiştir",roleDemo:"Rolü dene (demo)",
  r_owner:"Sahip",r_manager:"Müdür",r_cashier:"Kasiyer",r_kitchen:"Mutfak",r_accountant:"Muhasebeci",
- nav_overview:"Genel bakış",nav_pos:"Kasa",nav_kitchen:"Mutfak",nav_stock:"Stok",nav_reports:"Raporlar",nav_staff:"Personel",nav_settings:"Ayarlar",
+ nav_overview:"Genel bakış",nav_pos:"Kasa",nav_kitchen:"Mutfak",nav_stock:"Stok",nav_reports:"Raporlar",nav_staff:"Personel",nav_settings:"Ayarlar",nav_manage:"Yönetim",p_manage:"Masa ve menü düzenleme",mg_tables:"Masa sayısı",mg_save:"Kaydet",mg_tblBusy:"Açık adisyonu olan masalar kaldırılamaz",mg_menu:"Menü ve fiyatlar",mg_add:"Ürün ekle",mg_name:"Ürün adı",mg_price:"Fiyat",mg_cat:"Kategori",mg_stn:"İstasyon",mg_del:"Sil",mg_busy:"Açık adisyondaki ürün silinemez",mg_note:"Yeni ürünlerin reçetesi boştur; stok düşümü için reçete sonradan tanımlanır.",mg_bad:"Geçersiz değer",l_tblSet:"Masa sayısı: {n}",l_itemAdd:"Ürün eklendi: {mi}",l_itemDel:"Ürün silindi: {n}",l_itemEdit:"Ürün güncellendi: {mi}",
  branch:"Şube",allBranches:"Tüm şubeler",
  tables:"Masalar",newTake:"Paket sipariş",free:"Boş",tableN:"Masa",take:"Paket",ready:"Hazır",min:"dk",
  menuTab:"Menü",ticketTab:"Adisyon",all:"Tümü",soldOut:"Bitti",noLines:"Henüz ürün yok. Menüden ürün ekleyin.",
@@ -330,7 +330,7 @@ google:"المتابعة عبر Google",
  wsToday:"اليوم",wsOpen:"فاتورة مفتوحة",wsBranches:"فروع",wsNew:"إضافة منشأة جديدة",wsNamePh:"اسم المنشأة",wsCreate:"إنشاء",wsNewHint:"تُفتح مساحة فارغة بقالب جاهز للمنيو والمخزون والوصفات.",
  signOut:"تسجيل الخروج",switchWs:"تبديل المنشأة",roleDemo:"جرّب دوراً (تجريبي)",
  r_owner:"المالك",r_manager:"المدير",r_cashier:"الكاشير",r_kitchen:"المطبخ",r_accountant:"المحاسب",
- nav_overview:"نظرة عامة",nav_pos:"الكاشير",nav_kitchen:"المطبخ",nav_stock:"المخزون",nav_reports:"التقارير",nav_staff:"الموظفون",nav_settings:"الإعدادات",
+ nav_overview:"نظرة عامة",nav_pos:"الكاشير",nav_kitchen:"المطبخ",nav_stock:"المخزون",nav_reports:"التقارير",nav_staff:"الموظفون",nav_settings:"الإعدادات",nav_manage:"الإدارة",p_manage:"تعديل الطاولات والمنيو",mg_tables:"عدد الطاولات",mg_save:"حفظ",mg_tblBusy:"لا يمكن حذف طاولات عليها فاتورة مفتوحة",mg_menu:"المنيو والأسعار",mg_add:"إضافة صنف",mg_name:"اسم الصنف",mg_price:"السعر",mg_cat:"التصنيف",mg_stn:"القسم",mg_del:"حذف",mg_busy:"لا يمكن حذف صنف موجود في فاتورة مفتوحة",mg_note:"الأصناف الجديدة بلا وصفة؛ تُحدَّد الوصفة لاحقاً لخصم المخزون.",mg_bad:"قيمة غير صالحة",l_tblSet:"عدد الطاولات: {n}",l_itemAdd:"إضافة صنف: {mi}",l_itemDel:"حذف صنف: {n}",l_itemEdit:"تعديل صنف: {mi}",
  branch:"الفرع",allBranches:"كل الفروع",
  tables:"الطاولات",newTake:"طلب تيك أواي",free:"فارغة",tableN:"طاولة",take:"تيك أواي",ready:"جاهز",min:"د",
  menuTab:"المنيو",ticketTab:"الفاتورة",all:"الكل",soldOut:"نفد",noLines:"ما في أصناف بعد. أضف من المنيو.",
@@ -535,7 +535,7 @@ var unitL=function(u){return t("u_"+u);};
 function ic(n,c){
  var P={pos:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
  kitchen:'<path d="M4 17h16M5 17a7 7 0 0 1 14 0M12 7V5M10 5h4"/>',stock:'<path d="M3 8l9-5 9 5v8l-9 5-9-5zM3 8l9 5 9-5M12 13v8"/>',
- reports:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',settings:'<path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/>',
+ reports:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',manage:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M9 10v9"/>',settings:'<path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/>',
  overview:'<path d="M3 12l9-8 9 8M5 10v10h14V10"/>',staff:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5M17 5a3.5 3.5 0 0 1 0 7M21.5 20c-.4-2.2-1.5-3.8-3.2-4.7"/>',
  back:'<path d="M15 6l-6 6 6 6"/>',plus:'<path d="M12 5v14M5 12h14"/>',minus:'<path d="M5 12h14"/>',check:'<path d="M5 12l5 5L20 7"/>',
  move:'<path d="M5 12h14M15 8l4 4-4 4"/>',merge:'<path d="M6 4v5a6 6 0 0 0 6 6M18 4v5a6 6 0 0 1-6 6M12 15v5"/>',
@@ -697,7 +697,7 @@ function viewApp(){
  var dark=S.theme?S.theme==="dark":window.matchMedia("(prefers-color-scheme: dark)").matches;
  var scr=U.screen,body="";
  if(!can(scr)){scr=allowed[0];U.screen=scr;}
- body=scr==="overview"?viewOverview():scr==="pos"?viewPOS():scr==="kitchen"?viewKitchen():scr==="stock"?viewStock():scr==="reports"?viewReports():scr==="staff"?viewStaff():viewSettings();
+ body=scr==="overview"?viewOverview():scr==="pos"?viewPOS():scr==="kitchen"?viewKitchen():scr==="stock"?viewStock():scr==="reports"?viewReports():scr==="staff"?viewStaff():scr==="manage"?viewManage():viewSettings();
  var acc=accOf();
  var whoH=acc?'<div class="who"><b>'+esc(acc.name)+'</b><span class="muted">@'+esc(acc.user)+' · '+t("r_"+myRole())+'</span></div>':'<div class="who"><b>'+t("adminTitle")+'</b><span class="muted">'+t("adminView")+'</span></div>';
  var roleH=acc?'':'<div class="field"><label for="roleSel">'+t("roleDemo")+'</label><select id="roleSel" data-change="role">'+ROLES.filter(function(r){return RANK[r]<=RANK[myRole()];}).map(function(r){return '<option value="'+r+'"'+(r===S.role?" selected":"")+'>'+t("r_"+r)+'</option>';}).join("")+'</select></div>';
@@ -885,6 +885,14 @@ function roleCell(x){var bad=x.active===false?' <span class="pill out">'+t("inac
  return '<select data-change="staffRole" data-s="'+x.id+'" aria-label="'+t("colRole")+'">'+ROLES.filter(function(r){return r!=="owner";}).map(function(r){return '<option value="'+r+'"'+(x.role===r?" selected":"")+'>'+t("r_"+r)+'</option>';}).join("")+'</select>'+bad;}
 function activeCell(x){if(x.id==="m0"||x.role==="owner"||!can("settings"))return "";return '<button class="btn sm" data-act="toggleActive" data-s="'+x.id+'">'+t(x.active===false?"activate":"deactivate")+'</button>';}
 /* settings */
+function viewManage(){
+ var b=B(),T0=T();
+ var cats=function(sel){return CATS.map(function(c){return '<option value="'+c+'"'+(sel===c?" selected":"")+'>'+t("cat_"+c)+'</option>';}).join("");};
+ var rows=T0.menu.map(function(m){return '<tr><td><input value="'+esc(nm(m))+'" data-change="itemName" data-s="'+esc(m.id)+'" maxlength="40" aria-label="'+t("mg_name")+'" style="min-width:140px"></td><td>'+t("cat_"+m.cat)+'</td><td>'+t(m.station==="bar"?"k_bar":"k_kitchen")+'</td><td class="n"><input type="number" min="0.5" step="0.5" value="'+m.price+'" data-change="itemPrice" data-s="'+esc(m.id)+'" aria-label="'+t("mg_price")+'" style="width:96px"></td><td class="n"><button class="btn sm" data-act="itemDel" data-id="'+esc(m.id)+'">'+t("mg_del")+'</button></td></tr>';}).join("");
+ return '<div class="rgrid"><section class="panel"><h3>'+t("mg_tables")+' · '+esc(b.name)+'</h3><div class="inl"><div class="field"><label for="tblN">'+t("mg_tables")+'</label><input id="tblN" type="number" min="1" max="60" value="'+b.tables+'"></div><button class="btn pri" data-act="tblSet">'+t("mg_save")+'</button></div></section>'+
+ '<section class="panel"><h3>'+t("mg_add")+'</h3><div class="inl"><div class="field"><label for="miName">'+t("mg_name")+'</label><input id="miName" maxlength="40"></div><div class="field"><label for="miPrice">'+t("mg_price")+'</label><input id="miPrice" type="number" min="0.5" step="0.5"></div><div class="field"><label for="miCat">'+t("mg_cat")+'</label><select id="miCat">'+cats("coffee")+'</select></div><div class="field"><label for="miStn">'+t("mg_stn")+'</label><select id="miStn"><option value="bar">'+t("k_bar")+'</option><option value="kitchen">'+t("k_kitchen")+'</option></select></div><button class="btn pri" data-act="itemAdd">'+ic("plus")+t("mg_add")+'</button></div><p class="note">'+t("mg_note")+'</p></section>'+
+ '<section class="panel wide"><h3>'+t("mg_menu")+'</h3><div class="tw"><table><thead><tr><th>'+t("mg_name")+'</th><th>'+t("mg_cat")+'</th><th>'+t("mg_stn")+'</th><th class="n">'+t("mg_price")+'</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div></section></div>';
+}
 function viewSettings(){
  var b=B(),T0=T();
  var pr=[["bar",t("k_bar")],["kitchen",t("k_kitchen")],["receipt",t("rcpt")]].map(function(x){return '<div class="field"><label for="pr-'+x[0]+'">'+x[1]+'</label><select id="pr-'+x[0]+'" data-change="printer" data-st="'+x[0]+'">'+PRINTERS.map(function(p){return '<option'+(b.printers[x[0]]===p?" selected":"")+'>'+p+'</option>';}).join("")+'</select></div>';}).join("");
@@ -962,7 +970,15 @@ function act(a,d,el){
  case "nav":if(U.screen==="pos")cleanTicket();U.screen=d.v;U.posTable=null;U.modal=null;break;
  case "goBranch":if(!T().branches[d.id])break;S.bid=d.id;U.screen=can("pos")?"pos":U.screen;U.posTable=null;break;
  case "set":if(SETK[d.g])U[d.g]=d.v;break;
- case "openTable":if(!/^([1-9]|10|TA\d+)$/.test(d.k))break;ensureTicket(d.k);U.posTable=d.k;U.pane="menu";U.cat="all";break;
+  case "tblSet":{var n=parseInt(($("#tblN")||{}).value,10);if(!(n>=1&&n<=60)){toast(t("mg_bad"));break;}
+  if(Object.keys(b.tickets).some(function(k){return /^\d+$/.test(k)&&+k>n;})){toast(t("mg_tblBusy"));break;}
+  b.tables=n;log("tblSet",{n:n});break;}
+ case "itemAdd":{var nn=(($("#miName")||{}).value||"").trim().slice(0,40),pp=parseFloat(($("#miPrice")||{}).value),cc=($("#miCat")||{}).value,ss=($("#miStn")||{}).value;
+  if(!nn||!(pp>0&&pp<=100000)||CATS.indexOf(cc)<0||["bar","kitchen"].indexOf(ss)<0){toast(t("mg_bad"));break;}
+  var nid="c"+Date.now().toString(36);T().menu.push({id:nid,cat:cc,name:{tr:nn,ar:nn},price:Math.round(pp*100)/100,station:ss,recipe:[]});log("itemAdd",{mi:nid});break;}
+ case "itemDel":{var mm=menuItem(d.id);if(!mm)break;var busy=T().order.some(function(bi){var bb=T().branches[bi];return Object.keys(bb.tickets).some(function(k){return bb.tickets[k].lines.some(function(l){return l.item===d.id;});});});
+  if(busy){toast(t("mg_busy"));break;}T().menu=T().menu.filter(function(x){return x.id!==d.id;});log("itemDel",{n:nm(mm)});break;}
+ case "openTable":if(!/^(\d{1,2}|TA\d+)$/.test(d.k)||(/^\d/.test(d.k)&&(+d.k<1||+d.k>b.tables)))break;ensureTicket(d.k);U.posTable=d.k;U.pane="menu";U.cat="all";break;
  case "newTake":{var k="TA"+(b.counter++);ensureTicket(k);U.posTable=k;U.pane="menu";U.cat="all";break;}
  case "backTables":cleanTicket();U.posTable=null;break;
  case "add":{var tk=b.tickets[U.posTable],m=menuItem(d.id),un=tk.lines.filter(function(l){return l.item===d.id&&!l.sent;}).reduce(function(s,l){return s+l.qty;},0);
@@ -1019,6 +1035,8 @@ function applyChange(d){
  if(d.c==="role"){if(ROLES.indexOf(d.v)<0||RANK[d.v]>RANK[myRole()])return;if(RANK[d.v]>RANK[S.role])log("elevate",{r:d.v});if(RANK[d.v]<RANK[S.role])U.stepUp=0;S.role=d.v;if(!can("overview")&&!can("staffAll"))S.bid=T0.order[0];if(!can(U.screen))U.screen=SCREENS.filter(can)[0];U.posTable=null;U.menu=false;}
  else if(d.c==="branch"){if(!T0.branches[d.v])return;cleanTicket();S.bid=d.v;U.posTable=null;U.modal=null;}
  else if(d.c==="rb")U.rb=d.v;
+ else if(d.c==="itemPrice"){var im=T0.menu.filter(function(x){return x.id===d.s;})[0],pv=parseFloat(d.v);if(!im||!(pv>0&&pv<=100000)){toast(t("mg_bad"));return;}im.price=Math.round(pv*100)/100;log("itemEdit",{mi:im.id});}
+ else if(d.c==="itemName"){var im2=T0.menu.filter(function(x){return x.id===d.s;})[0],nv=(d.v||"").trim().slice(0,40);if(!im2||!nv){toast(t("mg_bad"));return;}im2.name[S.lang]=nv;log("itemEdit",{mi:im2.id});}
  else if(d.c==="printer"){if(PRINTERS.indexOf(d.v)<0||["bar","kitchen","receipt"].indexOf(d.st)<0)return;B().printers[d.st]=d.v;log("printer",{st:d.st,p:d.v});}
  else if(d.c==="staffBr"){var s1=T0.staff.filter(function(x){return x.id===d.s;})[0];if(s1&&T0.branches[d.v]){s1.br=d.v;if(LIVE)rpc("set_staff_branch",{p_tenant:S.tid,p_staff:d.s,p_branch:d.v}).catch(function(e){liveErr(e);reloadTenant();});}}
  else if(d.c==="staffRole"){var s2=T0.staff.filter(function(x){return x.id===d.s;})[0];if(!s2||s2.id==="m0"||s2.role==="owner"||d.v==="owner"||ROLES.indexOf(d.v)<0)return;s2.role=d.v;log("role",{who:s2.name,r:d.v});if(LIVE)rpc("set_staff_role",{p_tenant:S.tid,p_staff:d.s,p_role:d.v}).catch(function(e){liveErr(e);reloadTenant();});}
