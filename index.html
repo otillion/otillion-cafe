@@ -142,6 +142,9 @@ input,select{padding:9px 12px;border-radius:8px;border:1px solid var(--line);bac
   .ticket{position:static}
 }
 /* modal + toast */
+.rcpt{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;display:grid;gap:6px;color:var(--ink)}
+.rcpt .c{text-align:center}.rcpt .r{display:flex;justify-content:space-between;gap:10px}.rcpt hr{border:0;border-top:1px dashed var(--line);margin:4px 0;width:100%}
+@media print{#app>*:not(.overlay){display:none!important}.overlay{position:static!important;background:none!important;padding:0!important}.modal{border:0!important;box-shadow:none!important;width:80mm!important;max-height:none!important;overflow:visible!important;padding:0!important}.noprint{display:none!important}body{background:#fff!important}.rcpt{color:#000;font-size:12px}}
 .overlay{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:16px}
 .modal{width:min(520px,100%);max-height:90%;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:14px}
 .mh{display:flex;justify-content:space-between;align-items:center;gap:10px}
@@ -225,10 +228,10 @@ var PERM={
 var RANK={owner:5,manager:4,accountant:3,cashier:2,kitchen:1};
 var DEMO_PIN="1234",AUTOLOCK=5*60*1000,STEP_MS=2*60*1000;
 /* every mutating action maps to the permission it needs; the UI hiding a button is never the only check */
-var NEED={tblSet:"manage",itemAdd:"manage",itemDel:"manage",add:"pos",inc:"pos",dec:"pos",send:"pos",openPay:"pos",payN:"pos",paySel:"pos",doPay:"pos",openMove:"pos",doMove:"pos",openMerge:"pos",doMerge:"pos",newTake:"pos",openTable:"pos",backTables:"pos",
+var NEED={printRcpt:"pos",tblSet:"manage",itemAdd:"manage",itemDel:"manage",add:"pos",inc:"pos",dec:"pos",send:"pos",openPay:"pos",payN:"pos",paySel:"pos",doPay:"pos",openMove:"pos",doMove:"pos",openMerge:"pos",doMerge:"pos",newTake:"pos",openTable:"pos",backTables:"pos",
  void:"void",kadv:"kitchen",openRecv:"stockEdit",doRecv:"stockEdit",applyCount:"stockEdit",shift:"staffAll",lvOk:"staffAll",lvNo:"staffAll",invite:"adminOnly",setPin:"settings",toggleActive:"settings",goBranch:"overview",clock:"staff",lvReq:"staff"};
 var PINNED={void:1,applyCount:1,invite:1,toggleActive:1};
-var MODALA={payN:"pay",paySel:"pay",doPay:"pay",doMove:"move",doMerge:"merge",doRecv:"recv",pinSubmit:"pin"};
+var MODALA={printRcpt:"receipt",payN:"pay",paySel:"pay",doPay:"pay",doMove:"move",doMerge:"merge",doRecv:"recv",pinSubmit:"pin"};
 var POSA={add:1,inc:1,dec:1,void:1,send:1,openPay:1,openMove:1,openMerge:1};
 var SETK={cat:1,pane:1,kds:1,period:1,stockTab:1,staffTab:1};
 var CNEED={itemPrice:"manage",itemName:"manage",branch:"overview",rb:"reports",printer:"settings",staffBr:"settings",staffRole:"settings"};
@@ -280,7 +283,7 @@ google:"Google ile devam et",
  sentToast:"Siparişler gönderildi",stockWarn:"Stok uyarısı",voidB:"İptal",
  cat_coffee:"Kahveler",cat_cold:"Soğuk içecekler",cat_food:"Yiyecekler",cat_sweet:"Tatlılar",
  moveTitle:"Masayı taşı",moveHint:"Boş bir masa seçin.",noEmpty:"Boş masa yok.",mergeTitle:"Hesapları birleştir",mergeHint:"Bu adisyon hangi masaya eklensin?",noOpen:"Birleştirilecek başka açık adisyon yok.",
- payTitle:"Ödeme",splitEq:"Eşit böl",persons:"kişi",perPerson:"Kişi başı",pickItems:"Kalemleri seç",amount:"Tutar",cash:"Nakit",card:"Kart",payCash:"Nakit öde",payCard:"Kartla öde",payments:"Ödemeler",closedToast:"Hesap kapandı",close:"Kapat",
+ payTitle:"Ödeme",rc_title:"Fiş",rc_print:"Yazdır",rc_thanks:"Teşekkür ederiz",rc_no:"Fiş no",rc_cashier:"Kasiyer",splitEq:"Eşit böl",persons:"kişi",perPerson:"Kişi başı",pickItems:"Kalemleri seç",amount:"Tutar",cash:"Nakit",card:"Kart",payCash:"Nakit öde",payCard:"Kartla öde",payments:"Ödemeler",closedToast:"Hesap kapandı",close:"Kapat",
  recvTitle:"Stok girişi",qty:"Miktar",add:"Ekle",receivedToast:"Stok eklendi",
  k_kitchen:"Mutfak",k_bar:"Bar",k_queue:"Sıra ekranı",colNew:"Yeni",colPrep:"Hazırlanıyor",colReady:"Hazır",start:"Hazırlamaya başla",markReady:"Hazır",served:"Teslim edildi",printer:"Yazıcı",noTickets:"Bekleyen sipariş yok.",queueHint:"Bu ekran müşteri tarafındaki bir TV'ye yansıtılabilir.",
  tabStock:"Stok",tabRecipes:"Reçete ve maliyet",tabCount:"Sayım",colItem:"Malzeme",colStock:"Stok",colMin:"Alt sınır",colStatus:"Durum",colCost:"Birim maliyet",ok:"Yeterli",low:"Azalıyor",out:"Bitti",
@@ -339,7 +342,7 @@ google:"المتابعة عبر Google",
  sentToast:"تم إرسال الطلبات",stockWarn:"تنبيه مخزون",voidB:"إلغاء",
  cat_coffee:"القهوة",cat_cold:"المشروبات الباردة",cat_food:"المأكولات",cat_sweet:"الحلويات",
  moveTitle:"نقل الطاولة",moveHint:"اختر طاولة فارغة.",noEmpty:"ما في طاولات فارغة.",mergeTitle:"دمج الحسابات",mergeHint:"إلى أي طاولة تريد دمج هذه الفاتورة؟",noOpen:"ما في فواتير مفتوحة أخرى للدمج.",
- payTitle:"الدفع",splitEq:"تقسيم بالتساوي",persons:"أشخاص",perPerson:"للشخص",pickItems:"اختر الأصناف",amount:"المبلغ",cash:"نقداً",card:"بطاقة",payCash:"دفع نقدي",payCard:"دفع بالبطاقة",payments:"الدفعات",closedToast:"تم إغلاق الحساب",close:"إغلاق",
+ payTitle:"الدفع",rc_title:"الفاتورة",rc_print:"طباعة",rc_thanks:"شكراً لزيارتكم",rc_no:"رقم الفاتورة",rc_cashier:"الكاشير",splitEq:"تقسيم بالتساوي",persons:"أشخاص",perPerson:"للشخص",pickItems:"اختر الأصناف",amount:"المبلغ",cash:"نقداً",card:"بطاقة",payCash:"دفع نقدي",payCard:"دفع بالبطاقة",payments:"الدفعات",closedToast:"تم إغلاق الحساب",close:"إغلاق",
  recvTitle:"إدخال مخزون",qty:"الكمية",add:"إضافة",receivedToast:"تمت إضافة المخزون",
  k_kitchen:"المطبخ",k_bar:"البار",k_queue:"شاشة الدور",colNew:"جديد",colPrep:"قيد التحضير",colReady:"جاهز",start:"ابدأ التحضير",markReady:"جاهز",served:"تم التسليم",printer:"الطابعة",noTickets:"ما في طلبات بالانتظار.",queueHint:"يمكن عرض هذه الشاشة على تلفزيون موجّه للزبائن.",
  tabStock:"المخزون",tabRecipes:"الوصفات والتكلفة",tabCount:"الجرد",colItem:"المادة",colStock:"المخزون",colMin:"الحد الأدنى",colStatus:"الحالة",colCost:"تكلفة الوحدة",ok:"كافٍ",low:"منخفض",out:"نفد",
@@ -787,7 +790,13 @@ function modalHtml(){
  }else if(m.type==="pin"){title=t("pinTitle");h='<p class="muted" style="margin:0">'+t("pinHint")+'</p><div class="field"><label for="pinIn">'+t("pinPh")+'</label><input id="pinIn" type="password" inputmode="numeric" autocomplete="off" maxlength="8"></div><button class="btn pri" data-act="pinSubmit">'+ic("lock")+t("pinOk")+'</button>';
  }else if(m.type==="recv"){var inv=invItem(m.id);title=t("recvTitle")+" · "+nm(inv);
   h='<div class="field"><label for="recvQty">'+t("qty")+' ('+unitL(inv.unit)+')</label><input id="recvQty" type="number" min="0" step="any" inputmode="decimal"></div><button class="btn pri" data-act="doRecv">'+ic("plus")+t("add")+'</button>';}
- return '<div class="overlay" data-act="overlay"><div class="modal" role="dialog" aria-modal="true" aria-label="'+esc(title)+'"><div class="mh"><h2>'+esc(title)+'</h2><button class="icon" data-act="closeModal" aria-label="'+t("close")+'">'+ic("x")+'</button></div>'+h+'</div></div>';
+
+ if(m.type==="receipt"){var sl=b.sales.filter(function(x){return x.id===m.sid;})[0];if(!sl){U.modal=null;return "";}title=t("rc_title");
+  var T0r=T(),pays=sl.pay.map(function(x){return '<div class="r"><span>'+t(x.m)+'</span><span>'+money(x.amount)+'</span></div>';}).join("");
+  var ls=sl.lines.map(function(l){var mi=menuItem(l.item),n0=mi?nm(mi):l.item;return '<div class="r"><span>'+l.qty+' × '+esc(n0)+'</span><span>'+money(l.qty*l.price)+'</span></div>';}).join("");
+  h='<div class="rcpt" id="rcptSheet"><div class="c"><b style="font-size:16px">'+esc(T0r.name)+'</b></div><div class="c">'+esc(b.name)+'</div><hr><div class="r"><span>'+t("rc_no")+' #'+(b.sales.indexOf(sl)+1)+'</span><span>'+tblLabel(sl.table)+'</span></div><div class="r"><span>'+new Date(sl.ts).toLocaleString("tr-TR",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"})+'</span><span>'+t("rc_cashier")+': '+esc(sl.staff||"")+'</span></div><hr>'+ls+'<hr><div class="r"><b>'+t("total")+'</b><b>'+money(sl.total)+'</b></div>'+pays+'<hr><div class="c">'+t("rc_thanks")+'</div></div>'+
+  '<div class="tact noprint"><button class="btn pri" data-act="printRcpt">'+t("rc_print")+'</button><button class="btn" data-act="closeModal">'+t("close")+'</button></div>';}
+ return '<div class="overlay" data-act="overlay"><div class="modal" role="dialog" aria-modal="true" aria-label="'+esc(title)+'"><div class="mh noprint"><h2>'+esc(title)+'</h2><button class="icon" data-act="closeModal" aria-label="'+t("close")+'">'+ic("x")+'</button></div>'+h+'</div></div>';
 }
 /* kitchen */
 function viewKitchen(){
@@ -992,9 +1001,10 @@ function act(a,d,el){
  case "paySel":{var tk7=b.tickets[U.modal.k],id2=parseInt(d.l,10),ix=U.modal.sel.indexOf(id2);if(ix>=0)U.modal.sel.splice(ix,1);else U.modal.sel.push(id2);
   var sm=tk7.lines.filter(function(l){return U.modal.sel.indexOf(l.lid)>=0;}).reduce(function(s,l){return s+lineTotal(l);},0),rm2=r2(ticketTotal(tk7)-ticketPaid(tk7));U.modal.amount=r2(Math.min(sm,rm2));break;}
  case "doPay":{var amt=parseFloat(($("#payAmt")||{}).value);if(!(amt>0)){break;}var res=payTicket(U.modal.k,d.m,amt);
-  if(res==="closed"){toast(t("closedToast"));U.modal=null;U.posTable=null;}else if(res==="part"){var tk8=b.tickets[U.modal.k];U.modal.n=1;U.modal.sel=[];U.modal.amount=r2(ticketTotal(tk8)-ticketPaid(tk8));}break;}
+  if(res==="closed"){toast(t("closedToast"));U.modal={type:"receipt",sid:b.sales[b.sales.length-1].id};U.posTable=null;}else if(res==="part"){var tk8=b.tickets[U.modal.k];U.modal.n=1;U.modal.sel=[];U.modal.amount=r2(ticketTotal(tk8)-ticketPaid(tk8));}break;}
+ case "printRcpt":try{window.print();}catch(e1){}break;
  case "openMove":U.modal={type:"move",k:U.posTable};break;
- case "doMove":{if(!/^([1-9]|10)$/.test(d.to)||b.tickets[d.to])break;var from=U.modal.k,tk9=b.tickets[from];delete b.tickets[from];tk9.key=d.to;b.tickets[d.to]=tk9;b.kds.forEach(function(x){if(x.key===from)x.key=d.to;});log("move",{a:from,b:d.to});U.posTable=d.to;U.modal=null;break;}
+ case "doMove":{if(!/^\d{1,2}$/.test(d.to)||+d.to<1||+d.to>b.tables||b.tickets[d.to])break;var from=U.modal.k,tk9=b.tickets[from];delete b.tickets[from];tk9.key=d.to;b.tickets[d.to]=tk9;b.kds.forEach(function(x){if(x.key===from)x.key=d.to;});log("move",{a:from,b:d.to});U.posTable=d.to;U.modal=null;break;}
  case "openMerge":U.modal={type:"merge",k:U.posTable};break;
  case "doMerge":{if(!b.tickets[d.to]||d.to===U.modal.k)break;var fr=U.modal.k,src=b.tickets[fr],dst=b.tickets[d.to];src.lines.forEach(function(l){dst.lines.push(l);});src.payments.forEach(function(p){dst.payments.push(p);});
   b.kds.forEach(function(x){if(x.key===fr)x.key=d.to;});delete b.tickets[fr];log("merge",{a:fr,b:d.to});U.posTable=d.to;U.modal=null;break;}
