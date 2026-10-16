@@ -228,10 +228,10 @@ var PERM={
 var RANK={owner:5,manager:4,accountant:3,cashier:2,kitchen:1};
 var DEMO_PIN="1234",AUTOLOCK=5*60*1000,STEP_MS=2*60*1000;
 /* every mutating action maps to the permission it needs; the UI hiding a button is never the only check */
-var NEED={printRcpt:"pos",tblSet:"manage",itemAdd:"manage",itemDel:"manage",add:"pos",inc:"pos",dec:"pos",send:"pos",openPay:"pos",payN:"pos",paySel:"pos",doPay:"pos",openMove:"pos",doMove:"pos",openMerge:"pos",doMerge:"pos",newTake:"pos",openTable:"pos",backTables:"pos",
+var NEED={openRecent:"pos",reprint:"pos",printRcpt:"pos",tblSet:"manage",itemAdd:"manage",itemDel:"manage",add:"pos",inc:"pos",dec:"pos",send:"pos",openPay:"pos",payN:"pos",paySel:"pos",doPay:"pos",openMove:"pos",doMove:"pos",openMerge:"pos",doMerge:"pos",newTake:"pos",openTable:"pos",backTables:"pos",
  void:"void",kadv:"kitchen",openRecv:"stockEdit",doRecv:"stockEdit",applyCount:"stockEdit",shift:"staffAll",lvOk:"staffAll",lvNo:"staffAll",invite:"adminOnly",setPin:"settings",toggleActive:"settings",goBranch:"overview",clock:"staff",lvReq:"staff"};
 var PINNED={void:1,applyCount:1,invite:1,toggleActive:1};
-var MODALA={printRcpt:"receipt",payN:"pay",paySel:"pay",doPay:"pay",doMove:"move",doMerge:"merge",doRecv:"recv",pinSubmit:"pin"};
+var MODALA={reprint:"recent",printRcpt:"receipt",payN:"pay",paySel:"pay",doPay:"pay",doMove:"move",doMerge:"merge",doRecv:"recv",pinSubmit:"pin"};
 var POSA={add:1,inc:1,dec:1,void:1,send:1,openPay:1,openMove:1,openMerge:1};
 var SETK={cat:1,pane:1,kds:1,period:1,stockTab:1,staffTab:1};
 var CNEED={itemPrice:"manage",itemName:"manage",branch:"overview",rb:"reports",printer:"settings",staffBr:"settings",staffRole:"settings"};
@@ -283,7 +283,7 @@ google:"Google ile devam et",
  sentToast:"Siparişler gönderildi",stockWarn:"Stok uyarısı",voidB:"İptal",
  cat_coffee:"Kahveler",cat_cold:"Soğuk içecekler",cat_food:"Yiyecekler",cat_sweet:"Tatlılar",
  moveTitle:"Masayı taşı",moveHint:"Boş bir masa seçin.",noEmpty:"Boş masa yok.",mergeTitle:"Hesapları birleştir",mergeHint:"Bu adisyon hangi masaya eklensin?",noOpen:"Birleştirilecek başka açık adisyon yok.",
- payTitle:"Ödeme",rc_title:"Fiş",rc_print:"Yazdır",rc_thanks:"Teşekkür ederiz",rc_no:"Fiş no",rc_cashier:"Kasiyer",splitEq:"Eşit böl",persons:"kişi",perPerson:"Kişi başı",pickItems:"Kalemleri seç",amount:"Tutar",cash:"Nakit",card:"Kart",payCash:"Nakit öde",payCard:"Kartla öde",payments:"Ödemeler",closedToast:"Hesap kapandı",close:"Kapat",
+ payTitle:"Ödeme",rc_title:"Fiş",rc_recent:"Son fişler",rc_reprint:"Tekrar yazdır",rc_none:"Henüz fiş yok",rc_print:"Yazdır",rc_thanks:"Teşekkür ederiz",rc_no:"Fiş no",rc_cashier:"Kasiyer",splitEq:"Eşit böl",persons:"kişi",perPerson:"Kişi başı",pickItems:"Kalemleri seç",amount:"Tutar",cash:"Nakit",card:"Kart",payCash:"Nakit öde",payCard:"Kartla öde",payments:"Ödemeler",closedToast:"Hesap kapandı",close:"Kapat",
  recvTitle:"Stok girişi",qty:"Miktar",add:"Ekle",receivedToast:"Stok eklendi",
  k_kitchen:"Mutfak",k_bar:"Bar",k_queue:"Sıra ekranı",colNew:"Yeni",colPrep:"Hazırlanıyor",colReady:"Hazır",start:"Hazırlamaya başla",markReady:"Hazır",served:"Teslim edildi",printer:"Yazıcı",noTickets:"Bekleyen sipariş yok.",queueHint:"Bu ekran müşteri tarafındaki bir TV'ye yansıtılabilir.",
  tabStock:"Stok",tabRecipes:"Reçete ve maliyet",tabCount:"Sayım",colItem:"Malzeme",colStock:"Stok",colMin:"Alt sınır",colStatus:"Durum",colCost:"Birim maliyet",ok:"Yeterli",low:"Azalıyor",out:"Bitti",
@@ -342,7 +342,7 @@ google:"المتابعة عبر Google",
  sentToast:"تم إرسال الطلبات",stockWarn:"تنبيه مخزون",voidB:"إلغاء",
  cat_coffee:"القهوة",cat_cold:"المشروبات الباردة",cat_food:"المأكولات",cat_sweet:"الحلويات",
  moveTitle:"نقل الطاولة",moveHint:"اختر طاولة فارغة.",noEmpty:"ما في طاولات فارغة.",mergeTitle:"دمج الحسابات",mergeHint:"إلى أي طاولة تريد دمج هذه الفاتورة؟",noOpen:"ما في فواتير مفتوحة أخرى للدمج.",
- payTitle:"الدفع",rc_title:"الفاتورة",rc_print:"طباعة",rc_thanks:"شكراً لزيارتكم",rc_no:"رقم الفاتورة",rc_cashier:"الكاشير",splitEq:"تقسيم بالتساوي",persons:"أشخاص",perPerson:"للشخص",pickItems:"اختر الأصناف",amount:"المبلغ",cash:"نقداً",card:"بطاقة",payCash:"دفع نقدي",payCard:"دفع بالبطاقة",payments:"الدفعات",closedToast:"تم إغلاق الحساب",close:"إغلاق",
+ payTitle:"الدفع",rc_title:"الفاتورة",rc_recent:"آخر الفواتير",rc_reprint:"إعادة طباعة",rc_none:"لا توجد فواتير بعد",rc_print:"طباعة",rc_thanks:"شكراً لزيارتكم",rc_no:"رقم الفاتورة",rc_cashier:"الكاشير",splitEq:"تقسيم بالتساوي",persons:"أشخاص",perPerson:"للشخص",pickItems:"اختر الأصناف",amount:"المبلغ",cash:"نقداً",card:"بطاقة",payCash:"دفع نقدي",payCard:"دفع بالبطاقة",payments:"الدفعات",closedToast:"تم إغلاق الحساب",close:"إغلاق",
  recvTitle:"إدخال مخزون",qty:"الكمية",add:"إضافة",receivedToast:"تمت إضافة المخزون",
  k_kitchen:"المطبخ",k_bar:"البار",k_queue:"شاشة الدور",colNew:"جديد",colPrep:"قيد التحضير",colReady:"جاهز",start:"ابدأ التحضير",markReady:"جاهز",served:"تم التسليم",printer:"الطابعة",noTickets:"ما في طلبات بالانتظار.",queueHint:"يمكن عرض هذه الشاشة على تلفزيون موجّه للزبائن.",
  tabStock:"المخزون",tabRecipes:"الوصفات والتكلفة",tabCount:"الجرد",colItem:"المادة",colStock:"المخزون",colMin:"الحد الأدنى",colStatus:"الحالة",colCost:"تكلفة الوحدة",ok:"كافٍ",low:"منخفض",out:"نفد",
@@ -751,7 +751,7 @@ function chartHtml(b){
 function viewPOS(){return U.posTable?viewOrder():viewTables();}
 function viewTables(){
  var b=B(),keys=[];for(var i=1;i<=b.tables;i++)keys.push(String(i));Object.keys(b.tickets).filter(function(k){return k.indexOf("TA")===0;}).forEach(function(k){keys.push(k);});
- return '<div class="bar"><h2>'+t("tables")+'</h2><button class="btn pri" data-act="newTake">'+ic("plus")+t("newTake")+'</button></div><div class="tables">'+keys.map(function(k){
+ return '<div class="bar"><h2>'+t("tables")+'</h2><span style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-act="openRecent">'+t("rc_recent")+'</button><button class="btn pri" data-act="newTake">'+ic("plus")+t("newTake")+'</button></span></div><div class="tables">'+keys.map(function(k){
   var tk=b.tickets[k],rd=b.kds.some(function(x){return x.key===k&&x.status==="ready";}),cls=!tk?"free":rd?"ready":"open",tk2=k.indexOf("TA")===0;
   return '<button class="tbl '+cls+'" data-act="openTable" data-k="'+k+'"><span class="tn">'+(tk2?"#"+k.slice(2):k)+'</span><span class="tk">'+(tk2?t("take"):t("tableN"))+'</span>'+(tk?'<span class="tm">'+money0(ticketTotal(tk))+'</span><span class="tt">'+mins(tk.ts)+' '+t("min")+'</span>':'<span class="tm muted">'+t("free")+'</span>')+(rd?'<span class="badge">'+t("ready")+'</span>':'')+'</button>';}).join("")+'</div>';
 }
@@ -791,6 +791,8 @@ function modalHtml(){
  }else if(m.type==="recv"){var inv=invItem(m.id);title=t("recvTitle")+" · "+nm(inv);
   h='<div class="field"><label for="recvQty">'+t("qty")+' ('+unitL(inv.unit)+')</label><input id="recvQty" type="number" min="0" step="any" inputmode="decimal"></div><button class="btn pri" data-act="doRecv">'+ic("plus")+t("add")+'</button>';}
 
+ if(m.type==="recent"){title=t("rc_recent");var rs=b.sales.slice(-12).reverse();
+  h=rs.length?'<ul class="alist">'+rs.map(function(x){return '<li><span class="muted num" style="min-width:92px">'+dm(x.ts)+'</span><span style="flex:1">#'+(b.sales.indexOf(x)+1)+' · '+tblLabel(x.table)+' · '+money(x.total)+'</span><button class="btn sm" data-act="reprint" data-id="'+esc(x.id)+'">'+t("rc_reprint")+'</button></li>';}).join("")+'</ul>':'<p class="muted">'+t("rc_none")+'</p>';}
  if(m.type==="receipt"){var sl=b.sales.filter(function(x){return x.id===m.sid;})[0];if(!sl){U.modal=null;return "";}title=t("rc_title");
   var T0r=T(),pays=sl.pay.map(function(x){return '<div class="r"><span>'+t(x.m)+'</span><span>'+money(x.amount)+'</span></div>';}).join("");
   var ls=sl.lines.map(function(l){var mi=menuItem(l.item),n0=mi?nm(mi):l.item;return '<div class="r"><span>'+l.qty+' × '+esc(n0)+'</span><span>'+money(l.qty*l.price)+'</span></div>';}).join("");
@@ -1002,6 +1004,8 @@ function act(a,d,el){
   var sm=tk7.lines.filter(function(l){return U.modal.sel.indexOf(l.lid)>=0;}).reduce(function(s,l){return s+lineTotal(l);},0),rm2=r2(ticketTotal(tk7)-ticketPaid(tk7));U.modal.amount=r2(Math.min(sm,rm2));break;}
  case "doPay":{var amt=parseFloat(($("#payAmt")||{}).value);if(!(amt>0)){break;}var res=payTicket(U.modal.k,d.m,amt);
   if(res==="closed"){toast(t("closedToast"));U.modal={type:"receipt",sid:b.sales[b.sales.length-1].id};U.posTable=null;}else if(res==="part"){var tk8=b.tickets[U.modal.k];U.modal.n=1;U.modal.sel=[];U.modal.amount=r2(ticketTotal(tk8)-ticketPaid(tk8));}break;}
+ case "openRecent":U.modal={type:"recent"};break;
+ case "reprint":{if(b.sales.some(function(x){return x.id===d.id;}))U.modal={type:"receipt",sid:d.id};break;}
  case "printRcpt":try{window.print();}catch(e1){}break;
  case "openMove":U.modal={type:"move",k:U.posTable};break;
  case "doMove":{if(!/^\d{1,2}$/.test(d.to)||+d.to<1||+d.to>b.tables||b.tickets[d.to])break;var from=U.modal.k,tk9=b.tickets[from];delete b.tickets[from];tk9.key=d.to;b.tickets[d.to]=tk9;b.kds.forEach(function(x){if(x.key===from)x.key=d.to;});log("move",{a:from,b:d.to});U.posTable=d.to;U.modal=null;break;}
