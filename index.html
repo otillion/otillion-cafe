@@ -263,7 +263,7 @@ var I={tr:{
 
  loginStaff:"Kafe ve personel girişi",userPh:"Kullanıcı adı",passPh:"Şifre",signInBtn:"Giriş yap",orAdmin:"veya ana yönetici girişi",badLogin:"Kullanıcı adı veya şifre hatalı",accOff:"Hesap veya işletme durduruldu. Yönetimle iletişime geçin.",adminNote:"Demo: buradaki Google girişi simüledir. Gerçek sürümde sunucu yönetici e-postasını doğrular.",
  adminTitle:"Ana yönetici",adminSub:"İşletmeleri ve personel hesaplarını oluşturun ve yönetin",adminView:"Tüm işletmeler",admKpiCafes:"İşletmeler",admKpiAcc:"Hesaplar",admKpiSales:"Bugünkü ciro",admKpiOpen:"Açık adisyon",
- admOpen:"Aç",admSuspend:"İşletmeyi durdur",admResume:"İşletmeyi aç",suspended:"Durduruldu",noAcc:"Henüz hesap yok",colStatus:"Durum",colLastIn:"Son giriş",never:"Henüz girmedi",newPw:"Yeni şifre",resetPw:"Sıfırla",delAcc:"Sil",delConfirm:"Silmeyi onayla",
+ admOpen:"Aç",admDel:"İşletmeyi sil",admDelC:"Silmeyi onayla (geri alınamaz)",cafeDeleted:"İşletme silindi",admSuspend:"İşletmeyi durdur",admResume:"İşletmeyi aç",suspended:"Durduruldu",noAcc:"Henüz hesap yok",colStatus:"Durum",colLastIn:"Son giriş",never:"Henüz girmedi",newPw:"Yeni şifre",resetPw:"Sıfırla",delAcc:"Sil",delConfirm:"Silmeyi onayla",
  newCafe:"Yeni işletme oluştur",cafeName:"İşletme adı",cafeBr:"Şubeler (virgülle ayırın)",cafePin:"Yönetici PIN (4-8 rakam)",cafePinHint:"PIN yalnızca işletme yöneticisinde kalır; iptal ve sayım gibi hassas işlemleri onaylar.",
  newAcc:"Hesap oluştur",accCafe:"İşletme",accName:"Görünen ad",accUser:"Kullanıcı adı (küçük harf, rakam, . _ -)",accPass:"Şifre (en az 8 karakter)",gen:"Üret",accCreated:"Hesap oluşturuldu",userTaken:"Bu kullanıcı adı alınmış",userBad:"Kullanıcı adı: 3-24 küçük harf, rakam, . _ -",passBad:"Şifre en az 8 karakter olmalı ve kullanıcı adından farklı olmalı",pwChanged:"Şifre değiştirildi",cafeCreated:"İşletme oluşturuldu",pinWeak:"PIN çok kolay, başka seçin",
  l_login:"Giriş yapıldı",l_loginfail:"Başarısız giriş denemesi",l_pwreset:"Şifre sıfırlandı: {who}",l_acc_new:"Yeni hesap: {who}",l_acc_del:"Hesap silindi: {who}",l_adminin:"Ana yönetici girdi",
@@ -322,7 +322,7 @@ ar:{
 
  loginStaff:"دخول الكافيه والموظفين",userPh:"اسم المستخدم",passPh:"كلمة السر",signInBtn:"دخول",orAdmin:"أو دخول الأدمن الرئيسي",badLogin:"اسم المستخدم أو كلمة السر غير صحيحة",accOff:"الحساب أو الكافيه موقوف. تواصل مع الإدارة.",adminNote:"نسخة تجريبية: الدخول عبر Google هنا محاكى. في النسخة الفعلية يتحقق الخادم من إيميل الأدمن.",
  adminTitle:"الأدمن الرئيسي",adminSub:"أنشئ المنشآت وحسابات الموظفين وتحكّم بها",adminView:"كل المنشآت",admKpiCafes:"المنشآت",admKpiAcc:"الحسابات",admKpiSales:"مبيعات اليوم",admKpiOpen:"فواتير مفتوحة",
- admOpen:"فتح",admSuspend:"إيقاف المنشأة",admResume:"تفعيل المنشأة",suspended:"موقوفة",noAcc:"لا توجد حسابات بعد",colStatus:"الحالة",colLastIn:"آخر دخول",never:"لم يدخل بعد",newPw:"كلمة سر جديدة",resetPw:"تعيين",delAcc:"حذف",delConfirm:"تأكيد الحذف",
+ admOpen:"فتح",admDel:"حذف المنشأة",admDelC:"تأكيد الحذف النهائي (لا رجعة فيه)",cafeDeleted:"تم حذف المنشأة",admSuspend:"إيقاف المنشأة",admResume:"تفعيل المنشأة",suspended:"موقوفة",noAcc:"لا توجد حسابات بعد",colStatus:"الحالة",colLastIn:"آخر دخول",never:"لم يدخل بعد",newPw:"كلمة سر جديدة",resetPw:"تعيين",delAcc:"حذف",delConfirm:"تأكيد الحذف",
  newCafe:"إنشاء منشأة جديدة",cafeName:"اسم الكافيه",cafeBr:"الفروع (افصل بفاصلة)",cafePin:"رمز المدير (4-8 أرقام)",cafePinHint:"الرمز يبقى عند مدير المنشأة؛ يعتمد العمليات الحساسة كالإلغاء والجرد.",
  newAcc:"إنشاء حساب",accCafe:"المنشأة",accName:"الاسم الظاهر",accUser:"اسم المستخدم (حروف صغيرة وأرقام . _ -)",accPass:"كلمة السر (8 أحرف على الأقل)",gen:"توليد",accCreated:"تم إنشاء الحساب",userTaken:"اسم المستخدم مستخدم",userBad:"اسم المستخدم: 3-24 حرف صغير أو رقم أو . _ -",passBad:"كلمة السر 8 أحرف على الأقل ومختلفة عن اسم المستخدم",pwChanged:"تم تغيير كلمة السر",cafeCreated:"تم إنشاء المنشأة",pinWeak:"الرمز سهل التخمين، اختر غيره",
  l_login:"تسجيل دخول",l_loginfail:"محاولة دخول فاشلة",l_pwreset:"إعادة تعيين كلمة سر: {who}",l_acc_new:"حساب جديد: {who}",l_acc_del:"حذف حساب: {who}",l_adminin:"دخول الأدمن الرئيسي",
@@ -424,7 +424,7 @@ var T=function(){return S.tenants[S.tid];};
 var B=function(){return T().branches[S.bid];};
 var can=function(p){return PERM[S.role].indexOf(p)>=0;};
 /* ---------- platform admin + accounts ---------- */
-var ADMINA={createCafe:1,createAcc:1,resetPw:1,toggleAcc:1,delAcc:1,toggleCafe:1,enter:1};
+var ADMINA={delCafe:1,createCafe:1,createAcc:1,resetPw:1,toggleAcc:1,delAcc:1,toggleCafe:1,enter:1};
 var isAdmin=function(){return !!(S.sess&&S.sess.k==="admin");};
 var accOf=function(){return S.sess&&S.sess.k==="user"?S.accounts.filter(function(a){return a.id===S.sess.id;})[0]:null;};
 function staffOfAcc(a){var T1=S.tenants[a.tid];return T1?T1.staff.filter(function(x){return x.id===a.sid;})[0]:null;}
@@ -441,7 +441,7 @@ function forceOut(){if(LIVE)clearLive();S.signedIn=false;S.tid=null;S.sess=null;
 var LIVE=typeof location!=="undefined"&&/(^|\.)github\.io$|^localhost$|^127\.0\.0\.1$/.test(location.hostname);
 var CFG={url:"https://mrlkatgniijrlkkkqfgk.supabase.co",key:"sb_publishable_kySHarBhFF5pBgzuan-0ow_VBrSGhOo"};
 var AUTH=null,SYNC={ver:{},hash:{},dirty:false,busy:false,timer:null};
-var LIVEACT={userLogin:1,adminLogin:1,logout:1,pinSubmit:1,setPin:1,unlock:1,createCafe:1,createAcc:1,resetPw:1,toggleAcc:1,delAcc:1,toggleCafe:1};
+var LIVEACT={delCafe:1,userLogin:1,adminLogin:1,logout:1,pinSubmit:1,setPin:1,unlock:1,createCafe:1,createAcc:1,resetPw:1,toggleAcc:1,delAcc:1,toggleCafe:1};
 function sbFetch(path,o){o=o||{};var h={apikey:CFG.key,"Content-Type":"application/json"};if(o.auth!==false&&AUTH)h.Authorization="Bearer "+AUTH.access;if(o.prefer)h.Prefer=o.prefer;
  return fetch(CFG.url+path,{method:o.method||"GET",headers:h,body:o.body!==undefined?JSON.stringify(o.body):undefined}).then(function(r){return r.text().then(function(tx){var j=null;try{j=tx?JSON.parse(tx):null;}catch(e){}
   if(r.status===401&&o.retry!==false&&AUTH&&AUTH.refresh)return refreshTok().then(function(ok){if(!ok)throw {status:401};o.retry=false;return sbFetch(path,o);});
@@ -522,6 +522,8 @@ function liveAct(a,d){
   go(rpc("admin_set_member_active",{p_user:d.id,p_active:ac4.active===false}).then(function(){return loadAdmin();}));return;}
  case "delAcc":{if(U.delC!==d.id){U.delC=d.id;return;}U.delC=null;var ac5=S.accounts.filter(function(x){return x.id===d.id;})[0];if(!ac5)return;
   go(rpc("admin_delete_account",{p_user:d.id}).then(function(){return mutateBlob(ac5.tid,function(dd){dd.staff.forEach(function(x){if(x.id===ac5.sid)x.active=false;});}).catch(function(){});}).then(function(){return loadAdmin();}));return;}
+ case "delCafe":{if(!S.tenants[d.id])return;if(U.delCafe!==d.id){U.delCafe=d.id;return;}U.delCafe=null;
+  go(rpc("admin_delete_tenant",{p_tenant:d.id}).then(function(){if(U.adSel===d.id)U.adSel=null;if(S.tid===d.id)S.tid=null;return loadAdmin();}).then(function(){toast(t("cafeDeleted"));}));return;}
  case "toggleCafe":{var tc=S.tenants[d.id];if(!tc)return;go(rpc("admin_set_tenant_suspended",{p_tenant:d.id,p_suspended:!tc.suspended}).then(function(){return loadAdmin();}));return;}
  }
 }
@@ -678,7 +680,7 @@ function viewAdmin(){
   var T0=S.tenants[id],st=tenantStats(T0),accs=S.accounts.filter(function(a){return a.tid===id;});
   var rows=accs.map(function(a){var br=T0.branches[a.br];
    return '<tr><td><b>'+esc(a.name)+'</b><br><span class="muted">@'+esc(a.user)+'</span></td><td>'+t("r_"+accRole(a))+'</td><td>'+esc(br?br.name:"-")+'</td><td>'+(accLive(a)?'<span class="pill ok">'+t("activeW")+'</span>':'<span class="pill out">'+t("inactive")+'</span>')+'</td><td class="num">'+(a.last?dm(a.last):t("never"))+'</td><td><div class="inl"><input id="rp-'+a.id+'" type="text" autocomplete="off" placeholder="'+t("newPw")+'" style="width:150px"><button class="btn sm" data-act="resetPw" data-id="'+a.id+'">'+t("resetPw")+'</button><button class="btn sm" data-act="toggleAcc" data-id="'+a.id+'">'+t(a.active===false?"activate":"deactivate")+'</button><button class="btn sm" data-act="delAcc" data-id="'+a.id+'">'+(U.delC===a.id?t("delConfirm"):t("delAcc"))+'</button></div></td></tr>';}).join("");
-  return '<section class="panel"><div class="cafehd"><div><h3>'+esc(T0.name)+(T0.suspended?' <span class="pill out">'+t("suspended")+'</span>':'')+'</h3><span class="muted">'+T0.order.length+' '+t("wsBranches")+' · '+t("wsToday")+' '+money0(st.rev)+' · '+st.open+' '+t("wsOpen")+'</span></div><div class="inl"><button class="btn sm pri" data-act="enter" data-id="'+id+'">'+t("admOpen")+'</button><button class="btn sm" data-act="toggleCafe" data-id="'+id+'">'+t(T0.suspended?"admResume":"admSuspend")+'</button></div></div>'+
+  return '<section class="panel"><div class="cafehd"><div><h3>'+esc(T0.name)+(T0.suspended?' <span class="pill out">'+t("suspended")+'</span>':'')+'</h3><span class="muted">'+T0.order.length+' '+t("wsBranches")+' · '+t("wsToday")+' '+money0(st.rev)+' · '+st.open+' '+t("wsOpen")+'</span></div><div class="inl"><button class="btn sm pri" data-act="enter" data-id="'+id+'">'+t("admOpen")+'</button><button class="btn sm" data-act="toggleCafe" data-id="'+id+'">'+t(T0.suspended?"admResume":"admSuspend")+'</button><button class="btn sm" style="'+(U.delCafe===id?'background:#b00020;color:#fff;border-color:#b00020':'')+'" data-act="delCafe" data-id="'+id+'">'+t(U.delCafe===id?"admDelC":"admDel")+'</button></div></div>'+
    (accs.length?'<div class="tw"><table><thead><tr><th>'+t("colStaff")+'</th><th>'+t("colRole")+'</th><th>'+t("colBranch")+'</th><th>'+t("colStatus")+'</th><th>'+t("colLastIn")+'</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div>':'<p class="muted" style="margin:0">'+t("noAcc")+'</p>')+'</section>';}).join("");
  var sel=U.adSel&&S.tenants[U.adSel]?U.adSel:S.order[0],TS=S.tenants[sel];
  var accForm=TS?'<section class="panel"><h3>'+t("newAcc")+'</h3><div class="field"><label for="acTid">'+t("accCafe")+'</label><select id="acTid" data-change="acCafe">'+S.order.map(function(id){return '<option value="'+id+'"'+(id===sel?" selected":"")+'>'+esc(S.tenants[id].name)+'</option>';}).join("")+'</select></div>'+
@@ -974,6 +976,7 @@ function act(a,d,el){
  case "delAcc":{if(U.delC!==d.id){U.delC=d.id;break;}U.delC=null;var ix2=S.accounts.map(function(x){return x.id;}).indexOf(d.id);if(ix2<0)break;
   var ad=S.accounts[ix2],sf=staffOfAcc(ad);if(sf)sf.active=false;tlog(ad.tid,"acc_del",{who:ad.name});S.accounts.splice(ix2,1);break;}
  case "toggleCafe":{var tc=S.tenants[d.id];if(tc){tc.suspended=!tc.suspended;}break;}
+ case "delCafe":{if(!S.tenants[d.id])break;if(U.delCafe!==d.id){U.delCafe=d.id;break;}U.delCafe=null;delete S.tenants[d.id];S.order=S.order.filter(function(x){return x!==d.id;});S.accounts=S.accounts.filter(function(x){return x.tid!==d.id;});if(U.adSel===d.id)U.adSel=null;if(S.tid===d.id)S.tid=null;toast(t("cafeDeleted"));break;}
  case "logout":S.signedIn=false;S.sess=null;S.tid=null;U.menu=false;U.modal=null;U.stepUp=0;U.locked=false;break;
  case "enter":if(S.tenants[d.id]){enter(d.id);log("adminin",{});}break;
   case "wsHome":if(!isAdmin())break;if(S.tid)cleanTicket();S.tid=null;U.menu=false;U.posTable=null;U.modal=null;break;
@@ -1057,7 +1060,7 @@ function applyChange(d){
 }
 function run(a,d){
  if(ADMINA[a]&&!isAdmin())return deny(a);
- if(a!=="delAcc")U.delC=null;
+ if(a!=="delAcc")U.delC=null;if(a!=="delCafe")U.delCafe=null;
  var need=NEED[a];
  if(need&&!can(need))return deny(a);
  if(a==="nav"&&!can(d.v))return deny(a);
