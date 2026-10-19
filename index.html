@@ -228,13 +228,13 @@ var PERM={
 var RANK={owner:5,manager:4,accountant:3,cashier:2,kitchen:1};
 var DEMO_PIN="1234",AUTOLOCK=5*60*1000,STEP_MS=2*60*1000;
 /* every mutating action maps to the permission it needs; the UI hiding a button is never the only check */
-var NEED={catAdd:"manage",catDel:"manage",openRecent:"pos",reprint:"pos",printRcpt:"pos",tblSet:"manage",itemAdd:"manage",itemDel:"manage",add:"pos",inc:"pos",dec:"pos",send:"pos",openPay:"pos",payN:"pos",paySel:"pos",doPay:"pos",openMove:"pos",doMove:"pos",openMerge:"pos",doMerge:"pos",newTake:"pos",openTable:"pos",backTables:"pos",
+var NEED={repReset:"reports",repCsv:"reports",repOpen:"reports",repMore:"reports",catAdd:"manage",catDel:"manage",openRecent:"pos",reprint:"pos",printRcpt:"pos",tblSet:"manage",itemAdd:"manage",itemDel:"manage",add:"pos",inc:"pos",dec:"pos",send:"pos",openPay:"pos",payN:"pos",paySel:"pos",doPay:"pos",openMove:"pos",doMove:"pos",openMerge:"pos",doMerge:"pos",newTake:"pos",openTable:"pos",backTables:"pos",
  void:"void",kadv:"kitchen",openRecv:"stockEdit",doRecv:"stockEdit",applyCount:"stockEdit",shift:"staffAll",lvOk:"staffAll",lvNo:"staffAll",invite:"adminOnly",setPin:"settings",toggleActive:"settings",goBranch:"overview",clock:"staff",lvReq:"staff"};
 var PINNED={void:1,applyCount:1,invite:1,toggleActive:1};
 var MODALA={reprint:"recent",printRcpt:"receipt",payN:"pay",paySel:"pay",doPay:"pay",doMove:"move",doMerge:"merge",doRecv:"recv",pinSubmit:"pin"};
 var POSA={add:1,inc:1,dec:1,void:1,send:1,openPay:1,openMove:1,openMerge:1};
-var SETK={cat:1,pane:1,kds:1,period:1,stockTab:1,staffTab:1};
-var CNEED={itemCat:"manage",itemStn:"manage",catName:"manage",itemPrice:"manage",itemName:"manage",branch:"overview",rb:"reports",printer:"settings",staffBr:"settings",staffRole:"settings"};
+var SETK={cat:1,pane:1,kds:1,period:1,stockTab:1,staffTab:1,rt:1};
+var CNEED={itemCat:"manage",itemStn:"manage",catName:"manage",itemPrice:"manage",itemName:"manage",branch:"overview",rb:"reports",rst:"reports",rcat:"reports",rstaff:"reports",rtype:"reports",rq:"reports",rFrom:"reports",rTo:"reports",printer:"settings",staffBr:"settings",staffRole:"settings"};
 var MATRIX=["pos","kitchen","stock","stockEdit","void","costView","reports","overview","staff","staffAll","manage","settings"];
 var PINLIST=["void","applyCount","invite","staffRole","staffBr","printer","toggleActive","elevate"];
 function sha256(msg){
@@ -285,7 +285,7 @@ google:"Google ile devam et",
  moveTitle:"Masayı taşı",moveHint:"Boş bir masa seçin.",noEmpty:"Boş masa yok.",mergeTitle:"Hesapları birleştir",mergeHint:"Bu adisyon hangi masaya eklensin?",noOpen:"Birleştirilecek başka açık adisyon yok.",
  payTitle:"Ödeme",rc_title:"Fiş",rc_recent:"Son fişler",rc_reprint:"Tekrar yazdır",rc_none:"Henüz fiş yok",rc_print:"Yazdır",rc_thanks:"Teşekkür ederiz",rc_no:"Fiş no",rc_cashier:"Kasiyer",splitEq:"Eşit böl",persons:"kişi",perPerson:"Kişi başı",pickItems:"Kalemleri seç",amount:"Tutar",cash:"Nakit",card:"Kart",payCash:"Nakit öde",payCard:"Kartla öde",payments:"Ödemeler",closedToast:"Hesap kapandı",close:"Kapat",
  recvTitle:"Stok girişi",qty:"Miktar",add:"Ekle",receivedToast:"Stok eklendi",
- k_kitchen:"Mutfak",k_bar:"Bar",k_queue:"Sıra ekranı",colNew:"Yeni",colPrep:"Hazırlanıyor",colReady:"Hazır",start:"Hazırlamaya başla",markReady:"Hazır",served:"Teslim edildi",printer:"Yazıcı",noTickets:"Bekleyen sipariş yok.",queueHint:"Bu ekran müşteri tarafındaki bir TV'ye yansıtılabilir.",
+ rp_ov:"Genel",rp_items:"Ürünler",rp_staff:"Personel",rp_time:"Zaman analizi",rp_rcpt:"Fişler",rp_profit:"Kâr",rp_voids:"İptaller",rp_custom:"Özel tarih",rp_from:"Başlangıç",rp_to:"Bitiş",rp_station:"İstasyon",rp_allSt:"Hepsi",rp_allCat:"Tüm kategoriler",rp_staffF:"Personel",rp_allStaff:"Tüm personel",rp_type:"Sipariş türü",rp_dine:"Masada",rp_take:"Paket",rp_search:"Ürün ara",rp_reset:"Sıfırla",rp_csv:"CSV indir",rp_csvErr:"İndirilemedi",rp_none:"Bu filtrelerde satış yok.",rp_range:"Aralık",rp_vsPrev:"Oklar önceki eşit dönemle karşılaştırmadır.",rp_pay:"Ödeme yöntemleri",rp_byStn:"İstasyona göre (Bar / Mutfak)",rp_byType:"Sipariş türüne göre",rp_all:"Ürün satış dağılımı",rp_share:"Pay",rp_avgP:"Ort. fiyat",rp_least:"En az satanlar",rp_nosale:"Hiç satılmayanlar",rp_dur:"Ort. masa süresi",rp_byHour:"Saate göre ciro",rp_byDow:"Güne göre ciro",rp_tables:"Masa analizi",rp_hide:"Gizle",rp_open:"Detay",rp_more:"Daha fazla göster",rp_cost:"Maliyet",rp_profit2:"Kâr",rp_margin:"Marj",rp_cover:"Reçeteli ürün oranı",rp_noRecipe:"Reçetesi olmayan ürünlerde maliyet hesaplanamaz.",rp_voidN:"İptal sayısı",rp_detail:"Detay",rp_voidNote:"Not: Sistem yalnızca son 200 işlemi saklar; eski iptaller görünmeyebilir.",k_kitchen:"Mutfak",k_bar:"Bar",k_queue:"Sıra ekranı",colNew:"Yeni",colPrep:"Hazırlanıyor",colReady:"Hazır",start:"Hazırlamaya başla",markReady:"Hazır",served:"Teslim edildi",printer:"Yazıcı",noTickets:"Bekleyen sipariş yok.",queueHint:"Bu ekran müşteri tarafındaki bir TV'ye yansıtılabilir.",
  tabStock:"Stok",tabRecipes:"Reçete ve maliyet",tabCount:"Sayım",colItem:"Malzeme",colStock:"Stok",colMin:"Alt sınır",colStatus:"Durum",colCost:"Birim maliyet",ok:"Yeterli",low:"Azalıyor",out:"Bitti",
  lowBanner:"{n} malzeme alt sınırın altında",addStock:"Giriş ekle",colProduct:"Ürün",colPrice:"Fiyat",colRecipe:"Reçete",colCostR:"Maliyet",colMargin:"Marj",
  theo:"Teorik",phys:"Sayılan",variance:"Fark",varValue:"Değer",applyCount:"Sayımı uygula",countHint:"Sayılan miktarı girin; boş bırakılan kalemler değişmez.",countApplied:"Sayım uygulandı",totalVar:"Toplam fark",readOnly:"Bu rol için salt okunur.",
@@ -344,7 +344,7 @@ google:"المتابعة عبر Google",
  moveTitle:"نقل الطاولة",moveHint:"اختر طاولة فارغة.",noEmpty:"ما في طاولات فارغة.",mergeTitle:"دمج الحسابات",mergeHint:"إلى أي طاولة تريد دمج هذه الفاتورة؟",noOpen:"ما في فواتير مفتوحة أخرى للدمج.",
  payTitle:"الدفع",rc_title:"الفاتورة",rc_recent:"آخر الفواتير",rc_reprint:"إعادة طباعة",rc_none:"لا توجد فواتير بعد",rc_print:"طباعة",rc_thanks:"شكراً لزيارتكم",rc_no:"رقم الفاتورة",rc_cashier:"الكاشير",splitEq:"تقسيم بالتساوي",persons:"أشخاص",perPerson:"للشخص",pickItems:"اختر الأصناف",amount:"المبلغ",cash:"نقداً",card:"بطاقة",payCash:"دفع نقدي",payCard:"دفع بالبطاقة",payments:"الدفعات",closedToast:"تم إغلاق الحساب",close:"إغلاق",
  recvTitle:"إدخال مخزون",qty:"الكمية",add:"إضافة",receivedToast:"تمت إضافة المخزون",
- k_kitchen:"المطبخ",k_bar:"البار",k_queue:"شاشة الدور",colNew:"جديد",colPrep:"قيد التحضير",colReady:"جاهز",start:"ابدأ التحضير",markReady:"جاهز",served:"تم التسليم",printer:"الطابعة",noTickets:"ما في طلبات بالانتظار.",queueHint:"يمكن عرض هذه الشاشة على تلفزيون موجّه للزبائن.",
+ rp_ov:"نظرة عامة",rp_items:"المنتجات",rp_staff:"الموظفون",rp_time:"تحليل الوقت",rp_rcpt:"الفواتير",rp_profit:"الربح",rp_voids:"الإلغاءات",rp_custom:"تاريخ محدد",rp_from:"من تاريخ",rp_to:"إلى تاريخ",rp_station:"القسم",rp_allSt:"الكل",rp_allCat:"كل التصنيفات",rp_staffF:"الموظف",rp_allStaff:"كل الموظفين",rp_type:"نوع الطلب",rp_dine:"داخل الكافيه",rp_take:"تيك أواي",rp_search:"بحث عن منتج",rp_reset:"إعادة ضبط",rp_csv:"تنزيل CSV",rp_csvErr:"تعذر التنزيل",rp_none:"لا توجد مبيعات بهذه الفلاتر.",rp_range:"الفترة",rp_vsPrev:"الأسهم تقارن مع فترة سابقة بنفس الطول.",rp_pay:"طرق الدفع",rp_byStn:"حسب القسم (بار / مطبخ)",rp_byType:"حسب نوع الطلب",rp_all:"توزيع مبيعات المنتجات",rp_share:"النسبة",rp_avgP:"متوسط السعر",rp_least:"الأقل مبيعاً",rp_nosale:"لم تُبع إطلاقاً",rp_dur:"متوسط مدة الطاولة",rp_byHour:"الإيراد حسب الساعة",rp_byDow:"الإيراد حسب اليوم",rp_tables:"تحليل الطاولات",rp_hide:"إخفاء",rp_open:"تفاصيل",rp_more:"عرض المزيد",rp_cost:"التكلفة",rp_profit2:"الربح",rp_margin:"الهامش",rp_cover:"نسبة المنتجات التي لها وصفة",rp_noRecipe:"المنتجات بدون وصفة لا تُحسب تكلفتها.",rp_voidN:"عدد الإلغاءات",rp_detail:"التفاصيل",rp_voidNote:"ملاحظة: النظام يحفظ آخر 200 عملية فقط، فقد لا تظهر الإلغاءات القديمة.",k_kitchen:"المطبخ",k_bar:"البار",k_queue:"شاشة الدور",colNew:"جديد",colPrep:"قيد التحضير",colReady:"جاهز",start:"ابدأ التحضير",markReady:"جاهز",served:"تم التسليم",printer:"الطابعة",noTickets:"ما في طلبات بالانتظار.",queueHint:"يمكن عرض هذه الشاشة على تلفزيون موجّه للزبائن.",
  tabStock:"المخزون",tabRecipes:"الوصفات والتكلفة",tabCount:"الجرد",colItem:"المادة",colStock:"المخزون",colMin:"الحد الأدنى",colStatus:"الحالة",colCost:"تكلفة الوحدة",ok:"كافٍ",low:"منخفض",out:"نفد",
  lowBanner:"{n} مواد تحت الحد الأدنى",addStock:"إضافة كمية",colProduct:"المنتج",colPrice:"السعر",colRecipe:"الوصفة",colCostR:"التكلفة",colMargin:"الهامش",
  theo:"النظري",phys:"الفعلي",variance:"الفرق",varValue:"القيمة",applyCount:"اعتماد الجرد",countHint:"أدخل الكمية الفعلية؛ المواد الفارغة لا تتغير.",countApplied:"تم اعتماد الجرد",totalVar:"إجمالي الفرق",readOnly:"للقراءة فقط لهذا الدور.",
@@ -649,7 +649,7 @@ function sendTicket(key){
 function closeTicket(key){
  var b=B(),tk=b.tickets[key],agg={};
  tk.lines.forEach(function(l){var p=menuItem(l.item).price;if(agg[l.item])agg[l.item].qty+=l.qty;else agg[l.item]={item:l.item,qty:l.qty,price:p};});
- var sale={id:b.id+"-n"+Date.now(),br:b.id,ts:Date.now(),table:key,lines:Object.keys(agg).map(function(k){return agg[k];}),total:r2(ticketTotal(tk)),pay:tk.payments.slice(),staff:actor()};
+ var sale={id:b.id+"-n"+Date.now(),br:b.id,ts:Date.now(),table:key,lines:Object.keys(agg).map(function(k){return agg[k];}),total:r2(ticketTotal(tk)),pay:tk.payments.slice(),staff:actor(),ots:tk.ts||undefined};
  b.sales.push(sale);delete b.tickets[key];log("close",{tbl:key});
 }
 function payTicket(key,m,amount){
@@ -856,27 +856,162 @@ function updateCount(id){
  if(c2){c2.textContent=has?money(d*i.cost):"—";c2.className="n "+(has?(d<0?"bad":d>0?"good":""):"");}
  var tot=0;b.inv.forEach(function(x){var w=U.counts[x.id];if(w!==undefined&&w!==""&&!isNaN(parseFloat(w)))tot+=(parseFloat(w)-x.stock)*x.cost;});var te=$("#cvtot");if(te)te.textContent=money(tot);
 }
-/* reports */
+/* ---------- reports (detailed) ---------- */
+var RT=["ov","items","staff","time","rcpt","profit","voids"];
+function dayStr(ts){var d=new Date(ts);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function parseDay(s){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(s||"");return m?new Date(+m[1],+m[2]-1,+m[3]).getTime():NaN;}
+function repRange(){
+ if(U.period==="custom"&&isNaN(parseDay(U.rFrom)))U.period="today";
+ if(U.period==="custom"){var f=parseDay(U.rFrom),z=parseDay(U.rTo||U.rFrom);if(isNaN(z)||z<f)z=f;return {from:f,to:z+864e5,custom:true};}
+ return {from:periodFrom(U.period),to:Date.now()+1,custom:false};
+}
+function repBranch(){var T0=T();return (U.rb==="all"||!T0.branches[U.rb])?"all":U.rb;}
+function repFilters(){return {st:U.rst||"all",cat:U.rcat||"all",staff:U.rstaff||"all",type:U.rtype||"all",q:(U.rq||"").trim().toLowerCase()};}
+function itemCost(br,id){var m=menuItem(id),T0=T(),b=T0.branches[br]||T0.branches[T0.order[0]];if(!m||!m.recipe||!m.recipe.length)return 0;
+ return m.recipe.reduce(function(a,r){var iv=b.inv.filter(function(x){return x.id===r[0];})[0];return a+(iv?iv.cost*r[1]:0);},0);}
+function repCollect(from,to,F,rb){
+ var T0=T(),ids=rb==="all"?T0.order:[rb],out=[],lineF=F.st!=="all"||F.cat!=="all"||!!F.q;
+ ids.forEach(function(id){T0.branches[id].sales.forEach(function(s){
+  if(s.ts<from||s.ts>=to)return;
+  var take=String(s.table).indexOf("TA")===0;
+  if(F.type==="dine"&&take)return;if(F.type==="take"&&!take)return;
+  if(F.staff!=="all"&&s.staff!==F.staff)return;
+  var ls=s.lines.filter(function(l){var m=menuItem(l.item);
+   if(F.st!=="all"&&(!m||m.station!==F.st))return false;
+   if(F.cat!=="all"&&(!m||m.cat!==F.cat))return false;
+   if(F.q&&(!m||nm(m).toLowerCase().indexOf(F.q)<0))return false;return true;});
+  if(lineF&&!ls.length)return;
+  var tot=lineF?ls.reduce(function(a,l){return a+l.qty*l.price;},0):s.total;
+  out.push({s:s,lines:ls,total:r2(tot),take:take,full:!lineF});
+ });});
+ return out;
+}
+function repAgg(rows){
+ var a={rev:0,n:rows.length,items:0,cost:0,cat:{},stn:{bar:0,kitchen:0},item:{},staff:{},table:{},pm:{},take:{n:0,r:0},dine:{n:0,r:0},hour:[],dow:[0,0,0,0,0,0,0],voids:0},h;
+ for(h=0;h<24;h++)a.hour.push(0);
+ rows.forEach(function(r){var s=r.s,d=new Date(s.ts),ty=r.take?a.take:a.dine,qn=0;a.rev+=r.total;ty.n++;ty.r+=r.total;a.hour[d.getHours()]+=r.total;a.dow[d.getDay()]+=r.total;
+  r.lines.forEach(function(l){var m=menuItem(l.item),rv=l.qty*l.price,cs=l.qty*itemCost(s.br,l.item);qn+=l.qty;a.items+=l.qty;a.cost+=cs;
+   if(m){a.cat[m.cat]=(a.cat[m.cat]||0)+rv;a.stn[m.station]=(a.stn[m.station]||0)+rv;}
+   var o=a.item[l.item]=a.item[l.item]||{q:0,r:0,c:0};o.q+=l.qty;o.r+=rv;o.c+=cs;});
+  var st=a.staff[s.staff]=a.staff[s.staff]||{n:0,r:0,i:0};st.n++;st.r+=r.total;st.i+=qn;
+  var tk=a.table[r.take?"TA":s.table]=a.table[r.take?"TA":s.table]||{n:0,r:0,d:0,dn:0};tk.n++;tk.r+=r.total;if(s.ots){tk.d+=s.ts-s.ots;tk.dn++;}
+  if(r.full)s.pay.forEach(function(p){a.pm[p.m]=(a.pm[p.m]||0)+p.amount;});
+ });
+ return a;
+}
+function bucketsRange(rows,from,to){
+ var days=Math.round((to-from)/864e5),loc=S.lang==="ar"?"ar":"tr-TR",b=[],i;
+ if(days<=62){for(i=0;i<days;i++){var d=new Date(from+i*864e5);b.push({k:i,label:d.getDate()+"/"+(d.getMonth()+1),v:0});}
+  rows.forEach(function(s){var x=b[Math.floor((s.ts-from)/864e5)];if(x)x.v+=s.total;});return b;}
+ var a=new Date(from),z=new Date(to-1),base=a.getFullYear()*12+a.getMonth(),n=z.getFullYear()*12+z.getMonth()-base+1;
+ for(i=0;i<n;i++){var dq=new Date(Math.floor((base+i)/12),(base+i)%12,1);b.push({k:i,label:dq.toLocaleDateString(loc,{month:"short",year:"2-digit"}),v:0});}
+ rows.forEach(function(s){var dd=new Date(s.ts),x=b[dd.getFullYear()*12+dd.getMonth()-base];if(x)x.v+=s.total;});return b;
+}
+function rpDelta(cur,prev){if(!(prev>0))return "";var p=(cur-prev)/prev*100;return '<span class="pill '+(p>=0?"ok":"out")+'">'+(p>=0?"▲ ":"▼ ")+num(Math.abs(p),0)+'%</span>';}
+function rpKpi(l,v,d){return '<div><div class="l">'+l+'</div><div class="v">'+v+'</div><div style="margin-top:4px;min-height:22px">'+(d||"")+'</div></div>';}
+function rpT(heads,rows,ns){ns=ns==null?1:ns;return '<div class="tw"><table><thead><tr>'+heads.map(function(h,i){return '<th'+(i>=ns?' class="n"':'')+'>'+h+'</th>';}).join("")+'</tr></thead><tbody>'+rows.map(function(r){return '<tr>'+r.map(function(c,i){return '<td'+(i>=ns?' class="n"':'')+'>'+c+'</td>';}).join("")+'</tr>';}).join("")+'</tbody></table></div>';}
+function rpBars(pairs){var mx=Math.max.apply(null,pairs.map(function(p){return p[1];}).concat([0]));return pairs.map(function(p){return '<div class="hb"><span>'+p[0]+'</span><div class="trk"><i style="width:'+(mx?p[1]/mx*100:0).toFixed(0)+'%"></i></div><b class="num">'+(p[2]||money0(p[1]))+'</b></div>';}).join("");}
+function rpPanel(title,body,wide){return '<section class="panel'+(wide?" wide":"")+'"><h3>'+title+'</h3>'+body+'</section>';}
+function rpSel(label,ch,val,opts){return '<div class="field"><label for="rf_'+ch+'">'+label+'</label><select id="rf_'+ch+'" data-change="'+ch+'">'+opts.map(function(o){return '<option value="'+esc(o[0])+'"'+(String(val)===String(o[0])?" selected":"")+'>'+esc(o[1])+'</option>';}).join("")+'</select></div>';}
+function rpPairs(o,fmt){return Object.keys(o).sort(function(a,c){return o[c]-o[a];}).map(function(k){return [k,o[k]];});}
 function viewReports(){
- var T0=T(),ids=T0.order,rb=(U.rb==="all"||!T0.branches[U.rb])?"all":U.rb,rows=[];
- (rb==="all"?ids:[rb]).forEach(function(id){T0.branches[id].sales.forEach(function(s){rows.push(s);});});
- var from=periodFrom(U.period);rows=rows.filter(function(s){return s.ts>=from;});
- var head='<div class="bar">'+seg("period",U.period,[["today",t("today")],["week",t("week")],["month",t("pm30")],["half",t("pm6")],["year",t("pm12")]])+(multi()?'<select data-change="rb" aria-label="'+t("branch")+'"><option value="all"'+(rb==="all"?" selected":"")+'>'+t("allBranches")+'</option>'+ids.map(function(id){return '<option value="'+id+'"'+(rb===id?" selected":"")+'>'+esc(T0.branches[id].name)+'</option>';}).join("")+'</select>':'')+'</div>';
- if(!rows.length)return head+'<p class="muted">'+t("noSales")+'</p>';
- var rev=0,items=0,cat={},top={},staff={},pm={cash:0,card:0};
- rows.forEach(function(s){rev+=s.total;s.lines.forEach(function(l){items+=l.qty;var m=menuItem(l.item);if(!m)return;cat[m.cat]=(cat[m.cat]||0)+l.qty*l.price;var o=top[l.item]=top[l.item]||{q:0,r:0};o.q+=l.qty;o.r+=l.qty*l.price;});
-  var st=staff[s.staff]=staff[s.staff]||{n:0,r:0};st.n++;st.r+=s.total;s.pay.forEach(function(p){pm[p.m]=(pm[p.m]||0)+p.amount;});});
- var kp='<div class="kpis"><div><div class="l">'+t("kSales")+'</div><div class="v">'+money0(rev)+'</div></div><div><div class="l">'+t("kOrders")+'</div><div class="v">'+rows.length+'</div></div><div><div class="l">'+t("kAvg")+'</div><div class="v">'+money0(rev/rows.length)+'</div></div><div><div class="l">'+t("kItems")+'</div><div class="v">'+items+'</div></div></div>';
- var cm=Math.max.apply(null,CATS.map(function(c){return cat[c]||0;}));
- var hb=catIds().map(function(c){var v=cat[c]||0;return '<div class="hb"><span>'+catNm(c)+'</span><div class="trk"><i style="width:'+(cm?v/cm*100:0).toFixed(0)+'%"></i></div><b class="num">'+money0(v)+'</b></div>';}).join("");
- var tl=Object.keys(top).sort(function(a,c){return top[c].q-top[a].q;}).slice(0,6);
- var topT='<div class="tw"><table><thead><tr><th>'+t("colProduct")+'</th><th class="n">'+t("colQty")+'</th><th class="n">'+t("colRev")+'</th></tr></thead><tbody>'+tl.map(function(id){return '<tr><td>'+esc(nm(menuItem(id)))+'</td><td class="n">'+top[id].q+'</td><td class="n">'+money0(top[id].r)+'</td></tr>';}).join("")+'</tbody></table></div>';
- var stT='<div class="tw"><table><thead><tr><th>'+t("colStaff")+'</th><th class="n">'+t("colOrders")+'</th><th class="n">'+t("colRev")+'</th><th class="n">'+t("colAvg")+'</th></tr></thead><tbody>'+Object.keys(staff).sort(function(a,c){return staff[c].r-staff[a].r;}).map(function(k){return '<tr><td>'+esc(k)+'</td><td class="n">'+staff[k].n+'</td><td class="n">'+money0(staff[k].r)+'</td><td class="n">'+money0(staff[k].r/staff[k].n)+'</td></tr>';}).join("")+'</tbody></table></div>';
- var pays=[];rows.forEach(function(s){s.pay.forEach(function(p){pays.push({ts:p.ts,s:s,m:p.m,a:p.amount});});});pays.sort(function(a,c){return c.ts-a.ts;});
- var tp=pm.cash+pm.card||1;
- var cashT='<div class="gt"><div class="hb" style="grid-template-columns:70px 1fr auto"><span>'+t("cash")+'</span><div class="trk"><i style="width:'+(pm.cash/tp*100).toFixed(0)+'%"></i></div><b class="num">'+money0(pm.cash)+'</b></div><div class="hb" style="grid-template-columns:70px 1fr auto"><span>'+t("card")+'</span><div class="trk"><i style="width:'+(pm.card/tp*100).toFixed(0)+'%"></i></div><b class="num">'+money0(pm.card)+'</b></div></div>'+
-  '<div class="tw"><table><thead><tr><th>'+t("colTime")+'</th>'+(rb==="all"&&multi()?'<th>'+t("colBranch")+'</th>':'')+'<th>'+t("colTable")+'</th><th>'+t("colStaff")+'</th><th>'+t("colMethod")+'</th><th class="n">'+t("colAmount")+'</th></tr></thead><tbody>'+pays.slice(0,8).map(function(p){return '<tr><td class="num">'+hm(p.ts)+'</td>'+(rb==="all"&&multi()?'<td>'+esc(T0.branches[p.s.br].name)+'</td>':'')+'<td>'+saleLbl(p.s)+'</td><td>'+esc(p.s.staff)+'</td><td>'+t(p.m)+'</td><td class="n">'+money(p.a)+'</td></tr>';}).join("")+'</tbody></table></div>';
- return head+kp+'<div class="rgrid"><section class="panel wide"><h3>'+t(U.period==="today"?"byHour":(U.period==="half"||U.period==="year")?"byMonth":"byDay")+'</h3>'+chartHtml(bucketsFor(rows,U.period))+'</section><section class="panel"><h3>'+t("byCat")+'</h3>'+hb+'</section><section class="panel"><h3>'+t("top")+'</h3>'+topT+'</section><section class="panel"><h3>'+t("staffPerf")+'</h3>'+stT+'</section><section class="panel"><h3>'+t("cashLog")+'</h3>'+cashT+'</section></div>';
+ var T0=T(),ids=T0.order,rb=repBranch(),rg=repRange(),F=repFilters();
+ if(RT.indexOf(U.rt)<0||(U.rt==="profit"&&!can("costView")))U.rt="ov";
+ var tabs=[["ov",t("rp_ov")],["items",t("rp_items")],["staff",t("rp_staff")],["time",t("rp_time")],["rcpt",t("rp_rcpt")]].concat(can("costView")?[["profit",t("rp_profit")]]:[]).concat([["voids",t("rp_voids")]]);
+ var allStaff={};ids.forEach(function(id){T0.branches[id].sales.forEach(function(s){allStaff[s.staff]=1;});});
+ var presets=[["today",t("today")],["week",t("week")],["month",t("pm30")],["half",t("pm6")],["year",t("pm12")]];
+ var psg='<div class="seg" role="group">'+presets.map(function(o){return '<button data-act="set" data-g="period" data-v="'+o[0]+'" aria-pressed="'+(U.period===o[0])+'">'+o[1]+'</button>';}).join("")+'<button aria-pressed="'+(U.period==="custom")+'" disabled style="opacity:1">'+t("rp_custom")+'</button></div>';
+ var fil='<div class="panel" style="margin-bottom:12px"><div class="bar" style="flex-wrap:wrap;gap:10px">'+psg+'</div><div class="inl" style="flex-wrap:wrap;gap:10px;margin-top:10px">'+
+  '<div class="field"><label for="rf_rFrom">'+t("rp_from")+'</label><input id="rf_rFrom" type="date" data-change="rFrom" value="'+(U.period==="custom"?esc(U.rFrom||""):"")+'"></div>'+
+  '<div class="field"><label for="rf_rTo">'+t("rp_to")+'</label><input id="rf_rTo" type="date" data-change="rTo" value="'+(U.period==="custom"?esc(U.rTo||U.rFrom||""):"")+'"></div>'+
+  (multi()?rpSel(t("branch"),"rb",rb,[["all",t("allBranches")]].concat(ids.map(function(id){return [id,T0.branches[id].name];}))):"")+
+  rpSel(t("rp_station"),"rst",F.st,[["all",t("rp_allSt")],["bar",t("k_bar")],["kitchen",t("k_kitchen")]])+
+  rpSel(t("mg_cat"),"rcat",F.cat,[["all",t("rp_allCat")]].concat(catIds().map(function(c){return [c,catNm(c)];})))+
+  rpSel(t("rp_staffF"),"rstaff",F.staff,[["all",t("rp_allStaff")]].concat(Object.keys(allStaff).sort().map(function(k){return [k,k];})))+
+  rpSel(t("rp_type"),"rtype",F.type,[["all",t("rp_allSt")],["dine",t("rp_dine")],["take",t("rp_take")]])+
+  '<div class="field"><label for="rf_rq">'+t("rp_search")+'</label><input id="rf_rq" data-change="rq" maxlength="40" value="'+esc(U.rq||"")+'"></div>'+
+  '<button class="btn" data-act="repReset">'+t("rp_reset")+'</button><button class="btn" data-act="repCsv">'+t("rp_csv")+'</button></div></div>';
+ var tb='<div class="bar" style="margin-bottom:12px;flex-wrap:wrap">'+seg("rt",U.rt,tabs)+'</div>';
+ var rows=repCollect(rg.from,rg.to,F,rb),A=repAgg(rows);
+ var rangeTxt=dm(rg.from).slice(0,5)+" → "+dm(Math.min(rg.to-1,Date.now())).slice(0,5);
+ if(U.rt==="voids")return fil+tb+rpVoids(rg,rb,F);
+ if(!rows.length)return fil+tb+'<p class="muted">'+t(rg.custom||F.st!=="all"||F.cat!=="all"||F.staff!=="all"||F.type!=="all"||F.q?"rp_none":"noSales")+'</p>';
+ var body="";
+ if(U.rt==="ov")body=rpOverview(rows,A,rg,rb,F);
+ else if(U.rt==="items")body=rpItems(A,F);
+ else if(U.rt==="staff")body=rpStaff(A);
+ else if(U.rt==="time")body=rpTime(A);
+ else if(U.rt==="rcpt")body=rpReceipts(rows,rb);
+ else if(U.rt==="profit")body=rpProfit(A);
+ return fil+tb+'<p class="muted" style="margin:0 0 10px">'+t("rp_range")+': '+rangeTxt+' · '+rows.length+' '+t("kOrders")+'</p>'+body;
+}
+function rpOverview(rows,A,rg,rb,F){
+ var len=rg.to-rg.from,pf=(!rg.custom&&U.period==="today")?rg.from-864e5:rg.from-len,P=repAgg(repCollect(pf,pf+len,F,rb));
+ var kp='<div class="kpis">'+rpKpi(t("kSales"),money0(A.rev),rpDelta(A.rev,P.rev))+rpKpi(t("kOrders"),A.n,rpDelta(A.n,P.n))+rpKpi(t("kAvg"),money0(A.rev/A.n),rpDelta(A.rev/A.n,P.n?P.rev/P.n:0))+rpKpi(t("kItems"),A.items,rpDelta(A.items,P.items))+'</div><p class="muted" style="margin:6px 0 12px;font-size:13px">'+t("rp_vsPrev")+'</p>';
+ var mapped=rows.map(function(r){return {ts:r.s.ts,total:r.total};}),bk,title;
+ if(rg.custom){var days=Math.round(len/864e5);if(days<=1){bk=bucketsFor(mapped,"today");title="byHour";}else{bk=bucketsRange(mapped,rg.from,rg.to);title=days<=62?"byDay":"byMonth";}}
+ else{bk=bucketsFor(mapped,U.period);title=U.period==="today"?"byHour":(U.period==="half"||U.period==="year")?"byMonth":"byDay";}
+ var stn=rpBars([[t("k_bar"),A.stn.bar],[t("k_kitchen"),A.stn.kitchen]]);
+ var cat=rpBars(catIds().map(function(c){return [catNm(c),A.cat[c]||0];}));
+ var typ=rpBars([[t("rp_dine"),A.dine.r,money0(A.dine.r)+" · "+A.dine.n],[t("rp_take"),A.take.r,money0(A.take.r)+" · "+A.take.n]]);
+ var pay=F.st==="all"&&F.cat==="all"&&!F.q?rpPanel(t("rp_pay"),rpBars(Object.keys(A.pm).map(function(k){return [t(k),A.pm[k]];}))):"";
+ return kp+'<div class="rgrid">'+rpPanel(t(title),chartHtml(bk),true)+rpPanel(t("rp_byStn"),stn)+rpPanel(t("rp_byType"),typ)+rpPanel(t("byCat"),cat)+pay+'</div>';
+}
+function rpItems(A,F){
+ var T0=T(),keys=Object.keys(A.item).sort(function(a,c){return A.item[c].q-A.item[a].q;}),tq=keys.reduce(function(a,k){return a+A.item[k].q;},0)||1;
+ var nmOf=function(id){var m=menuItem(id);return m?esc(nm(m)):"—";};
+ var rowsT=keys.slice(0,100).map(function(k){var m=menuItem(k),o=A.item[k];return [nmOf(k),m?catNm(m.cat):"—",m?t(m.station==="bar"?"k_bar":"k_kitchen"):"—",o.q,num(o.q/tq*100,1)+"%",money0(o.r),money0(o.r/o.q)];});
+ var least=keys.slice(-5).reverse().map(function(k){return [nmOf(k),A.item[k].q,money0(A.item[k].r)];});
+ var none=T0.menu.filter(function(m){return !A.item[m.id]&&(F.st==="all"||m.station===F.st)&&(F.cat==="all"||m.cat===F.cat)&&(!F.q||nm(m).toLowerCase().indexOf(F.q)>=0);}).map(function(m){return esc(nm(m));});
+ return '<div class="rgrid">'+rpPanel(t("rp_all"),rpT([t("colProduct"),t("mg_cat"),t("mg_stn"),t("colQty"),t("rp_share"),t("colRev"),t("rp_avgP")],rowsT,3),true)+
+  rpPanel(t("rp_least"),rpT([t("colProduct"),t("colQty"),t("colRev")],least))+
+  rpPanel(t("rp_nosale")+" ("+none.length+")",none.length?'<p style="margin:0;line-height:1.9">'+none.slice(0,60).join(" · ")+(none.length>60?" …":"")+'</p>':'<p class="muted">—</p>')+'</div>';
+}
+function rpStaff(A){
+ var ks=Object.keys(A.staff).sort(function(a,c){return A.staff[c].r-A.staff[a].r;}),tr=ks.reduce(function(a,k){return a+A.staff[k].r;},0)||1;
+ return '<div class="rgrid">'+rpPanel(t("staffPerf"),rpT([t("colStaff"),t("colOrders"),t("kItems"),t("colRev"),t("colAvg"),t("rp_share")],ks.map(function(k){var o=A.staff[k];return [esc(k),o.n,o.i,money0(o.r),money0(o.r/o.n),num(o.r/tr*100,1)+"%"];})),true)+'</div>';
+}
+function rpTime(A){
+ var lo=24,hi=-1,h,hb=[];for(h=0;h<24;h++)if(A.hour[h]>0){lo=Math.min(lo,h);hi=Math.max(hi,h);}
+ for(h=lo;h<=hi;h++)hb.push({k:h,label:String(h).padStart(2,"0"),v:A.hour[h]});
+ var wd=weekdays(),ord=[1,2,3,4,5,6,0],db=ord.map(function(d,i){return {k:d,label:wd[i],v:A.dow[d]};});
+ var tk=Object.keys(A.table).sort(function(a,c){return A.table[c].r-A.table[a].r;}).slice(0,12);
+ var tt=rpT([t("colTable"),t("colOrders"),t("colRev"),t("colAvg"),t("rp_dur")],tk.map(function(k){var o=A.table[k];return [k==="TA"?t("take"):tblLabel(k),o.n,money0(o.r),money0(o.r/o.n),o.dn?num(o.d/o.dn/6e4,0)+" "+t("min"):"—"];}));
+ return '<div class="rgrid">'+rpPanel(t("rp_byHour"),hb.length?chartHtml(hb):'<p class="muted">—</p>',true)+rpPanel(t("rp_byDow"),chartHtml(db),true)+rpPanel(t("rp_tables"),tt,true)+'</div>';
+}
+function rpReceipts(rows,rb){
+ var T0=T(),srt=rows.slice().sort(function(a,c){return c.s.ts-a.s.ts;}),pg=Math.max(1,U.rPage||1),show=srt.slice(0,pg*40),mu=multi()&&rb==="all";
+ var html='<div class="tw"><table><thead><tr><th>'+t("colTime")+'</th>'+(mu?'<th>'+t("colBranch")+'</th>':'')+'<th>'+t("colTable")+'</th><th>'+t("colStaff")+'</th><th class="n">'+t("kItems")+'</th><th>'+t("colMethod")+'</th><th class="n">'+t("colAmount")+'</th><th></th></tr></thead><tbody>'+show.map(function(r){
+  var s=r.s,qn=r.lines.reduce(function(a,l){return a+l.qty;},0),methods=s.pay.map(function(p){return t(p.m);}).filter(function(x,i,a){return a.indexOf(x)===i;}).join("+"),open=U.rOpen===s.id,cs=mu?7:6;
+  var row='<tr><td class="num">'+dm(s.ts)+'</td>'+(mu?'<td>'+esc(T0.branches[s.br].name)+'</td>':'')+'<td>'+saleLbl(s)+'</td><td>'+esc(s.staff)+'</td><td class="n">'+qn+'</td><td>'+methods+'</td><td class="n">'+money(r.total)+'</td><td class="n"><button class="btn sm" data-act="repOpen" data-id="'+esc(s.id)+'">'+t(open?"rp_hide":"rp_open")+'</button></td></tr>';
+  if(open)row+='<tr><td colspan="'+(cs+1)+'">'+rpT([t("colProduct"),t("colQty"),t("rp_avgP"),t("colAmount")],r.lines.map(function(l){var m=menuItem(l.item);return [m?esc(nm(m)):"—",l.qty,money(l.price),money(l.qty*l.price)];}))+(s.ots?'<p class="muted" style="margin:6px 0 0">'+t("rp_dur")+': '+num((s.ts-s.ots)/6e4,0)+' '+t("min")+'</p>':'')+'</td></tr>';
+  return row;}).join("")+'</tbody></table></div>';
+ return '<div class="rgrid">'+rpPanel(t("rp_rcpt")+" ("+rows.length+")",html+(srt.length>show.length?'<p style="margin:10px 0 0"><button class="btn" data-act="repMore">'+t("rp_more")+'</button></p>':''),true)+'</div>';
+}
+function rpProfit(A){
+ var keys=Object.keys(A.item).sort(function(a,c){return (A.item[c].r-A.item[c].c)-(A.item[a].r-A.item[a].c);}),pr=A.rev-A.cost,withRec=0;
+ keys.forEach(function(k){var m=menuItem(k);if(m&&m.recipe&&m.recipe.length)withRec+=A.item[k].r;});
+ var kp='<div class="kpis">'+rpKpi(t("kSales"),money0(A.rev))+rpKpi(t("rp_cost"),money0(A.cost))+rpKpi(t("rp_profit2"),money0(pr))+rpKpi(t("rp_margin"),num(A.rev?pr/A.rev*100:0,1)+"%")+'</div>';
+ var rowsT=keys.slice(0,100).map(function(k){var m=menuItem(k),o=A.item[k],has=m&&m.recipe&&m.recipe.length;return [m?esc(nm(m)):"—",o.q,money0(o.r),has?money0(o.c):"—",has?money0(o.r-o.c):"—",has?num((o.r-o.c)/o.r*100,0)+"%":"—"];});
+ return kp+'<p class="muted" style="margin:6px 0 12px;font-size:13px">'+t("rp_cover")+': '+num(A.rev?withRec/A.rev*100:0,0)+'% · '+t("rp_noRecipe")+'</p><div class="rgrid">'+rpPanel(t("rp_profit"),rpT([t("colProduct"),t("colQty"),t("colRev"),t("rp_cost"),t("rp_profit2"),t("rp_margin")],rowsT),true)+'</div>';
+}
+function rpVoids(rg,rb,F){
+ var T0=T(),L=T0.log.filter(function(l){return l.k==="void"&&l.ts>=rg.from&&l.ts<rg.to&&(rb==="all"||l.br===rb)&&(F.staff==="all"||l.user===F.staff);});
+ var kp='<div class="kpis">'+rpKpi(t("rp_voidN"),L.length)+'</div>';
+ var tbl=L.length?rpT([t("colTime"),t("colStaff"),t("rp_detail")],L.slice(0,100).map(function(l){return [dm(l.ts),esc(l.user),logText(l)];}),3):'<p class="muted">—</p>';
+ return kp+'<div class="rgrid">'+rpPanel(t("rp_voids"),tbl+'<p class="muted" style="margin:8px 0 0;font-size:13px">'+t("rp_voidNote")+'</p>',true)+'</div>';
+}
+
+function repLineRows(){
+ var rg=repRange(),F=repFilters(),rb=repBranch(),T0=T(),out=[["date","time","branch","table","staff","item","category","station","qty","price","amount","payment"]];
+ repCollect(rg.from,rg.to,F,rb).sort(function(a,c){return a.s.ts-c.s.ts;}).forEach(function(r){var s=r.s,d=new Date(s.ts),ds=dayStr(s.ts),tm=String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0"),pm=s.pay.map(function(p){return p.m;}).filter(function(x,i,a){return a.indexOf(x)===i;}).join("+");
+  r.lines.forEach(function(l){var m=menuItem(l.item);out.push([ds,tm,T0.branches[s.br].name,s.table,s.staff,m?nm(m):l.item,m?catNm(m.cat):"",m?m.station:"",l.qty,l.price,r2(l.qty*l.price),pm]);});});
+ return out;
+}
+function repDownload(){
+ var rows=repLineRows();if(rows.length<2){toast(t("rp_none"));return;}
+ var csv="\ufeff"+rows.map(function(r){return r.map(function(c){c=String(c);if(/^[=+\-@]/.test(c))c="'"+c;return '"'+c.replace(/"/g,'""')+'"';}).join(",");}).join("\r\n");
+ try{var u=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"})),a=document.createElement("a");a.href=u;a.download="otillion-report-"+dayStr(Date.now())+".csv";document.body.appendChild(a);a.click();setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(u);},500);}catch(e){toast(t("rp_csvErr"));}
 }
 /* staff / HR */
 function weekdays(){var loc=S.lang==="ar"?"ar":"tr-TR",o=[];for(var i=0;i<7;i++)o.push(new Date(2024,0,1+i).toLocaleDateString(loc,{weekday:"short"}));return o;}
@@ -1003,7 +1138,11 @@ function act(a,d,el){
  case "menuToggle":U.menu=!U.menu;break;
  case "nav":if(U.screen==="pos")cleanTicket();U.screen=d.v;U.posTable=null;U.modal=null;break;
  case "goBranch":if(!T().branches[d.id])break;S.bid=d.id;U.screen=can("pos")?"pos":U.screen;U.posTable=null;break;
- case "set":if(SETK[d.g])U[d.g]=d.v;break;
+ case "set":if(SETK[d.g]){U[d.g]=d.v;if(d.g==="period"){U.rFrom=U.rTo=null;U.rPage=1;U.rOpen=null;}if(d.g==="rt")U.rPage=1;}break;
+ case "repReset":U.period="today";U.rFrom=U.rTo=null;U.rst=U.rcat=U.rstaff=U.rtype="all";U.rq="";U.rPage=1;U.rOpen=null;break;
+ case "repCsv":repDownload();break;
+ case "repOpen":U.rOpen=U.rOpen===d.id?null:d.id;break;
+ case "repMore":U.rPage=(U.rPage||1)+1;break;
   case "tblSet":{var n=parseInt(($("#tblN")||{}).value,10);if(!(n>=1&&n<=60)){toast(t("mg_bad"));break;}
   if(Object.keys(b.tickets).some(function(k){return /^\d+$/.test(k)&&+k>n;})){toast(t("mg_tblBusy"));break;}
   b.tables=n;log("tblSet",{n:n});break;}
@@ -1076,7 +1215,14 @@ function applyChange(d){
  var T0=T();
  if(d.c==="role"){if(ROLES.indexOf(d.v)<0||RANK[d.v]>RANK[myRole()])return;if(RANK[d.v]>RANK[S.role])log("elevate",{r:d.v});if(RANK[d.v]<RANK[S.role])U.stepUp=0;S.role=d.v;if(!can("overview")&&!can("staffAll"))S.bid=T0.order[0];if(!can(U.screen))U.screen=SCREENS.filter(can)[0];U.posTable=null;U.menu=false;}
  else if(d.c==="branch"){if(!T0.branches[d.v])return;cleanTicket();S.bid=d.v;U.posTable=null;U.modal=null;}
- else if(d.c==="rb")U.rb=d.v;
+ else if(d.c==="rb"){U.rb=d.v;U.rPage=1;}
+ else if(d.c==="rst"){if(["all","bar","kitchen"].indexOf(d.v)>=0){U.rst=d.v;U.rPage=1;}}
+ else if(d.c==="rtype"){if(["all","dine","take"].indexOf(d.v)>=0){U.rtype=d.v;U.rPage=1;}}
+ else if(d.c==="rcat"){if(d.v==="all"||catIds().indexOf(d.v)>=0){U.rcat=d.v;U.rPage=1;}}
+ else if(d.c==="rstaff"){U.rstaff=String(d.v).slice(0,60);U.rPage=1;}
+ else if(d.c==="rq"){U.rq=String(d.v).slice(0,40);U.rPage=1;}
+ else if(d.c==="rFrom"){if(isNaN(parseDay(d.v))){U.rFrom=U.rTo=null;U.period="today";}else{U.rFrom=d.v;U.period="custom";if(!U.rTo||U.rTo<d.v)U.rTo=d.v;}U.rPage=1;U.rOpen=null;}
+ else if(d.c==="rTo"){if(isNaN(parseDay(d.v))){U.rTo=U.rFrom||null;}else{U.rTo=d.v;U.period="custom";if(!U.rFrom||U.rFrom>d.v)U.rFrom=d.v;}U.rPage=1;U.rOpen=null;}
  else if(d.c==="itemPrice"){var im=T0.menu.filter(function(x){return x.id===d.s;})[0],pv=parseFloat(d.v);if(!im||!(pv>0&&pv<=100000)){toast(t("mg_bad"));return;}im.price=Math.round(pv*100)/100;log("itemEdit",{mi:im.id});}
  else if(d.c==="itemName"){var im2=T0.menu.filter(function(x){return x.id===d.s;})[0],nv=(d.v||"").trim().slice(0,40);if(!im2||!nv){toast(t("mg_bad"));return;}im2.name[S.lang]=nv;log("itemEdit",{mi:im2.id});}
  else if(d.c==="itemCat"){var im3=T0.menu.filter(function(x){return x.id===d.s;})[0];if(!im3||catIds().indexOf(d.v)<0)return;im3.cat=d.v;log("itemEdit",{mi:im3.id});}
