@@ -290,7 +290,7 @@ google:"Google ile devam et",
  lowBanner:"{n} malzeme alt sınırın altında",addStock:"Giriş ekle",colProduct:"Ürün",colPrice:"Fiyat",colRecipe:"Reçete",colCostR:"Maliyet",colMargin:"Marj",
  theo:"Teorik",phys:"Sayılan",variance:"Fark",varValue:"Değer",applyCount:"Sayımı uygula",countHint:"Sayılan miktarı girin; boş bırakılan kalemler değişmez.",countApplied:"Sayım uygulandı",totalVar:"Toplam fark",readOnly:"Bu rol için salt okunur.",
  u_g:"g",u_ml:"ml",u_pc:"adet",
- today:"Bugün",week:"Son 7 gün",kSales:"Satış",kOrders:"Sipariş",kAvg:"Ort. adisyon",kItems:"Satılan ürün",byHour:"Saate göre satış",byDay:"Güne göre satış",byCat:"Kategoriye göre",top:"En çok satanlar",
+ today:"Bugün",week:"Son 7 gün",pm30:"Son 30 gün",pm6:"Son 6 ay",pm12:"Son 1 yıl",byMonth:"Aylık satış",kSales:"Satış",kOrders:"Sipariş",kAvg:"Ort. adisyon",kItems:"Satılan ürün",byHour:"Saate göre satış",byDay:"Güne göre satış",byCat:"Kategoriye göre",top:"En çok satanlar",
  staffPerf:"Personel performansı",cashLog:"Kasa ve ödemeler",colQty:"Adet",colRev:"Ciro",colOrders:"Sipariş",colAvg:"Ort.",colTime:"Saat",colTable:"Masa",colMethod:"Yöntem",colAmount:"Tutar",noSales:"Bu dönemde satış yok.",peak:"En yoğun",colStaff:"Personel",
  liveNow:"Canlı",ovBranches:"Şubeler",ovAlerts:"Uyarılar",ovFeed:"Son satışlar",ovGo:"Şubeye git",ovNoAlerts:"Şu an uyarı yok.",colBranch:"Şube",colOpen:"Açık",colLow:"Az stok",colOnShift:"Vardiyada",colLast:"Son satış",
  ovAllHint:"Tüm şubeler tek ekranda. Her cihazdan, her yerden izlenebilir.",alLow:"{b}: {i} azalıyor",alSlow:"{b}: {n} sipariş 12 dakikadan uzun bekliyor",
@@ -349,7 +349,7 @@ google:"المتابعة عبر Google",
  lowBanner:"{n} مواد تحت الحد الأدنى",addStock:"إضافة كمية",colProduct:"المنتج",colPrice:"السعر",colRecipe:"الوصفة",colCostR:"التكلفة",colMargin:"الهامش",
  theo:"النظري",phys:"الفعلي",variance:"الفرق",varValue:"القيمة",applyCount:"اعتماد الجرد",countHint:"أدخل الكمية الفعلية؛ المواد الفارغة لا تتغير.",countApplied:"تم اعتماد الجرد",totalVar:"إجمالي الفرق",readOnly:"للقراءة فقط لهذا الدور.",
  u_g:"غ",u_ml:"مل",u_pc:"حبة",
- today:"اليوم",week:"آخر 7 أيام",kSales:"المبيعات",kOrders:"الطلبات",kAvg:"متوسط الفاتورة",kItems:"الأصناف المباعة",byHour:"المبيعات حسب الساعة",byDay:"المبيعات حسب اليوم",byCat:"حسب التصنيف",top:"الأكثر مبيعاً",
+ today:"اليوم",week:"آخر 7 أيام",pm30:"آخر 30 يوم",pm6:"آخر 6 أشهر",pm12:"آخر سنة",byMonth:"المبيعات حسب الشهر",kSales:"المبيعات",kOrders:"الطلبات",kAvg:"متوسط الفاتورة",kItems:"الأصناف المباعة",byHour:"المبيعات حسب الساعة",byDay:"المبيعات حسب اليوم",byCat:"حسب التصنيف",top:"الأكثر مبيعاً",
  staffPerf:"أداء الموظفين",cashLog:"الصندوق والمدفوعات",colQty:"العدد",colRev:"الإيراد",colOrders:"الطلبات",colAvg:"المتوسط",colTime:"الوقت",colTable:"الطاولة",colMethod:"الطريقة",colAmount:"المبلغ",noSales:"ما في مبيعات بهذه الفترة.",peak:"الذروة",colStaff:"الموظف",
  liveNow:"مباشر",ovBranches:"الفروع",ovAlerts:"التنبيهات",ovFeed:"آخر المبيعات",ovGo:"الذهاب للفرع",ovNoAlerts:"لا توجد تنبيهات الآن.",colBranch:"الفرع",colOpen:"مفتوحة",colLow:"مخزون قليل",colOnShift:"في الوردية",colLast:"آخر بيع",
  ovAllHint:"كل الفروع في شاشة واحدة، ويمكن متابعتها من أي جهاز ومن أي مكان.",alLow:"{b}: {i} منخفض",alSlow:"{b}: {n} طلبات تنتظر أكثر من 12 دقيقة",
@@ -747,8 +747,16 @@ var saleLbl=function(s){return s.table==="TA"?t("take"):tblLabel(s.table);};
 /* charts */
 function niceMax(v){if(v<=0)return 1;var e=Math.pow(10,Math.floor(Math.log10(v))),m=v/e;return (m<=1?1:m<=2?2:m<=5?5:10)*e;}
 var kfmt=function(v){return "₺"+(v>=1000?num(v/1000,v%1000?1:0)+"k":num(v));};
+function periodFrom(p){var d0=dayStart(Date.now()),n=new Date();
+ if(p==="today")return d0;if(p==="week")return d0-6*864e5;if(p==="month")return d0-29*864e5;
+ var back=p==="half"?5:11;return new Date(n.getFullYear(),n.getMonth()-back,1).getTime();}
 function bucketsFor(rows,period){
  var b=[],d0=dayStart(Date.now()),loc=S.lang==="ar"?"ar":"tr-TR";
+ if(period==="month"){for(var j=29;j>=0;j--){var dj=d0-j*864e5;b.push({k:dj,label:String(new Date(dj).getDate()),v:0});}
+  rows.forEach(function(s){var x=b[29-Math.round((d0-dayStart(s.ts))/864e5)];if(x)x.v+=s.total;});return b;}
+ if(period==="half"||period==="year"){var nm=period==="half"?6:12,nw=new Date(),base=nw.getFullYear()*12+nw.getMonth()-(nm-1);
+  for(var q=0;q<nm;q++){var dq=new Date(Math.floor((base+q)/12),(base+q)%12,1);b.push({k:q,label:dq.toLocaleDateString(loc,{month:"short"}),v:0});}
+  rows.forEach(function(s){var dd=new Date(s.ts),x=b[dd.getFullYear()*12+dd.getMonth()-base];if(x)x.v+=s.total;});return b;}
  if(period==="today"){var lo=8,hi=22;rows.forEach(function(s){var h=new Date(s.ts).getHours();lo=Math.min(lo,h);hi=Math.max(hi,h);});
   for(var h=lo;h<=hi;h++)b.push({k:h,label:String(h).padStart(2,"0"),v:0});rows.forEach(function(s){var x=b[new Date(s.ts).getHours()-lo];if(x)x.v+=s.total;});}
  else{for(var i=6;i>=0;i--){var d=d0-i*864e5;b.push({k:d,label:new Date(d).toLocaleDateString(loc,{weekday:"short"}),v:0});}
@@ -852,8 +860,8 @@ function updateCount(id){
 function viewReports(){
  var T0=T(),ids=T0.order,rb=(U.rb==="all"||!T0.branches[U.rb])?"all":U.rb,rows=[];
  (rb==="all"?ids:[rb]).forEach(function(id){T0.branches[id].sales.forEach(function(s){rows.push(s);});});
- var d0=dayStart(Date.now()),from=U.period==="today"?d0:d0-6*864e5;rows=rows.filter(function(s){return s.ts>=from;});
- var head='<div class="bar">'+seg("period",U.period,[["today",t("today")],["week",t("week")]])+(multi()?'<select data-change="rb" aria-label="'+t("branch")+'"><option value="all"'+(rb==="all"?" selected":"")+'>'+t("allBranches")+'</option>'+ids.map(function(id){return '<option value="'+id+'"'+(rb===id?" selected":"")+'>'+esc(T0.branches[id].name)+'</option>';}).join("")+'</select>':'')+'</div>';
+ var from=periodFrom(U.period);rows=rows.filter(function(s){return s.ts>=from;});
+ var head='<div class="bar">'+seg("period",U.period,[["today",t("today")],["week",t("week")],["month",t("pm30")],["half",t("pm6")],["year",t("pm12")]])+(multi()?'<select data-change="rb" aria-label="'+t("branch")+'"><option value="all"'+(rb==="all"?" selected":"")+'>'+t("allBranches")+'</option>'+ids.map(function(id){return '<option value="'+id+'"'+(rb===id?" selected":"")+'>'+esc(T0.branches[id].name)+'</option>';}).join("")+'</select>':'')+'</div>';
  if(!rows.length)return head+'<p class="muted">'+t("noSales")+'</p>';
  var rev=0,items=0,cat={},top={},staff={},pm={cash:0,card:0};
  rows.forEach(function(s){rev+=s.total;s.lines.forEach(function(l){items+=l.qty;var m=menuItem(l.item);if(!m)return;cat[m.cat]=(cat[m.cat]||0)+l.qty*l.price;var o=top[l.item]=top[l.item]||{q:0,r:0};o.q+=l.qty;o.r+=l.qty*l.price;});
@@ -868,7 +876,7 @@ function viewReports(){
  var tp=pm.cash+pm.card||1;
  var cashT='<div class="gt"><div class="hb" style="grid-template-columns:70px 1fr auto"><span>'+t("cash")+'</span><div class="trk"><i style="width:'+(pm.cash/tp*100).toFixed(0)+'%"></i></div><b class="num">'+money0(pm.cash)+'</b></div><div class="hb" style="grid-template-columns:70px 1fr auto"><span>'+t("card")+'</span><div class="trk"><i style="width:'+(pm.card/tp*100).toFixed(0)+'%"></i></div><b class="num">'+money0(pm.card)+'</b></div></div>'+
   '<div class="tw"><table><thead><tr><th>'+t("colTime")+'</th>'+(rb==="all"&&multi()?'<th>'+t("colBranch")+'</th>':'')+'<th>'+t("colTable")+'</th><th>'+t("colStaff")+'</th><th>'+t("colMethod")+'</th><th class="n">'+t("colAmount")+'</th></tr></thead><tbody>'+pays.slice(0,8).map(function(p){return '<tr><td class="num">'+hm(p.ts)+'</td>'+(rb==="all"&&multi()?'<td>'+esc(T0.branches[p.s.br].name)+'</td>':'')+'<td>'+saleLbl(p.s)+'</td><td>'+esc(p.s.staff)+'</td><td>'+t(p.m)+'</td><td class="n">'+money(p.a)+'</td></tr>';}).join("")+'</tbody></table></div>';
- return head+kp+'<div class="rgrid"><section class="panel wide"><h3>'+t(U.period==="today"?"byHour":"byDay")+'</h3>'+chartHtml(bucketsFor(rows,U.period))+'</section><section class="panel"><h3>'+t("byCat")+'</h3>'+hb+'</section><section class="panel"><h3>'+t("top")+'</h3>'+topT+'</section><section class="panel"><h3>'+t("staffPerf")+'</h3>'+stT+'</section><section class="panel"><h3>'+t("cashLog")+'</h3>'+cashT+'</section></div>';
+ return head+kp+'<div class="rgrid"><section class="panel wide"><h3>'+t(U.period==="today"?"byHour":(U.period==="half"||U.period==="year")?"byMonth":"byDay")+'</h3>'+chartHtml(bucketsFor(rows,U.period))+'</section><section class="panel"><h3>'+t("byCat")+'</h3>'+hb+'</section><section class="panel"><h3>'+t("top")+'</h3>'+topT+'</section><section class="panel"><h3>'+t("staffPerf")+'</h3>'+stT+'</section><section class="panel"><h3>'+t("cashLog")+'</h3>'+cashT+'</section></div>';
 }
 /* staff / HR */
 function weekdays(){var loc=S.lang==="ar"?"ar":"tr-TR",o=[];for(var i=0;i<7;i++)o.push(new Date(2024,0,1+i).toLocaleDateString(loc,{weekday:"short"}));return o;}
