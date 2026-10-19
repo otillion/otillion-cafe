@@ -46,7 +46,7 @@ create table if not exists public.members (
   tenant_id text not null references public.tenants(id) on delete cascade,
   username text not null unique check (username ~ '^[a-z0-9._-]{3,24}$'),
   display_name text not null check (char_length(display_name) between 1 and 40),
-  role text not null check (role in ('owner','manager','accountant','cashier','kitchen')),
+  role text not null check (role in ('owner','manager','accountant','cashier','waiter','kitchen')),
   branch_id text,
   staff_id text,
   active boolean not null default true,
@@ -206,7 +206,7 @@ begin
   if p_username !~ '^[a-z0-9._-]{3,24}$' then raise exception 'bad username'; end if;
   if exists (select 1 from public.members where username = p_username) then raise exception 'username taken'; end if;
   if char_length(p_password) < 8 or char_length(p_password) > 64 or lower(p_password) = p_username then raise exception 'bad password'; end if;
-  if p_role not in ('owner','manager','accountant','cashier','kitchen') then raise exception 'bad role'; end if;
+  if p_role not in ('owner','manager','accountant','cashier','waiter','kitchen') then raise exception 'bad role'; end if;
   em := p_username || '@staff.otillion.invalid';
   insert into auth.users(instance_id, id, aud, role, email, encrypted_password, email_confirmed_at,
       raw_app_meta_data, raw_user_meta_data, created_at, updated_at,
@@ -339,7 +339,7 @@ declare tr text;
 begin
   if coalesce(public.member_role(p_tenant), '') not in ('owner','manager') and not public.is_platform_admin() then raise exception 'denied'; end if;
   if not public.has_step_up(p_tenant) then raise exception 'pin required'; end if;
-  if p_role not in ('manager','accountant','cashier','kitchen') then raise exception 'bad role'; end if;
+  if p_role not in ('manager','accountant','cashier','waiter','kitchen') then raise exception 'bad role'; end if;
   select role into tr from public.members where tenant_id = p_tenant and staff_id = p_staff;
   if tr is null or tr = 'owner' then raise exception 'denied'; end if;
   update public.members set role = p_role where tenant_id = p_tenant and staff_id = p_staff;
