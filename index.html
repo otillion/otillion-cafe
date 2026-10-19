@@ -219,23 +219,23 @@ td.n,th.n{text-align:end;font-variant-numeric:tabular-nums}
 (function(){
 "use strict";
 var LS="otillion-demo-v3";
-var ROLES=["owner","manager","cashier","kitchen","accountant"];
+var ROLES=["owner","manager","cashier","waiter","kitchen","accountant"];
 var SCREENS=["overview","pos","kitchen","stock","reports","staff","manage","settings"];
 var PERM={
- owner:["overview","pos","kitchen","stock","stockEdit","costView","reports","staff","staffAll","manage","settings","void"],
- manager:["overview","pos","kitchen","stock","stockEdit","costView","reports","staff","staffAll","manage","void"],
- cashier:["pos","kitchen","staff"],kitchen:["kitchen","staff"],accountant:["overview","reports","stock","costView"]};
-var RANK={owner:5,manager:4,accountant:3,cashier:2,kitchen:1};
+ owner:["overview","pos","pay","kitchen","stock","stockEdit","costView","reports","staff","staffAll","manage","settings","void"],
+ manager:["overview","pos","pay","kitchen","stock","stockEdit","costView","reports","staff","staffAll","manage","void"],
+ cashier:["pos","pay","kitchen","staff"],waiter:["pos","staff"],kitchen:["kitchen","staff"],accountant:["overview","reports","stock","costView"]};
+var RANK={owner:5,manager:4,accountant:3,cashier:2,waiter:1,kitchen:1};
 var DEMO_PIN="1234",AUTOLOCK=5*60*1000,STEP_MS=2*60*1000;
 /* every mutating action maps to the permission it needs; the UI hiding a button is never the only check */
-var NEED={repReset:"reports",repCsv:"reports",repOpen:"reports",repMore:"reports",catAdd:"manage",catDel:"manage",openRecent:"pos",reprint:"pos",printRcpt:"pos",tblSet:"manage",itemAdd:"manage",itemDel:"manage",add:"pos",inc:"pos",dec:"pos",send:"pos",openPay:"pos",payN:"pos",paySel:"pos",doPay:"pos",openMove:"pos",doMove:"pos",openMerge:"pos",doMerge:"pos",newTake:"pos",openTable:"pos",backTables:"pos",
+var NEED={openPay:"pay",payN:"pay",paySel:"pay",doPay:"pay",openRecent:"pay",reprint:"pay",printRcpt:"pay",repReset:"reports",repCsv:"reports",repOpen:"reports",repMore:"reports",catAdd:"manage",catDel:"manage",tblSet:"manage",itemAdd:"manage",itemDel:"manage",add:"pos",inc:"pos",dec:"pos",send:"pos",openMove:"pos",doMove:"pos",openMerge:"pos",doMerge:"pos",newTake:"pos",openTable:"pos",backTables:"pos",
  void:"void",kadv:"kitchen",openRecv:"stockEdit",doRecv:"stockEdit",applyCount:"stockEdit",shift:"staffAll",lvOk:"staffAll",lvNo:"staffAll",invite:"adminOnly",setPin:"settings",toggleActive:"settings",goBranch:"overview",clock:"staff",lvReq:"staff"};
 var PINNED={void:1,applyCount:1,invite:1,toggleActive:1};
 var MODALA={reprint:"recent",printRcpt:"receipt",payN:"pay",paySel:"pay",doPay:"pay",doMove:"move",doMerge:"merge",doRecv:"recv",pinSubmit:"pin"};
 var POSA={add:1,inc:1,dec:1,void:1,send:1,openPay:1,openMove:1,openMerge:1};
 var SETK={cat:1,pane:1,kds:1,period:1,stockTab:1,staffTab:1,rt:1};
 var CNEED={itemCat:"manage",itemStn:"manage",catName:"manage",itemPrice:"manage",itemName:"manage",branch:"overview",rb:"reports",rst:"reports",rcat:"reports",rstaff:"reports",rtype:"reports",rq:"reports",rFrom:"reports",rTo:"reports",printer:"settings",staffBr:"settings",staffRole:"settings"};
-var MATRIX=["pos","kitchen","stock","stockEdit","void","costView","reports","overview","staff","staffAll","manage","settings"];
+var MATRIX=["pos","pay","kitchen","stock","stockEdit","void","costView","reports","overview","staff","staffAll","manage","settings"];
 var PINLIST=["void","applyCount","invite","staffRole","staffBr","printer","toggleActive","elevate"];
 function sha256(msg){
  var K=[0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
@@ -273,7 +273,7 @@ google:"Google ile devam et",
  wsTitle:"Çalışma alanınızı seçin",wsSub:"Tek hesapla birden fazla işletmeye girebilirsiniz. Her işletmenin verisi diğerlerinden tamamen ayrıdır.",
  wsToday:"Bugün",wsOpen:"açık adisyon",wsBranches:"şube",wsNew:"Yeni işletme ekle",wsNamePh:"İşletme adı",wsCreate:"Oluştur",wsNewHint:"Hazır menü, stok ve reçete şablonuyla boş bir alan açılır.",
  signOut:"Çıkış yap",switchWs:"İşletme değiştir",roleDemo:"Rolü dene (demo)",
- r_owner:"Sahip",r_manager:"Müdür",r_cashier:"Kasiyer",r_kitchen:"Mutfak",r_accountant:"Muhasebeci",
+ r_owner:"Sahip",r_manager:"Müdür",r_cashier:"Kasiyer",r_waiter:"Garson",p_pay:"Ödeme alma ve fişler",r_kitchen:"Mutfak",r_accountant:"Muhasebeci",
  nav_overview:"Genel bakış",nav_pos:"Kasa",nav_kitchen:"Mutfak",nav_stock:"Stok",nav_reports:"Raporlar",nav_staff:"Personel",nav_settings:"Ayarlar",nav_manage:"Yönetim",p_manage:"Masa ve menü düzenleme",mg_tables:"Masa sayısı",mg_save:"Kaydet",mg_tblBusy:"Açık adisyonu olan masalar kaldırılamaz",mg_menu:"Menü ve fiyatlar",mg_add:"Ürün ekle",mg_cats:"Kategoriler",mg_catAdd:"Kategori ekle",mg_catName:"Kategori adı",mg_catBusy:"Bu kategoride ürün var; önce taşıyın veya silin",mg_catLast:"Son kategori silinemez",mg_items:"ürün",l_catAdd:"Kategori eklendi: {n}",l_catDel:"Kategori silindi: {n}",l_catEdit:"Kategori güncellendi: {n}",mg_name:"Ürün adı",mg_price:"Fiyat",mg_cat:"Kategori",mg_stn:"İstasyon",mg_del:"Sil",mg_busy:"Açık adisyondaki ürün silinemez",mg_note:"Yeni ürünlerin reçetesi boştur; stok düşümü için reçete sonradan tanımlanır.",mg_bad:"Geçersiz değer",l_tblSet:"Masa sayısı: {n}",l_itemAdd:"Ürün eklendi: {mi}",l_itemDel:"Ürün silindi: {n}",l_itemEdit:"Ürün güncellendi: {mi}",
  branch:"Şube",allBranches:"Tüm şubeler",
  tables:"Masalar",newTake:"Paket sipariş",free:"Boş",tableN:"Masa",take:"Paket",ready:"Hazır",min:"dk",
@@ -332,7 +332,7 @@ google:"المتابعة عبر Google",
  wsTitle:"اختر مساحة العمل",wsSub:"بحساب واحد تقدر تدخل أكثر من منشأة، وبيانات كل منشأة منفصلة تماماً عن الباقي.",
  wsToday:"اليوم",wsOpen:"فاتورة مفتوحة",wsBranches:"فروع",wsNew:"إضافة منشأة جديدة",wsNamePh:"اسم المنشأة",wsCreate:"إنشاء",wsNewHint:"تُفتح مساحة فارغة بقالب جاهز للمنيو والمخزون والوصفات.",
  signOut:"تسجيل الخروج",switchWs:"تبديل المنشأة",roleDemo:"جرّب دوراً (تجريبي)",
- r_owner:"المالك",r_manager:"المدير",r_cashier:"الكاشير",r_kitchen:"المطبخ",r_accountant:"المحاسب",
+ r_owner:"المالك",r_manager:"المدير",r_cashier:"الكاشير",r_waiter:"الجرسون",p_pay:"استلام الدفع والفواتير",r_kitchen:"المطبخ",r_accountant:"المحاسب",
  nav_overview:"نظرة عامة",nav_pos:"الكاشير",nav_kitchen:"المطبخ",nav_stock:"المخزون",nav_reports:"التقارير",nav_staff:"الموظفون",nav_settings:"الإعدادات",nav_manage:"الإدارة",p_manage:"تعديل الطاولات والمنيو",mg_tables:"عدد الطاولات",mg_save:"حفظ",mg_tblBusy:"لا يمكن حذف طاولات عليها فاتورة مفتوحة",mg_menu:"المنيو والأسعار",mg_add:"إضافة صنف",mg_cats:"الأقسام",mg_catAdd:"إضافة قسم",mg_catName:"اسم القسم",mg_catBusy:"القسم فيه أصناف، انقلها أو احذفها أولاً",mg_catLast:"لا يمكن حذف آخر قسم",mg_items:"صنف",l_catAdd:"تمت إضافة قسم: {n}",l_catDel:"تم حذف قسم: {n}",l_catEdit:"تم تعديل قسم: {n}",mg_name:"اسم الصنف",mg_price:"السعر",mg_cat:"التصنيف",mg_stn:"القسم",mg_del:"حذف",mg_busy:"لا يمكن حذف صنف موجود في فاتورة مفتوحة",mg_note:"الأصناف الجديدة بلا وصفة؛ تُحدَّد الوصفة لاحقاً لخصم المخزون.",mg_bad:"قيمة غير صالحة",l_tblSet:"عدد الطاولات: {n}",l_itemAdd:"إضافة صنف: {mi}",l_itemDel:"حذف صنف: {n}",l_itemEdit:"تعديل صنف: {mi}",
  branch:"الفرع",allBranches:"كل الفروع",
  tables:"الطاولات",newTake:"طلب تيك أواي",free:"فارغة",tableN:"طاولة",take:"تيك أواي",ready:"جاهز",min:"د",
@@ -771,7 +771,7 @@ function chartHtml(b){
 function viewPOS(){return U.posTable?viewOrder():viewTables();}
 function viewTables(){
  var b=B(),keys=[];for(var i=1;i<=b.tables;i++)keys.push(String(i));Object.keys(b.tickets).filter(function(k){return k.indexOf("TA")===0;}).forEach(function(k){keys.push(k);});
- return '<div class="bar"><h2>'+t("tables")+'</h2><span style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" data-act="openRecent">'+t("rc_recent")+'</button><button class="btn pri" data-act="newTake">'+ic("plus")+t("newTake")+'</button></span></div><div class="tables">'+keys.map(function(k){
+ return '<div class="bar"><h2>'+t("tables")+'</h2><span style="display:flex;gap:8px;flex-wrap:wrap">'+(can("pay")?'<button class="btn" data-act="openRecent">'+t("rc_recent")+'</button>':'')+'<button class="btn pri" data-act="newTake">'+ic("plus")+t("newTake")+'</button></span></div><div class="tables">'+keys.map(function(k){
   var tk=b.tickets[k],rd=b.kds.some(function(x){return x.key===k&&x.status==="ready";}),cls=!tk?"free":rd?"ready":"open",tk2=k.indexOf("TA")===0;
   return '<button class="tbl '+cls+'" data-act="openTable" data-k="'+k+'"><span class="tn">'+(tk2?"#"+k.slice(2):k)+'</span><span class="tk">'+(tk2?t("take"):t("tableN"))+'</span>'+(tk?'<span class="tm">'+money0(ticketTotal(tk))+'</span><span class="tt">'+mins(tk.ts)+' '+t("min")+'</span>':'<span class="tm muted">'+t("free")+'</span>')+(rd?'<span class="badge">'+t("ready")+'</span>':'')+'</button>';}).join("")+'</div>';
 }
@@ -791,7 +791,7 @@ function viewOrder(){
  '<aside class="ticket"><div class="th"><h3>'+t("ticketTab")+'</h3><span class="muted num">'+hm(tk.ts)+' · '+mins(tk.ts)+' '+t("min")+'</span></div><ul class="lines">'+lines+'</ul>'+
  '<dl class="sum"><div class="big"><dt>'+t("total")+'</dt><dd style="margin:0" class="num">'+money(total)+'</dd></div>'+(paid>0?'<div class="muted"><dt>'+t("paid")+'</dt><dd style="margin:0" class="num">'+money(paid)+'</dd></div><div><dt>'+t("remaining")+'</dt><dd style="margin:0" class="num">'+money(rem)+'</dd></div>':'')+'</dl>'+
  (hasSent&&!can("void")?'<p class="note">'+t("needVoid")+'</p>':'')+
- '<div class="tact"><button class="btn" data-act="send"'+(unsent?"":" disabled")+'>'+ic("send","flip")+t("send")+(unsent?" ("+unsent+")":"")+'</button><button class="btn pri" data-act="openPay"'+(tk.lines.length&&rem>0?"":" disabled")+'>'+t("pay")+'</button></div></aside></div>';
+ '<div class="tact"><button class="btn" data-act="send"'+(unsent?"":" disabled")+'>'+ic("send","flip")+t("send")+(unsent?" ("+unsent+")":"")+'</button>'+(can("pay")?'<button class="btn pri" data-act="openPay"'+(tk.lines.length&&rem>0?"":" disabled")+'>'+t("pay")+'</button>':'')+'</div></aside></div>';
 }
 function modalHtml(){
  var m=U.modal;if(!m||!S.tid||U.locked)return "";var b=B(),h="",title="";
