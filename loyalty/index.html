@@ -135,7 +135,7 @@ var HEX=/^#[0-9a-fA-F]{6}$/, IMG=/^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9
 
 /* ---------- i18n ---------- */
 var I={
-ar:{printQ:"طباعة بطاقة QR للطاولة",wa:"إرسال واتساب",posterL:"امسح الكود وانضم",app:"Otillion Loyalty",login:"تسجيل الدخول",user:"اسم المستخدم أو الإيميل",pass:"كلمة السر",signin:"دخول",logout:"خروج",loginHint:"حساب المحل يعطيك إياه الأدمن.",
+ar:{tabHome:"الرئيسية",tabCust:"الزبائن",addCustT:"إضافة زبون جديد",custAdded:"تمت إضافة الزبون",more:"عرض المزيد",total:"الإجمالي",noCust:"ما في زبائن",sendCard:"إرسال بطاقته",printQ:"طباعة بطاقة QR للطاولة",wa:"إرسال واتساب",posterL:"امسح الكود وانضم",app:"Otillion Loyalty",login:"تسجيل الدخول",user:"اسم المستخدم أو الإيميل",pass:"كلمة السر",signin:"دخول",logout:"خروج",loginHint:"حساب المحل يعطيك إياه الأدمن.",
 bad:"بيانات الدخول غير صحيحة",conn:"تعذّر الاتصال بالخادم",none:"هذا الحساب غير مفعّل لأي محل",blocked:"الحساب أو المحل موقوف",
 bizs:"المحلات",newBiz:"محل جديد",edit:"تعديل",close:"إغلاق",save:"حفظ",saved:"تم الحفظ",name:"اسم المحل",kind:"نوع المحل",slug:"الرابط (slug)",slugHint:"أحرف إنجليزية صغيرة وأرقام وشرطة",
 theme:"الثيم",custom:"مخصص",cBg:"الخلفية",cFg:"النص",cAc:"اللون الرئيسي",cCard:"البطاقة",logo:"اللوجو",logoPick:"رفع لوجو",logoRm:"حذف اللوجو",
@@ -151,7 +151,7 @@ joinT:"انضم واجمع النقاط",joinB:"انضمام",yourName:"اسمك
 gone:"هذا الرابط غير صالح أو المحل متوقف",needNP:"اكتب الاسم والهاتف",okAdd:"تمت إضافة النقطة",okRedeem:"تم تسليم المكافأة",
 "e_already registered":"هذا الرقم مسجّل مسبقاً",e_busy:"ازدحام، جرّب بعد قليل","e_too fast":"بسرعة كبيرة: انتظر ثواني","e_bad phone":"رقم الهاتف غير صالح","e_bad name":"الاسم غير صالح","e_slug taken":"هذا الرابط مستخدم",
 "e_bad slug":"الرابط غير صالح","e_username taken":"اسم المستخدم مستخدم","e_bad password":"كلمة السر ضعيفة","e_bad username":"اسم المستخدم غير صالح","e_no reward":"ما في مكافأة جاهزة","e_bad amount":"المبلغ غير صالح","e_no points":"المبلغ أقل من نقطة",e_denied:"غير مسموح"},
-tr:{printQ:"QR kartını yazdır",wa:"WhatsApp ile gönder",posterL:"Kodu okut ve katıl",app:"Otillion Loyalty",login:"Giriş",user:"Kullanıcı adı veya e-posta",pass:"Şifre",signin:"Giriş yap",logout:"Çıkış",loginHint:"İşletme hesabını yönetici verir.",
+tr:{tabHome:"Ana sayfa",tabCust:"Müşteriler",addCustT:"Yeni müşteri ekle",custAdded:"Müşteri eklendi",more:"Daha fazla",total:"Toplam",noCust:"Müşteri yok",sendCard:"Kartını gönder",printQ:"QR kartını yazdır",wa:"WhatsApp ile gönder",posterL:"Kodu okut ve katıl",app:"Otillion Loyalty",login:"Giriş",user:"Kullanıcı adı veya e-posta",pass:"Şifre",signin:"Giriş yap",logout:"Çıkış",loginHint:"İşletme hesabını yönetici verir.",
 bad:"Giriş bilgileri hatalı",conn:"Sunucuya bağlanılamadı",none:"Bu hesap hiçbir işletmeye bağlı değil",blocked:"Hesap veya işletme durdurulmuş",
 bizs:"İşletmeler",newBiz:"Yeni işletme",edit:"Düzenle",close:"Kapat",save:"Kaydet",saved:"Kaydedildi",name:"İşletme adı",kind:"İşletme türü",slug:"Bağlantı (slug)",slugHint:"küçük harf, rakam, tire",
 theme:"Tema",custom:"Özel",cBg:"Arka plan",cFg:"Yazı",cAc:"Ana renk",cCard:"Kart",logo:"Logo",logoPick:"Logo yükle",logoRm:"Logoyu sil",
@@ -229,7 +229,7 @@ function errKey(e){var m=(e&&e.message)||"";var k="e_"+m;var d=I[LANG]||I.tr;ret
 var Q=new URLSearchParams(location.search);
 var PUB=Q.get("c")?{slug:String(Q.get("c")).toLowerCase().slice(0,30)}:(Q.get("card")?{token:String(Q.get("card"))}:null);
 var S={ready:false,me:null,err:"",busy:false,biz:[],edit:null,form:null,sel:null,toast:"",lg:undefined,
- dash:null,found:null,q:"",newOpen:false,pw:{}};
+ dash:null,found:null,q:"",newOpen:false,pw:{},tab:"home",cl:{items:[],total:0,q:"",loaded:false}};
 var P={state:"load",biz:null,card:null,token:null,nm:"",ph:"",err:""};
 function toast(m){S.toast=m;var el=$("#toast");if(el)el.remove();var d=document.createElement("div");d.id="toast";d.className="toast";d.textContent=m;document.body.appendChild(d);setTimeout(function(){var x=$("#toast");if(x)x.remove();},2600);}
 function baseUrl(){return location.origin+location.pathname;}
@@ -357,6 +357,26 @@ function langSeg(){return '<div class="seg"><button data-act="lang" data-v="ar" 
 
 /* ---------- business dashboard ---------- */
 function dashLoad(){return rpc("lp_staff_overview").then(function(d){S.dash=d;S.found=null;LS.set("lp-th",JSON.stringify({theme:d.theme,custom:d.custom}));});}
+function custLoad(more){
+ var c=S.cl,off=more?c.items.length:0;
+ return rpc("lp_staff_customers",{p_q:c.q,p_offset:off}).then(function(r){c.total=r.total;c.items=more?c.items.concat(r.items):r.items;c.loaded=true;S.err="";render();},function(e){S.err=errKey(e);render();});
+}
+function waPhone(ph){var d=String(ph||"").replace(/\D/g,"");if(d.length===11&&d[0]==="0")return "90"+d.slice(1);if(d.length===10)return "90"+d;return d;}
+function cardLinkUrl(tok){return baseUrl()+"?card="+tok;}
+function custRow2(c,d){
+ var h=custRow(c,d),i=h.lastIndexOf('</div></div>'),wa=c.token?'<a class="btn sm" target="_blank" rel="noopener" href="https://wa.me/'+waPhone(c.phone)+'?text='+encodeURIComponent(d.name+"\n"+cardLinkUrl(c.token))+'">'+t("sendCard")+'</a>':'';
+ return h.slice(0,i)+wa+h.slice(i);
+}
+function tabsHtml(){return '<div class="seg" style="margin-bottom:14px"><button data-act="tab" data-v="home" class="'+(S.tab==="home"?"on":"")+'">'+t("tabHome")+'</button><button data-act="tab" data-v="cust" class="'+(S.tab==="cust"?"on":"")+'">'+t("tabCust")+'</button></div>';}
+function custPageHtml(d){
+ var c=S.cl;
+ return '<section class="panel"><h2>'+t("addCustT")+'</h2><div class="grid2"><div class="field"><label>'+t("dname")+'</label><input id="cnN" maxlength="40" autocomplete="off"></div><div class="field"><label>'+t("phone")+'</label><input id="cnP" inputmode="tel" maxlength="20" autocomplete="off"></div></div>'+
+ (S.err?'<div class="err">'+esc(S.err)+'</div>':'')+'<button class="btn pri" data-act="newCust2">'+t("add")+'</button></section>'+
+ '<section class="panel"><div class="row" style="margin-bottom:10px"><input id="cq" class="sp" placeholder="'+t("search")+'" value="'+esc(c.q)+'" style="min-width:140px"><button class="btn pri" data-act="custFind">'+t("find")+'</button></div>'+
+ '<div class="muted small" style="margin-bottom:8px">'+t("total")+': '+c.total+'</div>'+
+ (c.items.length?c.items.map(function(x){return custRow2(x,d);}).join(""):'<p class="muted small">'+(c.loaded?t("noCust"):"…")+'</p>')+
+ (c.items.length<c.total?'<button class="btn" data-act="custMore" style="width:100%;margin-top:6px">'+t("more")+'</button>':'')+'</section>';
+}
 function waUrl(name,slug){return "https://wa.me/?text="+encodeURIComponent(name+"\n"+joinUrl(slug));}
 function stampDots(c,d){var h="";for(var i=0;i<d.goal;i++)h+='<span class="dot'+(i<c.points?" f":"")+'"></span>';return h;}
 function custRow(c,d){
@@ -369,17 +389,17 @@ function dashHtml(){
  var d=S.dash;if(!d)return '<div class="wrap"><p class="muted">…</p></div>';
  var list=S.found!==null?S.found:d.recent,st=d.stats,url=joinUrl(d.slug);
  var h='<div class="wrap"><header class="top"><div class="brand">'+(d.logo&&IMG.test(d.logo)?'<img alt="" src="'+d.logo+'">':'<div class="mk">'+glyph(d.kind)+'</div>')+esc(d.name)+'</div><div class="row">'+langSeg()+'<button class="btn sm" data-act="logout">'+t("logout")+'</button></div></header>'+
- '<div class="kpis"><div class="kpi"><b>'+st.customers+'</b><span>'+t("customers")+'</span></div><div class="kpi"><b>'+st.ready+'</b><span>'+t("ready")+'</span></div><div class="kpi"><b>'+st.redeemed+'</b><span>'+t("redeemed")+'</span></div><div class="kpi"><b>'+st.new7+'</b><span>'+t("new7")+'</span></div></div>'+
+ tabsHtml()+(S.tab==="cust"?custPageHtml(d):'<div class="kpis"><div class="kpi"><b>'+st.customers+'</b><span>'+t("customers")+'</span></div><div class="kpi"><b>'+st.ready+'</b><span>'+t("ready")+'</span></div><div class="kpi"><b>'+st.redeemed+'</b><span>'+t("redeemed")+'</span></div><div class="kpi"><b>'+st.new7+'</b><span>'+t("new7")+'</span></div></div>'+
  '<div class="grid2" style="align-items:start"><section class="panel"><div class="row" style="margin-bottom:10px"><input id="q" class="sp" placeholder="'+t("search")+'" value="'+esc(S.q)+'" style="min-width:140px"><button class="btn pri" data-act="find">'+t("find")+'</button><button class="btn" data-act="toggleNew">+ '+t("newCust")+'</button></div>'+
  (S.newOpen?'<div class="grid2" style="margin-bottom:10px"><input id="ncN" placeholder="'+t("dname")+'" maxlength="40"><input id="ncP" placeholder="'+t("phone")+'" inputmode="tel" maxlength="20"></div><button class="btn pri" data-act="newCust" style="margin-bottom:12px">'+t("add")+'</button>':'')+
  (S.err?'<div class="err">'+esc(S.err)+'</div>':'')+
  '<h3>'+t("recent")+'</h3>'+(list.length?list.map(function(c){return custRow(c,d);}).join(""):'<p class="muted small">—</p>')+'</section>'+
  '<section class="panel"><h3>'+t("link")+'</h3><div class="row" style="align-items:flex-start"><div class="qr">'+qrSvg(url)+'</div><div class="sp"><div class="url">'+esc(url)+'</div><div class="row" style="margin-top:10px"><button class="btn sm" data-act="copyLink" data-s="'+esc(d.slug)+'">'+t("copy")+'</button><a class="btn sm" target="_blank" rel="noopener" href="'+esc(url)+'">'+t("open")+'</a><a class="btn sm" target="_blank" rel="noopener" href="'+esc(waUrl(d.name,d.slug))+'">'+t("wa")+'</a></div><div class="row" style="margin-top:8px"><button class="btn pri sm" data-act="printPoster">'+t("printQ")+'</button></div></div></div>'+
- '<p class="muted small" style="margin-top:12px">'+esc(d.reward)+' · '+d.goal+' '+(d.unit?esc(d.unit):t("pts"))+'</p></section></div></div>'+
+ '<p class="muted small" style="margin-top:12px">'+esc(d.reward)+' · '+d.goal+' '+(d.unit?esc(d.unit):t("pts"))+'</p></section></div>')+'</div>'+
  '<div id="poster">'+(d.logo&&IMG.test(d.logo)?'<img alt="" style="width:110px;height:110px;border-radius:24px;object-fit:cover" src="'+d.logo+'">':'')+'<h1>'+esc(d.name)+'</h1><p>'+esc(d.reward)+' · '+d.goal+' '+(d.unit?esc(d.unit):t("pts"))+'</p><div class="qrbig">'+qrSvg(url)+'</div><p>'+t("posterL")+'</p></div>';
  return h;
 }
-function upd(c){var d=S.dash;[].concat(d.recent||[]).forEach(function(x,i){if(x.id===c.id)d.recent[i]=c;});if(S.found)S.found=S.found.map(function(x){return x.id===c.id?c:x;});}
+function upd(c){var d=S.dash;[].concat(d.recent||[]).forEach(function(x,i){if(x.id===c.id)d.recent[i]=c;});if(S.found)S.found=S.found.map(function(x){return x.id===c.id?c:x;});if(S.cl&&S.cl.items)S.cl.items=S.cl.items.map(function(x){return x.id===c.id?Object.assign({},x,c):x;});}
 function dashAct(fn,args,okMsg){
  S.err="";return rpc(fn,args).then(function(c){if(c&&c.id)upd(c);if(okMsg)toast(okMsg);return dashLoad().then(function(){render();});},function(e){S.err=errKey(e);render();});
 }
@@ -443,6 +463,11 @@ document.addEventListener("click",function(ev){
   case "lang":setLang(d.v);return;
   case "login":login();return;
   case "logout":logout();return;
+  case "tab":S.tab=d.v;S.err="";if(d.v==="cust"&&!S.cl.loaded)custLoad(false);else render();return;
+  case "custFind":S.cl.q=($("#cq")||{}).value||"";custLoad(false);return;
+  case "custMore":custLoad(true);return;
+  case "newCust2":{var n2=($("#cnN")||{}).value||"",p2=($("#cnP")||{}).value||"";if(!n2.trim()||!p2.trim()){S.err=t("needNP");render();return;}
+   S.err="";rpc("lp_staff_add_customer",{p_name:n2,p_phone:p2}).then(function(c){S.cl.q="";toast(t("custAdded"));return dashLoad().then(function(){return custLoad(false);});},function(e){S.err=errKey(e);render();});return;}
   case "printPoster":window.print();return;
   case "newBiz":S.form=blankForm("coffee");S.err="";render();return;
   case "editBiz":S.form=formFrom(S.biz.filter(function(b){return b.id===d.id;})[0]);S.err="";render();return;
@@ -487,7 +512,7 @@ document.addEventListener("input",function(ev){
 });
 document.addEventListener("keydown",function(ev){
  if(ev.key!=="Enter")return;var id=ev.target.id;
- if(id==="lgU"||id==="lgP")login();else if(id==="q"){var b=document.querySelector('[data-act=find]');if(b)b.click();}
+ if(id==="lgU"||id==="lgP")login();else if(id==="cq"){var cb=document.querySelector("[data-act=custFind]");if(cb)cb.click();}else if(id==="cnN"||id==="cnP"){var nb=document.querySelector("[data-act=newCust2]");if(nb)nb.click();}else if(id==="q"){var b=document.querySelector('[data-act=find]');if(b)b.click();}
  else if(id==="pn"||id==="pp"){var j=document.querySelector('[data-act=pubJoin]');if(j)j.click();}
 });
 boot();
