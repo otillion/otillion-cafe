@@ -297,7 +297,24 @@ begin
     insert into public.lp_customers(business_id, name, phone) values (b.id, trim(p_name), ph) returning * into c;
     insert into public.lp_events(business_id, customer_id, kind, staff) values (b.id, c.id, 'join', auth.uid());
   end if;
-  return public.lp_card_json(c, b);
+  return public.lp_card_json(c, b) || jsonb_build_object('token', c.token);
+end $$;
+
+-- All customers of the caller's business, newest first, 30 per page. Includes each card token so the
+-- business can send a customer their card link.
+create or replace function public.lp_staff_customers(p_q text, p_offset int) returns jsonb
+language plpgsql stable security definer set search_path = public as $$
+declare b public.lp_businesses%rowtype; q text := trim(coalesce(p_q, '')); d text := public.lp_norm_phone(p_q); tot int;
+begin
+  b := public.lp_my_biz();
+  select count(*) into tot from public.lp_customers
+    where business_id = b.id and (q = '' or lower(name) like '%' || replace(replace(lower(q), '%', ''), '_', '') || '%'
+          or (char_length(d) >= 3 and phone like '%' || d || '%'));
+  return jsonb_build_object('total', tot, 'items', coalesce((select jsonb_agg(public.lp_card_json(c, b) || jsonb_build_object('token', c.token) order by c.created_at desc)
+    from (select * from public.lp_customers
+          where business_id = b.id and (q = '' or lower(name) like '%' || replace(replace(lower(q), '%', ''), '_', '') || '%'
+                or (char_length(d) >= 3 and phone like '%' || d || '%'))
+          order by created_at desc offset greatest(0, coalesce(p_offset, 0)) limit 30) c), '[]'::jsonb));
 end $$;
 
 create or replace function public.lp_staff_add(p_customer uuid, p_amount numeric) returns jsonb
@@ -387,6 +404,7 @@ grant execute on function public.lp_me(), public.lp_admin_list(),
   public.lp_admin_create_staff(text, text, text, text, text), public.lp_admin_reset_password(uuid, text),
   public.lp_admin_set_staff_active(uuid, boolean), public.lp_admin_delete_staff(uuid),
   public.lp_staff_overview(), public.lp_staff_search(text), public.lp_staff_add_customer(text, text),
+  public.lp_staff_customers(text, int),
   public.lp_staff_add(uuid, numeric), public.lp_staff_redeem(uuid)
   to authenticated;
 grant execute on function public.lp_public_biz(text), public.lp_public_join(text, text, text), public.lp_public_card(text)
