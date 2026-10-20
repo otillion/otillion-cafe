@@ -92,6 +92,34 @@ input:focus,select:focus{outline:2px solid var(--ac);outline-offset:0;border-col
 .logobtn{position:relative;overflow:hidden}
 .logobtn input{position:absolute;inset:0;opacity:0;cursor:pointer;min-height:0}
 .pv{border-radius:18px;padding:16px;border:1px dashed var(--line)}
+/* whole page in the business colour */
+body.themed{background:var(--ac);color:var(--acfg)}
+.themed .brand{color:var(--acfg)}
+.themed .brand .mk{background:var(--acfg);color:var(--ac)}
+.themed .brand img{background:rgba(255,255,255,.2)}
+.themed .seg{border-color:color-mix(in srgb,var(--acfg) 40%,transparent)}
+.themed .seg button{color:var(--acfg)}
+.themed .seg button.on{background:var(--acfg);color:var(--ac)}
+.themed header.top .btn{background:transparent;color:var(--acfg);border-color:color-mix(in srgb,var(--acfg) 45%,transparent)}
+.themed .muted{color:color-mix(in srgb,var(--acfg) 80%,var(--ac))}
+.themed .panel,.themed .kpi{background:var(--card);color:var(--fg);border-color:transparent}
+.themed .kpi span,.themed .panel .muted,.themed .cust .muted,.themed .url{color:var(--mut)}
+.themed .lcard{background:var(--card);color:var(--fg);box-shadow:0 12px 34px rgba(0,0,0,.28)}
+.themed .lcard .hd img{background:var(--bg)}
+.themed .stamp{opacity:1;border-color:color-mix(in srgb,var(--fg) 40%,transparent)}
+.themed .stamp.f{background:var(--ac);color:var(--acfg);border-color:var(--ac)}
+.themed .ready{background:var(--ac);color:var(--acfg)}
+.pv.themed{background:var(--ac);color:var(--acfg);border:0}
+#poster{display:none}
+@media print{
+ body,body.themed{background:#fff!important}
+ #app>.wrap,.toast{display:none!important}
+ #poster{display:flex!important;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:18px;min-height:96vh;background:var(--ac);color:var(--acfg);border-radius:0;padding:40px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ #poster .qrbig{width:62vmin;height:62vmin;background:#fff;border-radius:24px;padding:14px}
+ #poster .qrbig svg{width:100%;height:100%;display:block}
+ #poster h1{font-size:44px;line-height:1.15}
+ #poster p{font-size:22px}
+}
 </style>
 </head>
 <body>
@@ -107,7 +135,7 @@ var HEX=/^#[0-9a-fA-F]{6}$/, IMG=/^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9
 
 /* ---------- i18n ---------- */
 var I={
-ar:{app:"Otillion Loyalty",login:"تسجيل الدخول",user:"اسم المستخدم أو الإيميل",pass:"كلمة السر",signin:"دخول",logout:"خروج",loginHint:"حساب المحل يعطيك إياه الأدمن.",
+ar:{printQ:"طباعة بطاقة QR للطاولة",wa:"إرسال واتساب",posterL:"امسح الكود وانضم",app:"Otillion Loyalty",login:"تسجيل الدخول",user:"اسم المستخدم أو الإيميل",pass:"كلمة السر",signin:"دخول",logout:"خروج",loginHint:"حساب المحل يعطيك إياه الأدمن.",
 bad:"بيانات الدخول غير صحيحة",conn:"تعذّر الاتصال بالخادم",none:"هذا الحساب غير مفعّل لأي محل",blocked:"الحساب أو المحل موقوف",
 bizs:"المحلات",newBiz:"محل جديد",edit:"تعديل",close:"إغلاق",save:"حفظ",saved:"تم الحفظ",name:"اسم المحل",kind:"نوع المحل",slug:"الرابط (slug)",slugHint:"أحرف إنجليزية صغيرة وأرقام وشرطة",
 theme:"الثيم",custom:"مخصص",cBg:"الخلفية",cFg:"النص",cAc:"اللون الرئيسي",cCard:"البطاقة",logo:"اللوجو",logoPick:"رفع لوجو",logoRm:"حذف اللوجو",
@@ -123,7 +151,7 @@ joinT:"انضم واجمع النقاط",joinB:"انضمام",yourName:"اسمك
 gone:"هذا الرابط غير صالح أو المحل متوقف",needNP:"اكتب الاسم والهاتف",okAdd:"تمت إضافة النقطة",okRedeem:"تم تسليم المكافأة",
 "e_already registered":"هذا الرقم مسجّل مسبقاً",e_busy:"ازدحام، جرّب بعد قليل","e_too fast":"بسرعة كبيرة: انتظر ثواني","e_bad phone":"رقم الهاتف غير صالح","e_bad name":"الاسم غير صالح","e_slug taken":"هذا الرابط مستخدم",
 "e_bad slug":"الرابط غير صالح","e_username taken":"اسم المستخدم مستخدم","e_bad password":"كلمة السر ضعيفة","e_bad username":"اسم المستخدم غير صالح","e_no reward":"ما في مكافأة جاهزة","e_bad amount":"المبلغ غير صالح","e_no points":"المبلغ أقل من نقطة",e_denied:"غير مسموح"},
-tr:{app:"Otillion Loyalty",login:"Giriş",user:"Kullanıcı adı veya e-posta",pass:"Şifre",signin:"Giriş yap",logout:"Çıkış",loginHint:"İşletme hesabını yönetici verir.",
+tr:{printQ:"QR kartını yazdır",wa:"WhatsApp ile gönder",posterL:"Kodu okut ve katıl",app:"Otillion Loyalty",login:"Giriş",user:"Kullanıcı adı veya e-posta",pass:"Şifre",signin:"Giriş yap",logout:"Çıkış",loginHint:"İşletme hesabını yönetici verir.",
 bad:"Giriş bilgileri hatalı",conn:"Sunucuya bağlanılamadı",none:"Bu hesap hiçbir işletmeye bağlı değil",blocked:"Hesap veya işletme durdurulmuş",
 bizs:"İşletmeler",newBiz:"Yeni işletme",edit:"Düzenle",close:"Kapat",save:"Kaydet",saved:"Kaydedildi",name:"İşletme adı",kind:"İşletme türü",slug:"Bağlantı (slug)",slugHint:"küçük harf, rakam, tire",
 theme:"Tema",custom:"Özel",cBg:"Arka plan",cFg:"Yazı",cAc:"Ana renk",cCard:"Kart",logo:"Logo",logoPick:"Logo yükle",logoRm:"Logoyu sil",
@@ -172,7 +200,7 @@ function themeCss(th){
  var mut="color-mix(in srgb,"+th.fg+" 58%,"+th.bg+")",line="color-mix(in srgb,"+th.fg+" 16%,"+th.bg+")";
  return "--bg:"+th.bg+";--fg:"+th.fg+";--ac:"+th.ac+";--card:"+th.card+";--acfg:"+onColor(th.ac)+";--mut:"+mut+";--line:"+line+";";
 }
-function applyTheme(th){document.documentElement.style.cssText=th?themeCss(th):"";}
+function applyTheme(th){document.documentElement.style.cssText=th?themeCss(th):"";document.body.classList.toggle("themed",!!th);}
 function glyph(kind){return (KINDS[kind]||KINDS.custom).g;}
 
 /* ---------- supabase ---------- */
@@ -261,7 +289,7 @@ function pickLogo(el){
 function previewHtml(f){
  var th=themeOf(f.theme,f.custom),g=glyph(f.kind),goal=Math.max(2,Math.min(30,parseInt(f.goal,10)||6)),filled=Math.min(goal-1,Math.max(1,Math.round(goal/2))),st="";
  for(var i=0;i<goal;i++)st+='<div class="stamp'+(i<filled?" f":"")+'">'+(i<filled?g:"")+'</div>';
- return '<div class="pv" id="pv" style="'+themeCss(th)+'background:var(--bg);color:var(--fg)"><div class="lcard"><div class="hd">'+(f.logo&&IMG.test(f.logo)?'<img alt="" src="'+f.logo+'">':'<div class="stamp f" style="width:42px;height:42px">'+g+'</div>')+'<b>'+esc(f.name||"…")+'</b></div><div class="who">Ali</div><div class="stamps">'+st+'</div><div class="ft"><span>'+filled+' '+t("of")+' '+goal+(f.unit?" · "+esc(f.unit):"")+'</span><span>'+esc(f.reward)+'</span></div></div></div>';
+ return '<div class="pv themed" id="pv" style="'+themeCss(th)+'"><div class="lcard"><div class="hd">'+(f.logo&&IMG.test(f.logo)?'<img alt="" src="'+f.logo+'">':'<div class="stamp f" style="width:42px;height:42px">'+g+'</div>')+'<b>'+esc(f.name||"…")+'</b></div><div class="who">Ali</div><div class="stamps">'+st+'</div><div class="ft"><span>'+filled+' '+t("of")+' '+goal+(f.unit?" · "+esc(f.unit):"")+'</span><span>'+esc(f.reward)+'</span></div></div></div>';
 }
 function updPreview(){var pv=$("#pv");if(pv&&S.form){var d=document.createElement("div");d.innerHTML=previewHtml(S.form);pv.replaceWith(d.firstChild);}}
 function themeSwatches(f){
@@ -315,7 +343,7 @@ function adminHtml(){
    var th=themeOf(b.theme,b.custom);
    h+='<div class="biz"><div class="sw" style="background:'+th.ac+';color:'+onColor(th.ac)+'">'+(b.logo&&IMG.test(b.logo)?'<img alt="" src="'+b.logo+'">':glyph(b.kind))+'</div><div class="sp"><div class="nm">'+esc(b.name)+'</div><div class="muted small"><span dir="ltr">'+esc(b.slug)+'</span> · '+b.customers+' '+t("customers")+' · '+(b.staff||[]).length+' '+t("accounts")+'</div>'+
    (b.enabled&&!b.suspended?'':'<span class="tag off">'+t("off")+'</span>')+'</div>'+
-   '<div class="row"><a class="btn sm" target="_blank" rel="noopener" href="'+esc(joinUrl(b.slug))+'">'+t("open")+'</a><button class="btn sm" data-act="copyLink" data-s="'+esc(b.slug)+'">'+t("copy")+'</button><button class="btn sm" data-act="editBiz" data-id="'+b.id+'">'+t("edit")+'</button></div></div>'+
+   '<div class="row"><a class="btn sm" target="_blank" rel="noopener" href="'+esc(joinUrl(b.slug))+'">'+t("open")+'</a><button class="btn sm" data-act="copyLink" data-s="'+esc(b.slug)+'">'+t("copy")+'</button><a class="btn sm" target="_blank" rel="noopener" href="'+esc(waUrl(b.name,b.slug))+'">'+t("wa")+'</a><button class="btn sm" data-act="editBiz" data-id="'+b.id+'">'+t("edit")+'</button></div></div>'+
    (b.id===S.sel?'<div class="small muted" style="margin:-4px 4px 10px"><span class="url">'+esc(joinUrl(b.slug))+'</span></div>':'');
   });
  }else{
@@ -328,7 +356,8 @@ function adminHtml(){
 function langSeg(){return '<div class="seg"><button data-act="lang" data-v="ar" class="'+(LANG==="ar"?"on":"")+'">العربية</button><button data-act="lang" data-v="tr" class="'+(LANG==="tr"?"on":"")+'">Türkçe</button></div>';}
 
 /* ---------- business dashboard ---------- */
-function dashLoad(){return rpc("lp_staff_overview").then(function(d){S.dash=d;S.found=null;});}
+function dashLoad(){return rpc("lp_staff_overview").then(function(d){S.dash=d;S.found=null;LS.set("lp-th",JSON.stringify({theme:d.theme,custom:d.custom}));});}
+function waUrl(name,slug){return "https://wa.me/?text="+encodeURIComponent(name+"\n"+joinUrl(slug));}
 function stampDots(c,d){var h="";for(var i=0;i<d.goal;i++)h+='<span class="dot'+(i<c.points?" f":"")+'"></span>';return h;}
 function custRow(c,d){
  return '<div class="cust"><div class="sp"><div class="nm">'+esc(c.name)+' <span class="muted small" dir="ltr">'+esc(c.phone)+'</span></div><div class="dots">'+stampDots(c,d)+'</div>'+
@@ -345,8 +374,9 @@ function dashHtml(){
  (S.newOpen?'<div class="grid2" style="margin-bottom:10px"><input id="ncN" placeholder="'+t("dname")+'" maxlength="40"><input id="ncP" placeholder="'+t("phone")+'" inputmode="tel" maxlength="20"></div><button class="btn pri" data-act="newCust" style="margin-bottom:12px">'+t("add")+'</button>':'')+
  (S.err?'<div class="err">'+esc(S.err)+'</div>':'')+
  '<h3>'+t("recent")+'</h3>'+(list.length?list.map(function(c){return custRow(c,d);}).join(""):'<p class="muted small">—</p>')+'</section>'+
- '<section class="panel"><h3>'+t("link")+'</h3><div class="row" style="align-items:flex-start"><div class="qr">'+qrSvg(url)+'</div><div class="sp"><div class="url">'+esc(url)+'</div><div class="row" style="margin-top:10px"><button class="btn sm" data-act="copyLink" data-s="'+esc(d.slug)+'">'+t("copy")+'</button><a class="btn sm" target="_blank" rel="noopener" href="'+esc(url)+'">'+t("open")+'</a></div></div></div>'+
- '<p class="muted small" style="margin-top:12px">'+esc(d.reward)+' · '+d.goal+' '+(d.unit?esc(d.unit):t("pts"))+'</p></section></div></div>';
+ '<section class="panel"><h3>'+t("link")+'</h3><div class="row" style="align-items:flex-start"><div class="qr">'+qrSvg(url)+'</div><div class="sp"><div class="url">'+esc(url)+'</div><div class="row" style="margin-top:10px"><button class="btn sm" data-act="copyLink" data-s="'+esc(d.slug)+'">'+t("copy")+'</button><a class="btn sm" target="_blank" rel="noopener" href="'+esc(url)+'">'+t("open")+'</a><a class="btn sm" target="_blank" rel="noopener" href="'+esc(waUrl(d.name,d.slug))+'">'+t("wa")+'</a></div><div class="row" style="margin-top:8px"><button class="btn pri sm" data-act="printPoster">'+t("printQ")+'</button></div></div></div>'+
+ '<p class="muted small" style="margin-top:12px">'+esc(d.reward)+' · '+d.goal+' '+(d.unit?esc(d.unit):t("pts"))+'</p></section></div></div>'+
+ '<div id="poster">'+(d.logo&&IMG.test(d.logo)?'<img alt="" style="width:110px;height:110px;border-radius:24px;object-fit:cover" src="'+d.logo+'">':'')+'<h1>'+esc(d.name)+'</h1><p>'+esc(d.reward)+' · '+d.goal+' '+(d.unit?esc(d.unit):t("pts"))+'</p><div class="qrbig">'+qrSvg(url)+'</div><p>'+t("posterL")+'</p></div>';
  return h;
 }
 function upd(c){var d=S.dash;[].concat(d.recent||[]).forEach(function(x,i){if(x.id===c.id)d.recent[i]=c;});if(S.found)S.found=S.found.map(function(x){return x.id===c.id?c:x;});}
@@ -378,11 +408,11 @@ function pubHtml(){
  if(P.state==="card"&&P.card){
   var c=P.card,st="";for(var i=0;i<c.goal;i++)st+='<div class="stamp'+(i<c.points?" f":"")+'">'+(i<c.points?g:"")+'</div>';
   h+='<div class="lcard"><div class="hd">'+(b.logo&&IMG.test(b.logo)?'<img alt="" src="'+b.logo+'">':'')+'<b>'+esc(b.name)+'</b></div><div class="who">'+esc(c.name)+'</div><div class="stamps">'+st+'</div><div class="ft"><span>'+c.points+' '+t("of")+' '+c.goal+(c.unit?" · "+esc(c.unit):"")+'</span><span>'+esc(c.reward)+'</span></div>'+(c.ready?'<div class="ready">'+t("rewardReady")+(c.ready>1?" ×"+c.ready:"")+'</div>':'')+'</div>'+
-  '<p class="muted small" style="margin-top:14px">'+t("showStaff")+'</p><div class="row" style="margin-top:10px"><button class="btn" data-act="pubRefresh">'+t("refresh")+'</button></div><p class="muted small" style="margin-top:16px">'+t("a2hs")+'</p>';
+  '<section class="panel" style="margin-top:14px"><p>'+t("showStaff")+'</p><div class="row" style="margin-top:10px"><button class="btn" data-act="pubRefresh">'+t("refresh")+'</button></div><p class="muted small" style="margin-top:12px">'+t("a2hs")+'</p></section>';
  }else{
   h+='<div class="lcard" style="margin-bottom:16px"><div class="hd"><b>'+esc(b.name)+'</b></div><div class="who">'+t("joinT")+'</div><div class="ft"><span>'+b.goal+' '+(b.unit?esc(b.unit):t("pts"))+'</span><span>'+esc(b.reward)+'</span></div></div>'+
-  '<div class="field"><label>'+t("yourName")+'</label><input id="pn" maxlength="40" autocomplete="name" value="'+esc(P.nm)+'"></div><div class="field"><label>'+t("yourPhone")+'</label><input id="pp" inputmode="tel" maxlength="20" autocomplete="tel" value="'+esc(P.ph)+'"></div>'+
-  (P.err?'<div class="err">'+esc(P.err)+'</div>':'')+'<button class="btn pri" style="width:100%" data-act="pubJoin">'+t("joinB")+'</button>';
+  '<section class="panel"><div class="field"><label>'+t("yourName")+'</label><input id="pn" maxlength="40" autocomplete="name" value="'+esc(P.nm)+'"></div><div class="field"><label>'+t("yourPhone")+'</label><input id="pp" inputmode="tel" maxlength="20" autocomplete="tel" value="'+esc(P.ph)+'"></div>'+
+  (P.err?'<div class="err">'+esc(P.err)+'</div>':'')+'<button class="btn pri" style="width:100%" data-act="pubJoin">'+t("joinB")+'</button></section>';
  }
  return h+'</div></div>';
 }
@@ -392,7 +422,7 @@ function render(){
  var app=$("#app");
  if(PUB){var b=P.biz;applyTheme(b?themeOf(b.theme,b.custom):null);app.innerHTML=pubHtml();return;}
  if(!S.ready){app.innerHTML="";return;}
- if(!S.me){applyTheme(null);app.innerHTML=loginHtml();return;}
+ if(!S.me){var sv=null;try{sv=JSON.parse(LS.get("lp-th")||"null");}catch(e){}applyTheme(sv?themeOf(sv.theme,sv.custom):null);app.innerHTML=loginHtml();return;}
  if(S.me.admin){applyTheme(null);app.innerHTML=adminHtml();return;}
  if(S.me.staff){var d=S.dash||S.me.business;applyTheme(d?themeOf(d.theme,d.custom):null);app.innerHTML=dashHtml();return;}
  app.innerHTML=loginHtml();
@@ -413,6 +443,7 @@ document.addEventListener("click",function(ev){
   case "lang":setLang(d.v);return;
   case "login":login();return;
   case "logout":logout();return;
+  case "printPoster":window.print();return;
   case "newBiz":S.form=blankForm("coffee");S.err="";render();return;
   case "editBiz":S.form=formFrom(S.biz.filter(function(b){return b.id===d.id;})[0]);S.err="";render();return;
   case "cancelForm":S.form=null;S.err="";render();return;
