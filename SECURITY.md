@@ -35,3 +35,10 @@
 ## الإبلاغ عن ثغرة
 
 أبلغ المالك مباشرة وبشكل خاص، ولا تنشر التفاصيل علناً قبل الإصلاح.
+
+## Loyalty (الولاء)
+
+- Customers are not Auth users: a 64-hex random card token is the only credential. Anyone with the link can view that card, so treat it like a password.
+- Loyalty tables have RLS with no policies; everything goes through security-definer RPCs. `anon` can call only `loyalty_public_cafe`, `loyalty_public_join`, `loyalty_public_card`.
+- Join is limited per café (30 / 10 min), not per IP. Add a CDN/WAF rule before heavy public use.
+- Phone numbers are personal data (KVKK): tell customers what is stored and offer deletion.

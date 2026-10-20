@@ -61,3 +61,11 @@ python3 -m http.server 8080
 - The admin creates cafés and staff accounts (username + password) from the admin console; staff sign in and land directly in their café.
 - LIVE mode activates automatically on github.io / localhost; elsewhere the app runs as a local demo.
 - Limits: tenant data is one JSON blob per café (last-write-wins, polled every 10 s). Table-by-table RPCs are planned for phase 2.
+
+## Loyalty module (نقاط الولاء)
+
+- Run `backend/supabase/loyalty.sql` in the Supabase SQL editor **after** `schema.sql`.
+- Platform admin: Admin console → "Loyalty" panel → per café: enable, slug, brand name, color, logo, goal (2–30 points), reward text, earn mode (per visit / per amount).
+- Café staff (owner / manager / cashier): "Loyalty" tab → search or add customer, add a point, redeem a ready reward, copy the join link / QR.
+- Customers (no Auth account): `?c=<slug>` to join (name + phone), `?card=<token>` to open their card. The token lives in the URL and localStorage.
+- Not included: Apple/Google Wallet, NFC, push notifications, per-IP rate limit on join (only 30 joins / 10 min per café).
