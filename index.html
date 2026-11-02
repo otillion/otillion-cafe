@@ -145,7 +145,7 @@ input,select{padding:9px 12px;border-radius:8px;border:1px solid var(--line);bac
 /* modal + toast */
 .rcpt{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;display:grid;gap:6px;color:var(--ink)}
 .rcpt .c{text-align:center}.rcpt .r{display:flex;justify-content:space-between;gap:10px}.rcpt hr{border:0;border-top:1px dashed var(--line);margin:4px 0;width:100%}
-@media print{#app>*:not(.overlay){display:none!important}.overlay{position:static!important;background:none!important;padding:0!important}.modal{border:0!important;box-shadow:none!important;width:80mm!important;max-height:none!important;overflow:visible!important;padding:0!important}.noprint{display:none!important}body{background:#fff!important}.rcpt{color:#000;font-size:12px}}
+@media print{#app>*:not(.overlay){display:none!important}.overlay{position:static!important;background:none!important;padding:0!important}.modal{border:0!important;box-shadow:none!important;width:var(--paperw,80mm)!important;max-height:none!important;overflow:visible!important;padding:0!important}.noprint{display:none!important}body{background:#fff!important}.rcpt{color:#000;font-size:12px}}
 .overlay{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:16px}
 .modal{width:min(520px,100%);max-height:90%;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:14px}
 .mh{display:flex;justify-content:space-between;align-items:center;gap:10px}
@@ -235,7 +235,7 @@ var PINNED={void:1,applyCount:1,invite:1,toggleActive:1};
 var MODALA={reprint:"recent",printRcpt:"receipt",payN:"pay",paySel:"pay",doPay:"pay",doMove:"move",doMerge:"merge",doRecv:"recv",pinSubmit:"pin"};
 var POSA={add:1,inc:1,dec:1,void:1,send:1,openPay:1,openMove:1,openMerge:1};
 var SETK={cat:1,pane:1,kds:1,period:1,stockTab:1,staffTab:1,rt:1};
-var CNEED={itemCat:"manage",itemStn:"manage",catName:"manage",itemPrice:"manage",itemName:"manage",branch:"overview",rb:"reports",rst:"reports",rcat:"reports",rstaff:"reports",rtype:"reports",rq:"reports",rFrom:"reports",rTo:"reports",printer:"settings",staffBr:"settings",staffRole:"settings"};
+var CNEED={itemCat:"manage",itemStn:"manage",catName:"manage",itemPrice:"manage",itemName:"manage",branch:"overview",paper:"settings",rb:"reports",rst:"reports",rcat:"reports",rstaff:"reports",rtype:"reports",rq:"reports",rFrom:"reports",rTo:"reports",printer:"settings",staffBr:"settings",staffRole:"settings"};
 var MATRIX=["pos","pay","kitchen","stock","stockEdit","void","costView","reports","overview","staff","staffAll","manage","settings"];
 var PINLIST=["void","applyCount","invite","staffRole","staffBr","printer","toggleActive","elevate"];
 function sha256(msg){
@@ -301,7 +301,7 @@ google:"Google ile devam et",
  sh_m:"08–16",sh_e:"15–23",sh_o:"İzin",shHint:"Hücreye tıklayarak vardiyayı değiştirin.",
  lvType:"Tür",lvFrom:"Başlangıç",lvTo:"Bitiş",lvReq:"Talep et",lv_annual:"Yıllık izin",lv_sick:"Hastalık",lv_other:"Diğer",lvPending:"Bekliyor",lvApproved:"Onaylandı",lvRejected:"Reddedildi",approve:"Onayla",reject:"Reddet",lvSent:"İzin talebi gönderildi",
  colRevH:"Ciro / saat",invite:"Davet et",emailPh:"ornek@gmail.com",invited:"davet edildi",colRole:"Rol",colStart:"Başlangıç",
- printers:"Yazıcı yönlendirme",printersHint:"Bu şubede her istasyonun siparişleri seçilen yazıcıya gider.",rcpt:"Adisyon yazıcısı",
+ paperW:"Fiş kağıdı genişliği",printers:"Yazıcı yönlendirme",printersHint:"Bu şubede her istasyonun siparişleri seçilen yazıcıya gider.",rcpt:"Adisyon yazıcısı",
  audit:"İşlem geçmişi",noLog:"Kayıt yok.",security:"Güvenlik",sec1:"Google ile giriş, şifre yok",sec2:"İşletmeler arası tam veri ayrımı",sec3:"Role ve şubeye göre yetki",sec4:"Her işlem kayıt altında",
  secDemo:"Demo'da bunlar tarayıcıda simüle edilir; canlı sürümde sunucu tarafında uygulanır.",
  l_send:"Siparişler gönderildi · {tbl}",l_pay:"Ödeme {amt} ({m}) · {tbl}",l_close:"Hesap kapandı · {tbl}",l_move:"{a} → {b} taşındı",l_merge:"{a} → {b} birleştirildi",l_void:"İptal: {mi} · {tbl}",
@@ -360,7 +360,7 @@ google:"المتابعة عبر Google",
  sh_m:"08–16",sh_e:"15–23",sh_o:"إجازة",shHint:"اضغط على الخلية لتغيير الوردية.",
  lvType:"النوع",lvFrom:"من",lvTo:"إلى",lvReq:"إرسال الطلب",lv_annual:"إجازة سنوية",lv_sick:"مرضية",lv_other:"أخرى",lvPending:"قيد الانتظار",lvApproved:"موافق عليها",lvRejected:"مرفوضة",approve:"موافقة",reject:"رفض",lvSent:"تم إرسال طلب الإجازة",
  colRevH:"إيراد / ساعة",invite:"دعوة",emailPh:"example@gmail.com",invited:"مدعو",colRole:"الدور",colStart:"تاريخ البدء",
- printers:"توجيه الطابعات",printersHint:"في هذا الفرع، طلبات كل محطة تُرسل إلى الطابعة المختارة.",rcpt:"طابعة الفواتير",
+ paperW:"عرض ورق الفاتورة",printers:"توجيه الطابعات",printersHint:"في هذا الفرع، طلبات كل محطة تُرسل إلى الطابعة المختارة.",rcpt:"طابعة الفواتير",
  audit:"سجل العمليات",noLog:"لا توجد سجلات.",security:"الأمان",sec1:"الدخول عبر Google بدون كلمات سر",sec2:"فصل كامل للبيانات بين المنشآت",sec3:"صلاحيات حسب الدور والفرع",sec4:"كل عملية مسجّلة",
  secDemo:"في النسخة التجريبية هذه الأمور محاكاة داخل المتصفح، وفي النسخة الفعلية تُطبّق من جهة الخادم.",
  l_send:"تم إرسال الطلبات · {tbl}",l_pay:"دفعة {amt} ({m}) · {tbl}",l_close:"إغلاق حساب · {tbl}",l_move:"نقل {a} ← {b}",l_merge:"دمج {a} ← {b}",l_void:"إلغاء: {mi} · {tbl}",
@@ -1072,7 +1072,7 @@ function viewSettings(){
  return '<div class="rgrid"><section class="panel"><h3>'+t("pinSection")+'</h3><p class="muted" style="margin:0">'+t("pinActs")+'</p>'+pl+'<div class="inl">'+pf("pinCur","curPin")+pf("pinNew","pinNew")+pf("pinNew2","pinNew2")+'<button class="btn pri" data-act="setPin">'+t("changePin")+'</button></div><p class="note">'+t("pinRule")+'</p></section>'+
  '<section class="panel"><h3>'+t("security")+'</h3><ul class="alist">'+["sec1","sec2","sec3","sec4","sec5","sec6"].map(function(k){return '<li>'+ic("check")+'<span>'+t(k)+'</span></li>';}).join("")+'</ul><p class="note">'+t("secDemo")+'</p></section>'+
  '<section class="panel wide"><h3>'+t("matrix")+'</h3>'+mx+'</section>'+
- '<section class="panel"><h3>'+t("printers")+' · '+esc(b.name)+'</h3><p class="muted" style="margin:0">'+t("printersHint")+'</p>'+pr+'</section>'+
+ '<section class="panel"><h3>'+t("printers")+' · '+esc(b.name)+'</h3><p class="muted" style="margin:0">'+t("printersHint")+'</p>'+pr+'<div class="field"><label for="pr-paper">'+t("paperW")+'</label><select id="pr-paper" data-change="paper"><option value="80"'+(b.paper!=="58"?" selected":"")+'>80 mm</option><option value="58"'+(b.paper==="58"?" selected":"")+'>58 mm</option></select></div>'+'</section>'+
  '<section class="panel wide"><h3>'+t("audit")+'</h3>'+(lg?'<ul class="alist">'+lg+'</ul>':'<p class="muted">'+t("noLog")+'</p>')+'</section></div>';
 }
 function logText(l){
@@ -1175,7 +1175,7 @@ function act(a,d,el){
   if(res==="closed"){toast(t("closedToast"));U.modal={type:"receipt",sid:b.sales[b.sales.length-1].id};U.posTable=null;}else if(res==="part"){var tk8=b.tickets[U.modal.k];U.modal.n=1;U.modal.sel=[];U.modal.amount=r2(ticketTotal(tk8)-ticketPaid(tk8));}break;}
  case "openRecent":U.modal={type:"recent"};break;
  case "reprint":{if(b.sales.some(function(x){return x.id===d.id;}))U.modal={type:"receipt",sid:d.id};break;}
- case "printRcpt":try{window.print();}catch(e1){}break;
+ case "printRcpt":try{var pw=(B().paper==="58"?"58":"80"),ps=document.getElementById("pgStyle");if(!ps){ps=document.createElement("style");ps.id="pgStyle";document.head.appendChild(ps);}ps.textContent="@page{size:"+pw+"mm auto;margin:2mm}@media print{.modal{--paperw:"+pw+"mm}.rcpt{font-size:"+(pw==="58"?"11":"12")+"px}}";}catch(e0){}try{window.print();}catch(e1){}break;
  case "openMove":U.modal={type:"move",k:U.posTable};break;
  case "doMove":{if(!/^\d{1,2}$/.test(d.to)||+d.to<1||+d.to>b.tables||b.tickets[d.to])break;var from=U.modal.k,tk9=b.tickets[from];delete b.tickets[from];tk9.key=d.to;b.tickets[d.to]=tk9;b.kds.forEach(function(x){if(x.key===from)x.key=d.to;});log("move",{a:from,b:d.to});U.posTable=d.to;U.modal=null;break;}
  case "openMerge":U.modal={type:"merge",k:U.posTable};break;
@@ -1230,6 +1230,7 @@ function applyChange(d){
  else if(d.c==="itemCat"){var im3=T0.menu.filter(function(x){return x.id===d.s;})[0];if(!im3||catIds().indexOf(d.v)<0)return;im3.cat=d.v;log("itemEdit",{mi:im3.id});}
  else if(d.c==="itemStn"){var im4=T0.menu.filter(function(x){return x.id===d.s;})[0];if(!im4||["bar","kitchen"].indexOf(d.v)<0)return;im4.station=d.v;log("itemEdit",{mi:im4.id});}
  else if(d.c==="catName"){var cv=(d.v||"").trim().slice(0,30),cf=ensureCats(T0).filter(function(x){return x.id===d.s;})[0];if(!cf||!cv){toast(t("mg_bad"));return;}cf[S.lang]=cv;log("catEdit",{n:cv});}
+ else if(d.c==="paper"){if(["58","80"].indexOf(d.v)<0)return;B().paper=d.v;log("printer",{st:"receipt",p:d.v+"mm"});}
  else if(d.c==="printer"){if(PRINTERS.indexOf(d.v)<0||["bar","kitchen","receipt"].indexOf(d.st)<0)return;B().printers[d.st]=d.v;log("printer",{st:d.st,p:d.v});}
  else if(d.c==="staffBr"){var s1=T0.staff.filter(function(x){return x.id===d.s;})[0];if(s1&&T0.branches[d.v]){s1.br=d.v;if(LIVE)rpc("set_staff_branch",{p_tenant:S.tid,p_staff:d.s,p_branch:d.v}).catch(function(e){liveErr(e);reloadTenant();});}}
  else if(d.c==="staffRole"){var s2=T0.staff.filter(function(x){return x.id===d.s;})[0];if(!s2||s2.id==="m0"||s2.role==="owner"||d.v==="owner"||ROLES.indexOf(d.v)<0)return;s2.role=d.v;log("role",{who:s2.name,r:d.v});if(LIVE)rpc("set_staff_role",{p_tenant:S.tid,p_staff:d.s,p_role:d.v}).catch(function(e){liveErr(e);reloadTenant();});}
