@@ -1,0 +1,16 @@
+# Pings the Supabase project every day so the free plan never auto-pauses it.
+name: keepalive
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase API and database
+        run: |
+          URL="https://mrlkatgniijrlkkkqfgk.supabase.co"
+          KEY="sb_publishable_kySHarBhFF5pBgzuan-0ow_VBrSGhOo"
+          curl -fsS --retry 3 --max-time 30 "$URL/auth/v1/health" -H "apikey: $KEY" -o /dev/null
+          curl -sS --retry 3 --max-time 30 "$URL/rest/v1/tenant_data?select=tenant_id&limit=1" -H "apikey: $KEY" -H "Authorization: Bearer $KEY" -o /dev/null -w "db status %{http_code}\n"
