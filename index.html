@@ -145,6 +145,8 @@ input,select{padding:9px 12px;border-radius:8px;border:1px solid var(--line);bac
 /* modal + toast */
 .rcpt{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;display:grid;gap:6px;color:var(--ink)}
 .rcpt .c{text-align:center}.rcpt .r{display:flex;justify-content:space-between;gap:10px}.rcpt hr{border:0;border-top:1px dashed var(--line);margin:4px 0;width:100%}
+#kprint{display:none}
+@media print{body.kp #app{display:none!important}body.kp #kprint{display:block!important;width:var(--paperw,80mm);color:#000;font-family:ui-monospace,Menlo,Consolas,monospace}body.kp .kt{page-break-after:always;padding:2mm 0}body.kp .kt .c{text-align:center}body.kp .kt .st{font-size:14px;font-weight:700;letter-spacing:1px}body.kp .kt .big{font-size:30px;font-weight:700;line-height:1.2}body.kp .kt .ln{font-size:18px;font-weight:700;padding:2px 0}body.kp .kt hr{border:0;border-top:2px dashed #000;margin:4px 0}}
 @media print{#app>*:not(.overlay){display:none!important}.overlay{position:static!important;background:none!important;padding:0!important}.modal{border:0!important;box-shadow:none!important;width:var(--paperw,80mm)!important;max-height:none!important;overflow:visible!important;padding:0!important}.noprint{display:none!important}body{background:#fff!important}.rcpt{color:#000;font-size:12px}}
 .overlay{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:16px}
 .modal{width:min(520px,100%);max-height:90%;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:14px}
@@ -301,7 +303,7 @@ google:"Google ile devam et",
  sh_m:"08–16",sh_e:"15–23",sh_o:"İzin",shHint:"Hücreye tıklayarak vardiyayı değiştirin.",
  lvType:"Tür",lvFrom:"Başlangıç",lvTo:"Bitiş",lvReq:"Talep et",lv_annual:"Yıllık izin",lv_sick:"Hastalık",lv_other:"Diğer",lvPending:"Bekliyor",lvApproved:"Onaylandı",lvRejected:"Reddedildi",approve:"Onayla",reject:"Reddet",lvSent:"İzin talebi gönderildi",
  colRevH:"Ciro / saat",invite:"Davet et",emailPh:"ornek@gmail.com",invited:"davet edildi",colRole:"Rol",colStart:"Başlangıç",
- paperW:"Fiş kağıdı genişliği",printers:"Yazıcı yönlendirme",printersHint:"Bu şubede her istasyonun siparişleri seçilen yazıcıya gider.",rcpt:"Adisyon yazıcısı",
+ paperW:"Fiş kağıdı genişliği",kpAuto:"Otomatik mutfak/bar fişi",kpOn:"Açık",kpOff:"Kapalı",kpSt:"İstasyon",printers:"Yazıcı yönlendirme",printersHint:"Bu şubede her istasyonun siparişleri seçilen yazıcıya gider.",rcpt:"Adisyon yazıcısı",
  audit:"İşlem geçmişi",noLog:"Kayıt yok.",security:"Güvenlik",sec1:"Google ile giriş, şifre yok",sec2:"İşletmeler arası tam veri ayrımı",sec3:"Role ve şubeye göre yetki",sec4:"Her işlem kayıt altında",
  secDemo:"Demo'da bunlar tarayıcıda simüle edilir; canlı sürümde sunucu tarafında uygulanır.",
  l_send:"Siparişler gönderildi · {tbl}",l_pay:"Ödeme {amt} ({m}) · {tbl}",l_close:"Hesap kapandı · {tbl}",l_move:"{a} → {b} taşındı",l_merge:"{a} → {b} birleştirildi",l_void:"İptal: {mi} · {tbl}",
@@ -360,7 +362,7 @@ google:"المتابعة عبر Google",
  sh_m:"08–16",sh_e:"15–23",sh_o:"إجازة",shHint:"اضغط على الخلية لتغيير الوردية.",
  lvType:"النوع",lvFrom:"من",lvTo:"إلى",lvReq:"إرسال الطلب",lv_annual:"إجازة سنوية",lv_sick:"مرضية",lv_other:"أخرى",lvPending:"قيد الانتظار",lvApproved:"موافق عليها",lvRejected:"مرفوضة",approve:"موافقة",reject:"رفض",lvSent:"تم إرسال طلب الإجازة",
  colRevH:"إيراد / ساعة",invite:"دعوة",emailPh:"example@gmail.com",invited:"مدعو",colRole:"الدور",colStart:"تاريخ البدء",
- paperW:"عرض ورق الفاتورة",printers:"توجيه الطابعات",printersHint:"في هذا الفرع، طلبات كل محطة تُرسل إلى الطابعة المختارة.",rcpt:"طابعة الفواتير",
+ paperW:"عرض ورق الفاتورة",kpAuto:"طباعة الطلبات تلقائياً",kpOn:"تشغيل",kpOff:"إيقاف",kpSt:"القسم",printers:"توجيه الطابعات",printersHint:"في هذا الفرع، طلبات كل محطة تُرسل إلى الطابعة المختارة.",rcpt:"طابعة الفواتير",
  audit:"سجل العمليات",noLog:"لا توجد سجلات.",security:"الأمان",sec1:"الدخول عبر Google بدون كلمات سر",sec2:"فصل كامل للبيانات بين المنشآت",sec3:"صلاحيات حسب الدور والفرع",sec4:"كل عملية مسجّلة",
  secDemo:"في النسخة التجريبية هذه الأمور محاكاة داخل المتصفح، وفي النسخة الفعلية تُطبّق من جهة الخادم.",
  l_send:"تم إرسال الطلبات · {tbl}",l_pay:"دفعة {amt} ({m}) · {tbl}",l_close:"إغلاق حساب · {tbl}",l_move:"نقل {a} ← {b}",l_merge:"دمج {a} ← {b}",l_void:"إلغاء: {mi} · {tbl}",
@@ -773,7 +775,7 @@ function chartHtml(b){
 function viewPOS(){return U.posTable?viewOrder():viewTables();}
 function viewTables(){
  var b=B(),keys=[];for(var i=1;i<=b.tables;i++)keys.push(String(i));Object.keys(b.tickets).filter(function(k){return k.indexOf("TA")===0;}).forEach(function(k){keys.push(k);});
- return '<div class="bar"><h2>'+t("tables")+'</h2><span style="display:flex;gap:8px;flex-wrap:wrap">'+(can("pay")?'<button class="btn" data-act="openRecent">'+t("rc_recent")+'</button>':'')+'<button class="btn pri" data-act="newTake">'+ic("plus")+t("newTake")+'</button></span></div><div class="tables">'+keys.map(function(k){
+ return '<div class="bar"><h2>'+t("tables")+'</h2><span style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn'+(U.kpOn?" pri":"")+'" data-act="kpToggle" aria-pressed="'+!!U.kpOn+'">'+t("kpAuto")+': '+t(U.kpOn?"kpOn":"kpOff")+'</button>'+(can("pay")?'<button class="btn" data-act="openRecent">'+t("rc_recent")+'</button>':'')+'<button class="btn pri" data-act="newTake">'+ic("plus")+t("newTake")+'</button></span></div><div class="tables">'+keys.map(function(k){
   var tk=b.tickets[k],rd=b.kds.some(function(x){return x.key===k&&x.status==="ready";}),cls=!tk?"free":rd?"ready":tk.lines.length?"busy":"open",tk2=k.indexOf("TA")===0;
   return '<button class="tbl '+cls+'" data-act="openTable" data-k="'+k+'"><span class="tn">'+(tk2?"#"+k.slice(2):k)+'</span><span class="tk">'+(tk2?t("take"):t("tableN"))+'</span>'+(tk?'<span class="tm">'+money0(ticketTotal(tk))+'</span><span class="tt">'+mins(tk.ts)+' '+t("min")+'</span>':'<span class="tm muted">'+t("free")+'</span>')+(rd?'<span class="badge">'+t("ready")+'</span>':'')+'</button>';}).join("")+'</div>';
 }
@@ -830,9 +832,36 @@ function viewKitchen(){
   var pr=[],rd=[];Object.keys(g).forEach(function(k){(g[k].all?rd:pr).push(k);});var chipN=function(k){return '<span class="qn">'+(k.indexOf("TA")===0?"#"+k.slice(2):t("tableN")+" "+k)+'</span>';};
   return '<div class="bar">'+tabs+'<span class="muted">'+t("queueHint")+'</span></div><div class="q2"><div class="qbox"><h2>'+t("colPrep")+'</h2><div class="qnums">'+pr.map(chipN).join("")+'</div></div><div class="qbox r"><h2>'+t("colReady")+'</h2><div class="qnums">'+rd.map(chipN).join("")+'</div></div></div>';}
  var list=act(U.kds).sort(function(a,c){return a.ts-c.ts;}),cols=[["new",t("colNew")],["prep",t("colPrep")],["ready",t("colReady")]];
- return '<div class="bar">'+tabs+'<span class="muted">'+t("printer")+': '+esc(b.printers[U.kds])+'</span></div><div class="kcols">'+cols.map(function(c){var l=list.filter(function(x){return x.status===c[0];});
+ return '<div class="bar">'+tabs+'<span style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="btn'+(U.kpOn?" pri":"")+'" data-act="kpToggle" aria-pressed="'+!!U.kpOn+'">'+t("kpAuto")+': '+t(U.kpOn?"kpOn":"kpOff")+'</button><select data-change="kpSt" aria-label="'+t("kpSt")+'"><option value="both"'+(U.kpSt==="both"?" selected":"")+'>'+t("rp_allSt")+'</option><option value="kitchen"'+(U.kpSt==="kitchen"?" selected":"")+'>'+t("k_kitchen")+'</option><option value="bar"'+(U.kpSt==="bar"?" selected":"")+'>'+t("k_bar")+'</option></select></span></div><div class="kcols">'+cols.map(function(c){var l=list.filter(function(x){return x.status===c[0];});
   return '<div class="kcol"><h3><span>'+c[1]+'</span><span>'+l.length+'</span></h3>'+(l.map(function(x){var mn=mins(x.ts);
-   return '<div class="kcard"><div class="hd"><span>'+tblLabel(x.key)+'</span><span class="pill '+(mn>=15?"out":mn>=8?"low":"ok")+'">'+mn+' '+t("min")+'</span></div><ul>'+x.lines.map(function(l){return '<li><b>'+l.qty+'×</b> '+esc(nm(menuItem(l.item)))+'</li>';}).join("")+'</ul><button class="btn'+(x.status==="prep"?" pri":"")+'" data-act="kadv" data-id="'+x.id+'">'+(x.status==="new"?t("start"):x.status==="prep"?t("markReady"):t("served"))+'</button></div>';}).join("")||'<p class="muted">'+(c[0]==="new"?t("noTickets"):"")+'</p>')+'</div>';}).join("")+'</div>';
+   return '<div class="kcard"><div class="hd"><span>'+tblLabel(x.key)+'</span><span class="pill '+(mn>=15?"out":mn>=8?"low":"ok")+'">'+mn+' '+t("min")+'</span></div><ul>'+x.lines.map(function(l){return '<li><b>'+l.qty+'×</b> '+esc(nm(menuItem(l.item)))+'</li>';}).join("")+'</ul><div style="display:flex;gap:8px"><button class="btn sm" data-act="kprint" data-id="'+x.id+'">'+t("rc_print")+'</button></div><button class="btn'+(x.status==="prep"?" pri":"")+'" data-act="kadv" data-id="'+x.id+'">'+(x.status==="new"?t("start"):x.status==="prep"?t("markReady"):t("served"))+'</button></div>';}).join("")||'<p class="muted">'+(c[0]==="new"?t("noTickets"):"")+'</p>')+'</div>';}).join("")+'</div>';
+}
+/* kitchen / bar ticket printing (print station) */
+var KPK="otillion-kp";
+function kpLoad(){try{var o=JSON.parse(localStorage.getItem(KPK)||"{}");U.kpOn=!!o.on;U.kpSt=["both","kitchen","bar"].indexOf(o.st)>=0?o.st:"both";U.kpLast=o.last&&typeof o.last==="object"?o.last:{};}catch(e){U.kpOn=false;U.kpSt="both";U.kpLast={};}}
+function kpSave(){try{localStorage.setItem(KPK,JSON.stringify({on:U.kpOn,st:U.kpSt,last:U.kpLast}));}catch(e){}}
+function kpKey(b){return S.tid+":"+b.id;}
+function kpMax(b){return b.kds.reduce(function(a,x){return Math.max(a,x.id);},0);}
+function kpHtml(x){
+ var m=x.station==="bar"?t("k_bar"):t("k_kitchen");
+ return '<div class="kt"><div class="c st">'+esc(m)+'</div><div class="c big">'+esc(tblLabel(x.key))+'</div><div class="c">'+hm(x.ts)+' · #'+x.id+'</div><hr>'+x.lines.map(function(l){var mi=menuItem(l.item);return '<div class="ln">'+l.qty+'× '+esc(mi?nm(mi):l.item)+'</div>';}).join("")+'<hr></div>';
+}
+function kpPrint(list){
+ if(!list.length)return;
+ try{var b=B(),pw=b&&b.paper==="58"?"58":"80",ps=document.getElementById("pgStyle");if(!ps){ps=document.createElement("style");ps.id="pgStyle";document.head.appendChild(ps);}
+  ps.textContent="@page{size:"+pw+"mm auto;margin:2mm}@media print{#kprint{--paperw:"+pw+"mm}}";
+  var el=document.getElementById("kprint");if(!el){el=document.createElement("div");el.id="kprint";document.body.appendChild(el);}
+  el.innerHTML=list.map(kpHtml).join("");document.body.classList.add("kp");}catch(e0){}
+ try{window.print();}catch(e1){}
+ try{document.body.classList.remove("kp");var e2=document.getElementById("kprint");if(e2)e2.innerHTML="";}catch(e3){}
+}
+function kpCheck(){
+ if(!U.kpOn||!S.signedIn||!S.tid||U.locked||!T()||!B())return;
+ if(!(can("kitchen")||can("pos")))return;
+ var b=B(),k=kpKey(b),last=U.kpLast[k];if(last==null){U.kpLast[k]=kpMax(b);kpSave();return;}
+ var fresh=b.kds.filter(function(x){return x.id>last&&(U.kpSt==="both"||x.station===U.kpSt);}).sort(function(a,c){return a.id-c.id;});
+ var mx=kpMax(b);if(mx>last){U.kpLast[k]=mx;kpSave();}
+ kpPrint(fresh);
 }
 /* stock */
 function invState(i){return i.stock<=0?"out":i.stock<=i.min?"low":"ok";}
@@ -1093,6 +1122,7 @@ function render(){
  $("#app").innerHTML=h+modalHtml()+toastHtml();
  var r=document.documentElement;r.lang=S.lang;r.dir=S.lang==="ar"?"rtl":"ltr";
  if(S.theme)r.setAttribute("data-theme",S.theme);
+ kpCheck();
 }
 function enter(id){S.tid=id;var T0=T(),ac=accOf();S.role=myRole();S.bid=(ac&&T0.branches[ac.br])?ac.br:T0.order[0];U.screen=SCREENS.filter(can)[0];U.posTable=null;U.modal=null;U.rb="all";U.counts={};}
 function cleanTicket(){var b=B(),k=U.posTable;if(k&&b.tickets[k]&&!b.tickets[k].lines.length&&!b.tickets[k].payments.length)delete b.tickets[k];}
@@ -1182,6 +1212,8 @@ function act(a,d,el){
  case "doMerge":{if(!b.tickets[d.to]||d.to===U.modal.k)break;var fr=U.modal.k,src=b.tickets[fr],dst=b.tickets[d.to];src.lines.forEach(function(l){dst.lines.push(l);});src.payments.forEach(function(p){dst.payments.push(p);});
   b.kds.forEach(function(x){if(x.key===fr)x.key=d.to;});delete b.tickets[fr];log("merge",{a:fr,b:d.to});U.posTable=d.to;U.modal=null;break;}
  case "closeModal":case "overlay":U.modal=null;break;
+ case "kpToggle":if(!(can("kitchen")||can("pos")))break;U.kpOn=!U.kpOn;if(U.kpOn)U.kpLast[kpKey(b)]=kpMax(b);kpSave();break;
+ case "kprint":{if(!can("kitchen"))break;var kx=b.kds.filter(function(x){return String(x.id)===d.id;})[0];if(kx)kpPrint([kx]);break;}
  case "kadv":{var kk=b.kds.filter(function(x){return String(x.id)===d.id;})[0];if(kk){kk.status=kk.status==="new"?"prep":kk.status==="prep"?"ready":"done";}break;}
  case "openRecv":U.modal={type:"recv",id:d.id};break;
  case "doRecv":{var q=parseFloat(($("#recvQty")||{}).value);if(!(q>0)||q>100000)break;var iv=invItem(U.modal.id);iv.stock=r2(iv.stock+q);log("stock",{ii:iv.id,q:q});U.modal=null;toast(t("receivedToast"));break;}
@@ -1230,6 +1262,7 @@ function applyChange(d){
  else if(d.c==="itemCat"){var im3=T0.menu.filter(function(x){return x.id===d.s;})[0];if(!im3||catIds().indexOf(d.v)<0)return;im3.cat=d.v;log("itemEdit",{mi:im3.id});}
  else if(d.c==="itemStn"){var im4=T0.menu.filter(function(x){return x.id===d.s;})[0];if(!im4||["bar","kitchen"].indexOf(d.v)<0)return;im4.station=d.v;log("itemEdit",{mi:im4.id});}
  else if(d.c==="catName"){var cv=(d.v||"").trim().slice(0,30),cf=ensureCats(T0).filter(function(x){return x.id===d.s;})[0];if(!cf||!cv){toast(t("mg_bad"));return;}cf[S.lang]=cv;log("catEdit",{n:cv});}
+ else if(d.c==="kpSt"){if(["both","kitchen","bar"].indexOf(d.v)>=0){U.kpSt=d.v;kpSave();}}
  else if(d.c==="paper"){if(["58","80"].indexOf(d.v)<0)return;B().paper=d.v;log("printer",{st:"receipt",p:d.v+"mm"});}
  else if(d.c==="printer"){if(PRINTERS.indexOf(d.v)<0||["bar","kitchen","receipt"].indexOf(d.st)<0)return;B().printers[d.st]=d.v;log("printer",{st:d.st,p:d.v});}
  else if(d.c==="staffBr"){var s1=T0.staff.filter(function(x){return x.id===d.s;})[0];if(s1&&T0.branches[d.v]){s1.br=d.v;if(LIVE)rpc("set_staff_branch",{p_tenant:S.tid,p_staff:d.s,p_branch:d.v}).catch(function(e){liveErr(e);reloadTenant();});}}
@@ -1281,6 +1314,7 @@ setInterval(function(){
  if(S.signedIn&&S.tid&&!isAdmin()&&!U.locked&&S.role!=="kitchen"&&Date.now()-U.last>AUTOLOCK){U.locked=true;U.stepUp=0;U.modal=null;U.menu=false;log("lock",{});save();render();return;}
  var a=document.activeElement;if(S.signedIn&&S.tid&&!U.locked&&!U.modal&&!(a&&(a.tagName==="INPUT"||a.tagName==="SELECT"))&&(U.screen==="kitchen"||U.screen==="pos"||U.screen==="overview"))render();
 },15000);
+kpLoad();
 S=LIVE?freshLive():load();
 if(LIVE){try{var sv=sessionStorage.getItem("otillion-auth");if(sv){AUTH=JSON.parse(sv);bootSession().then(render,function(){clearLive();render();});}}catch(e){}
  setInterval(pullIfNewer,10000);}
