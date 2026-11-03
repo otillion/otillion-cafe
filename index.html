@@ -123,7 +123,7 @@ input,select{padding:9px 12px;border-radius:8px;border:1px solid var(--line);bac
 .item:hover:not(:disabled){border-color:var(--accent)}
 .item .in{font-weight:500}.item .ip{color:var(--muted);font-variant-numeric:tabular-nums}.item .is{font-size:11px;color:var(--muted)}
 .item:disabled{opacity:.5;cursor:not-allowed}
-.item .sold{position:absolute;top:8px;inset-inline-end:8px;font-size:11px;color:var(--bad);font-weight:600}
+.iw{position:relative;display:grid}.iw .item{width:100%;min-height:78px;align-content:start}.iw.sel .item{background:#fde047;border-color:#eab308;color:#000}.iw.sel .item .ip,.iw.sel .item .is{color:#3f3f00}.iq{position:absolute;top:8px;inset-inline-end:10px;background:#000;color:#fde047;font-weight:700;font-size:15px;line-height:1;padding:5px 9px;border-radius:999px;font-variant-numeric:tabular-nums}.imin{position:absolute;bottom:8px;inset-inline-end:8px;width:40px;height:40px;border-radius:50%;border:2px solid #000;background:#fff;color:#000;font-size:24px;font-weight:700;line-height:1;cursor:pointer;display:grid;place-items:center}.item .sold{position:absolute;top:8px;inset-inline-end:8px;font-size:11px;color:var(--bad);font-weight:600}
 .ticket{position:sticky;top:calc(env(safe-area-inset-top,0px) + 20px);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;display:grid;gap:12px}
 .th{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
 .lines{list-style:none;margin:0;padding:0;display:grid}
@@ -231,11 +231,11 @@ var PERM={
 var RANK={owner:5,manager:4,accountant:3,cashier:2,waiter:1,kitchen:1};
 var DEMO_PIN="1234",AUTOLOCK=5*60*1000,STEP_MS=2*60*1000;
 /* every mutating action maps to the permission it needs; the UI hiding a button is never the only check */
-var NEED={openPay:"pay",payN:"pay",paySel:"pay",doPay:"pay",openRecent:"pay",reprint:"pay",printRcpt:"pay",repReset:"reports",repCsv:"reports",repOpen:"reports",repMore:"reports",catAdd:"manage",catDel:"manage",tblSet:"manage",itemAdd:"manage",itemDel:"manage",add:"pos",inc:"pos",dec:"pos",send:"pos",openMove:"pos",doMove:"pos",openMerge:"pos",doMerge:"pos",newTake:"pos",openTable:"pos",backTables:"pos",
+var NEED={decItem:"pos",openPay:"pay",payN:"pay",paySel:"pay",doPay:"pay",openRecent:"pay",reprint:"pay",printRcpt:"pay",repReset:"reports",repCsv:"reports",repOpen:"reports",repMore:"reports",catAdd:"manage",catDel:"manage",tblSet:"manage",itemAdd:"manage",itemDel:"manage",add:"pos",inc:"pos",dec:"pos",send:"pos",openMove:"pos",doMove:"pos",openMerge:"pos",doMerge:"pos",newTake:"pos",openTable:"pos",backTables:"pos",
  void:"void",kadv:"kitchen",openRecv:"stockEdit",doRecv:"stockEdit",applyCount:"stockEdit",shift:"staffAll",lvOk:"staffAll",lvNo:"staffAll",invite:"adminOnly",setPin:"settings",toggleActive:"settings",goBranch:"overview",clock:"staff",lvReq:"staff"};
 var PINNED={void:1,applyCount:1,invite:1,toggleActive:1};
 var MODALA={reprint:"recent",printRcpt:"receipt",payN:"pay",paySel:"pay",doPay:"pay",doMove:"move",doMerge:"merge",doRecv:"recv",pinSubmit:"pin"};
-var POSA={add:1,inc:1,dec:1,void:1,send:1,openPay:1,openMove:1,openMerge:1};
+var POSA={add:1,decItem:1,inc:1,dec:1,void:1,send:1,openPay:1,openMove:1,openMerge:1};
 var SETK={cat:1,pane:1,kds:1,period:1,stockTab:1,staffTab:1,rt:1};
 var CNEED={itemCat:"manage",itemStn:"manage",catName:"manage",itemPrice:"manage",itemName:"manage",branch:"overview",paper:"settings",rb:"reports",rst:"reports",rcat:"reports",rstaff:"reports",rtype:"reports",rq:"reports",rFrom:"reports",rTo:"reports",printer:"settings",staffBr:"settings",staffRole:"settings"};
 var MATRIX=["pos","pay","kitchen","stock","stockEdit","void","costView","reports","overview","staff","staffAll","manage","settings"];
@@ -791,7 +791,8 @@ function viewOrder(){
  return '<div class="bar"><div style="display:flex;gap:12px;align-items:center"><button class="btn" data-act="backTables">'+ic("back","flip")+t("backTables")+'</button><h2>'+tblLabel(k)+'</h2></div><div style="display:flex;gap:8px"><button class="btn" data-act="openMove"'+(take?" disabled":"")+'>'+ic("move","flip")+t("move")+'</button><button class="btn" data-act="openMerge">'+ic("merge")+t("merge")+'</button></div></div>'+
  '<div class="panes">'+seg("pane",U.pane,[["menu",t("menuTab")],["ticket",t("ticketTab")+" ("+cnt+" · "+money0(total)+")"]])+'</div>'+
  '<div class="order" data-pane="'+U.pane+'"><div class="menu-pane"><div class="chips">'+cats.map(function(c){return '<button class="chip" data-act="set" data-g="cat" data-v="'+c[0]+'" aria-pressed="'+(U.cat===c[0])+'">'+c[1]+'</button>';}).join("")+'</div><div class="items">'+items.map(function(m){var ok=canMake(m,1);
-  return '<button class="item" data-act="add" data-id="'+m.id+'"'+(ok?"":" disabled")+'><span class="in">'+esc(nm(m))+'</span><span class="ip">'+money0(m.price)+'</span><span class="is">'+t(m.station==="bar"?"st_bar":"st_kitchen")+'</span>'+(ok?'':'<span class="sold">'+t("soldOut")+'</span>')+'</button>';}).join("")+'</div></div>'+
+  var nq=tk.lines.filter(function(l){return l.item===m.id&&!l.sent;}).reduce(function(s,l){return s+l.qty;},0);
+  return '<div class="iw'+(nq?" sel":"")+'"><button class="item" data-act="add" data-id="'+m.id+'"'+(ok?"":" disabled")+'><span class="in">'+esc(nm(m))+'</span><span class="ip">'+money0(m.price)+'</span><span class="is">'+t(m.station==="bar"?"st_bar":"st_kitchen")+'</span>'+(ok?'':'<span class="sold">'+t("soldOut")+'</span>')+(nq?'<span class="iq">+'+nq+'</span>':'')+'</button>'+(nq?'<button class="imin" data-act="decItem" data-id="'+m.id+'" aria-label="-1">&minus;</button>':'')+'</div>';}).join("")+'</div></div>'+
  '<aside class="ticket"><div class="th"><h3>'+t("ticketTab")+'</h3><span class="muted num">'+hm(tk.ts)+' · '+mins(tk.ts)+' '+t("min")+'</span></div><ul class="lines">'+lines+'</ul>'+
  '<dl class="sum"><div class="big"><dt>'+t("total")+'</dt><dd style="margin:0" class="num">'+money(total)+'</dd></div>'+(paid>0?'<div class="muted"><dt>'+t("paid")+'</dt><dd style="margin:0" class="num">'+money(paid)+'</dd></div><div><dt>'+t("remaining")+'</dt><dd style="margin:0" class="num">'+money(rem)+'</dd></div>':'')+'</dl>'+
  (hasSent&&!can("void")?'<p class="note">'+t("needVoid")+'</p>':'')+
@@ -1199,6 +1200,7 @@ function act(a,d,el){
  case "add":{var tk=b.tickets[U.posTable],m=menuItem(d.id),un=tk.lines.filter(function(l){return l.item===d.id&&!l.sent;}).reduce(function(s,l){return s+l.qty;},0);
   if(un>=50)break;if(!canMake(m,un+1)){toast(t("soldOut"));break;}var l0=tk.lines.filter(function(l){return l.item===d.id&&!l.sent;})[0];if(l0)l0.qty++;else tk.lines.push({lid:b.lid++,item:d.id,qty:1,sent:false});break;}
  case "inc":{var tk2=b.tickets[U.posTable],l1=tk2.lines.filter(function(l){return l.lid==d.l;})[0];if(l1&&!l1.sent){if(l1.qty<50&&canMake(menuItem(l1.item),l1.qty+1))l1.qty++;else toast(t("soldOut"));}break;}
+ case "decItem":{var tk4=b.tickets[U.posTable],l3=tk4.lines.filter(function(l){return l.item===d.id&&!l.sent;})[0];if(l3){l3.qty--;if(l3.qty<=0)tk4.lines.splice(tk4.lines.indexOf(l3),1);}break;}
  case "dec":{var tk3=b.tickets[U.posTable],l2=tk3.lines.filter(function(l){return l.lid==d.l;})[0];if(l2&&!l2.sent){l2.qty--;if(l2.qty<=0)tk3.lines.splice(tk3.lines.indexOf(l2),1);}break;}
  case "void":{if(!can("void")){toast(t("needVoid"));break;}var tk4=b.tickets[U.posTable],l3=tk4.lines.filter(function(l){return l.lid==d.l;})[0];if(l3){log("void",{tbl:U.posTable,mi:l3.item});tk4.lines.splice(tk4.lines.indexOf(l3),1);}break;}
  case "send":{var rs=sendTicket(U.posTable);if(rs.n)toast(t("sentToast")+" · "+t("printer")+": "+b.printers.kitchen+"/"+b.printers.bar+(rs.lows.length?" · "+t("stockWarn")+": "+rs.lows.join("، "):""));break;}
