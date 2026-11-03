@@ -303,7 +303,7 @@ google:"Google ile devam et",
  sh_m:"08–16",sh_e:"15–23",sh_o:"İzin",shHint:"Hücreye tıklayarak vardiyayı değiştirin.",
  lvType:"Tür",lvFrom:"Başlangıç",lvTo:"Bitiş",lvReq:"Talep et",lv_annual:"Yıllık izin",lv_sick:"Hastalık",lv_other:"Diğer",lvPending:"Bekliyor",lvApproved:"Onaylandı",lvRejected:"Reddedildi",approve:"Onayla",reject:"Reddet",lvSent:"İzin talebi gönderildi",
  colRevH:"Ciro / saat",invite:"Davet et",emailPh:"ornek@gmail.com",invited:"davet edildi",colRole:"Rol",colStart:"Başlangıç",
- paperW:"Fiş kağıdı genişliği",kpAuto:"Otomatik mutfak/bar fişi",kpOn:"Açık",kpOff:"Kapalı",kpSnd:"Sesli uyarı",kpLocal:"Gönderince bu cihazdan yazdır",kpNew:"Yeni sipariş · {tbl}",kpSt:"İstasyon",printers:"Yazıcı yönlendirme",printersHint:"Bu şubede her istasyonun siparişleri seçilen yazıcıya gider.",rcpt:"Adisyon yazıcısı",
+ paperW:"Fiş kağıdı genişliği",kpAuto:"Otomatik mutfak/bar fişi",kpOn:"Açık",kpOff:"Kapalı",kpSnd:"Sesli uyarı",kpLocal:"Gönderince bu cihazdan yazdır",kpRaw:"RawBT ile yazdır",kpNew:"Yeni sipariş · {tbl}",kpSt:"İstasyon",printers:"Yazıcı yönlendirme",printersHint:"Bu şubede her istasyonun siparişleri seçilen yazıcıya gider.",rcpt:"Adisyon yazıcısı",
  audit:"İşlem geçmişi",noLog:"Kayıt yok.",security:"Güvenlik",sec1:"Google ile giriş, şifre yok",sec2:"İşletmeler arası tam veri ayrımı",sec3:"Role ve şubeye göre yetki",sec4:"Her işlem kayıt altında",
  secDemo:"Demo'da bunlar tarayıcıda simüle edilir; canlı sürümde sunucu tarafında uygulanır.",
  l_send:"Siparişler gönderildi · {tbl}",l_pay:"Ödeme {amt} ({m}) · {tbl}",l_close:"Hesap kapandı · {tbl}",l_move:"{a} → {b} taşındı",l_merge:"{a} → {b} birleştirildi",l_void:"İptal: {mi} · {tbl}",
@@ -362,7 +362,7 @@ google:"المتابعة عبر Google",
  sh_m:"08–16",sh_e:"15–23",sh_o:"إجازة",shHint:"اضغط على الخلية لتغيير الوردية.",
  lvType:"النوع",lvFrom:"من",lvTo:"إلى",lvReq:"إرسال الطلب",lv_annual:"إجازة سنوية",lv_sick:"مرضية",lv_other:"أخرى",lvPending:"قيد الانتظار",lvApproved:"موافق عليها",lvRejected:"مرفوضة",approve:"موافقة",reject:"رفض",lvSent:"تم إرسال طلب الإجازة",
  colRevH:"إيراد / ساعة",invite:"دعوة",emailPh:"example@gmail.com",invited:"مدعو",colRole:"الدور",colStart:"تاريخ البدء",
- paperW:"عرض ورق الفاتورة",kpAuto:"طباعة الطلبات تلقائياً",kpOn:"تشغيل",kpOff:"إيقاف",kpSnd:"تنبيه صوتي",kpLocal:"طباعة من هذا الجهاز عند الإرسال",kpNew:"طلب جديد · {tbl}",kpSt:"القسم",printers:"توجيه الطابعات",printersHint:"في هذا الفرع، طلبات كل محطة تُرسل إلى الطابعة المختارة.",rcpt:"طابعة الفواتير",
+ paperW:"عرض ورق الفاتورة",kpAuto:"طباعة الطلبات تلقائياً",kpOn:"تشغيل",kpOff:"إيقاف",kpSnd:"تنبيه صوتي",kpLocal:"طباعة من هذا الجهاز عند الإرسال",kpRaw:"الطباعة عبر RawBT",kpNew:"طلب جديد · {tbl}",kpSt:"القسم",printers:"توجيه الطابعات",printersHint:"في هذا الفرع، طلبات كل محطة تُرسل إلى الطابعة المختارة.",rcpt:"طابعة الفواتير",
  audit:"سجل العمليات",noLog:"لا توجد سجلات.",security:"الأمان",sec1:"الدخول عبر Google بدون كلمات سر",sec2:"فصل كامل للبيانات بين المنشآت",sec3:"صلاحيات حسب الدور والفرع",sec4:"كل عملية مسجّلة",
  secDemo:"في النسخة التجريبية هذه الأمور محاكاة داخل المتصفح، وفي النسخة الفعلية تُطبّق من جهة الخادم.",
  l_send:"تم إرسال الطلبات · {tbl}",l_pay:"دفعة {amt} ({m}) · {tbl}",l_close:"إغلاق حساب · {tbl}",l_move:"نقل {a} ← {b}",l_merge:"دمج {a} ← {b}",l_void:"إلغاء: {mi} · {tbl}",
@@ -775,7 +775,7 @@ function chartHtml(b){
 function viewPOS(){return U.posTable?viewOrder():viewTables();}
 function viewTables(){
  var b=B(),keys=[];for(var i=1;i<=b.tables;i++)keys.push(String(i));Object.keys(b.tickets).filter(function(k){return k.indexOf("TA")===0;}).forEach(function(k){keys.push(k);});
- return '<div class="bar"><h2>'+t("tables")+'</h2><span style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn'+(U.kpOn?" pri":"")+'" data-act="kpToggle" aria-pressed="'+!!U.kpOn+'">'+t("kpAuto")+': '+t(U.kpOn?"kpOn":"kpOff")+'</button>'+'<button class="btn'+(U.kpSnd?" pri":"")+'" data-act="kpSnd" aria-pressed="'+!!U.kpSnd+'">'+t("kpSnd")+': '+t(U.kpSnd?"kpOn":"kpOff")+'</button>'+''+(can("pay")?'<button class="btn" data-act="openRecent">'+t("rc_recent")+'</button>':'')+'<button class="btn pri" data-act="newTake">'+ic("plus")+t("newTake")+'</button></span></div><div class="tables">'+keys.map(function(k){
+ return '<div class="bar"><h2>'+t("tables")+'</h2><span style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn'+(U.kpOn?" pri":"")+'" data-act="kpToggle" aria-pressed="'+!!U.kpOn+'">'+t("kpAuto")+': '+t(U.kpOn?"kpOn":"kpOff")+'</button>'+'<button class="btn'+(U.kpSnd?" pri":"")+'" data-act="kpSnd" aria-pressed="'+!!U.kpSnd+'">'+t("kpSnd")+': '+t(U.kpSnd?"kpOn":"kpOff")+'</button>'+'<button class="btn'+(U.kpRaw?" pri":"")+'" data-act="kpRaw" aria-pressed="'+!!U.kpRaw+'">'+t("kpRaw")+': '+t(U.kpRaw?"kpOn":"kpOff")+'</button>'+''+(can("pay")?'<button class="btn" data-act="openRecent">'+t("rc_recent")+'</button>':'')+'<button class="btn pri" data-act="newTake">'+ic("plus")+t("newTake")+'</button></span></div><div class="tables">'+keys.map(function(k){
   var tk=b.tickets[k],rd=b.kds.some(function(x){return x.key===k&&x.status==="ready";}),cls=!tk?"free":rd?"ready":tk.lines.length?"busy":"open",tk2=k.indexOf("TA")===0;
   return '<button class="tbl '+cls+'" data-act="openTable" data-k="'+k+'"><span class="tn">'+(tk2?"#"+k.slice(2):k)+'</span><span class="tk">'+(tk2?t("take"):t("tableN"))+'</span>'+(tk?'<span class="tm">'+money0(ticketTotal(tk))+'</span><span class="tt">'+mins(tk.ts)+' '+t("min")+'</span>':'<span class="tm muted">'+t("free")+'</span>')+(rd?'<span class="badge">'+t("ready")+'</span>':'')+'</button>';}).join("")+'</div>';
 }
@@ -839,16 +839,26 @@ function viewKitchen(){
 }
 /* kitchen / bar ticket printing (print station) */
 var KPK="otillion-kp";
-function kpLoad(){try{var o=JSON.parse(localStorage.getItem(KPK)||"{}");U.kpOn=!!o.on;U.kpSnd=!!o.snd;U.kpLocal=o.loc!==false;U.kpSt=["both","kitchen","bar"].indexOf(o.st)>=0?o.st:"both";U.kpLast=o.last&&typeof o.last==="object"?o.last:{};}catch(e){U.kpOn=false;U.kpSnd=false;U.kpLocal=true;U.kpSt="both";U.kpLast={};}}
-function kpSave(){try{localStorage.setItem(KPK,JSON.stringify({on:U.kpOn,snd:U.kpSnd,loc:U.kpLocal,st:U.kpSt,last:U.kpLast}));}catch(e){}}
+function kpLoad(){try{var o=JSON.parse(localStorage.getItem(KPK)||"{}");U.kpOn=!!o.on;U.kpSnd=!!o.snd;U.kpLocal=o.loc!==false;U.kpRaw=!!o.raw;U.kpSt=["both","kitchen","bar"].indexOf(o.st)>=0?o.st:"both";U.kpLast=o.last&&typeof o.last==="object"?o.last:{};}catch(e){U.kpOn=false;U.kpSnd=false;U.kpLocal=true;U.kpRaw=false;U.kpSt="both";U.kpLast={};}}
+function kpSave(){try{localStorage.setItem(KPK,JSON.stringify({on:U.kpOn,snd:U.kpSnd,loc:U.kpLocal,raw:U.kpRaw,st:U.kpSt,last:U.kpLast}));}catch(e){}}
 function kpKey(b){return S.tid+":"+b.id;}
 function kpMax(b){return b.kds.reduce(function(a,x){return Math.max(a,x.id);},0);}
 function kpHtml(x){
  var m=x.station==="bar"?t("k_bar"):t("k_kitchen");
  return '<div class="kt"><div class="c st">'+esc(m)+'</div><div class="c big">'+esc(tblLabel(x.key))+'</div><div class="c">'+hm(x.ts)+' · #'+x.id+'</div><hr>'+x.lines.map(function(l){var mi=menuItem(l.item);return '<div class="ln">'+l.qty+'× '+esc(mi?nm(mi):l.item)+'</div>';}).join("")+'<hr></div>';
 }
+function kpText(list){
+ var b=B(),w=b&&b.paper==="58"?32:42,ln=new Array(w+1).join("-");
+ return list.map(function(x){var m=x.station==="bar"?t("k_bar"):t("k_kitchen");
+  return m+"\n"+tblLabel(x.key)+"\n"+hm(x.ts)+" #"+x.id+"\n"+ln+"\n"+x.lines.map(function(l){var mi=menuItem(l.item);return l.qty+"x "+(mi?nm(mi):l.item);}).join("\n")+"\n"+ln+"\n\n\n";}).join("");
+}
+function kpRaw(list){
+ try{var bytes=new TextEncoder().encode(kpText(list)),bin="";for(var i=0;i<bytes.length;i++)bin+=String.fromCharCode(bytes[i]);
+  location.href="intent:base64,"+btoa(bin)+"#Intent;scheme=rawbt;package=ru.a402d.rawbtprinter;end;";return true;}catch(e){return false;}
+}
 function kpPrint(list){
  if(!list.length)return;
+ if(U.kpRaw&&kpRaw(list))return;
  try{var b=B(),pw=b&&b.paper==="58"?"58":"80",ps=document.getElementById("pgStyle");if(!ps){ps=document.createElement("style");ps.id="pgStyle";document.head.appendChild(ps);}
   ps.textContent="@page{size:"+pw+"mm auto;margin:2mm}@media print{#kprint{--paperw:"+pw+"mm}}";
   var el=document.getElementById("kprint");if(!el){el=document.createElement("div");el.id="kprint";document.body.appendChild(el);}
@@ -1222,6 +1232,7 @@ function act(a,d,el){
   b.kds.forEach(function(x){if(x.key===fr)x.key=d.to;});delete b.tickets[fr];log("merge",{a:fr,b:d.to});U.posTable=d.to;U.modal=null;break;}
  case "closeModal":case "overlay":U.modal=null;break;
  case "kpToggle":if(!(can("kitchen")||can("pos")))break;U.kpOn=!U.kpOn;if(U.kpOn)U.kpLast[kpKey(b)]=kpMax(b);kpSave();break;
+ case "kpRaw":U.kpRaw=!U.kpRaw;kpSave();break;
  case "kpSnd":if(!(can("kitchen")||can("pos")))break;U.kpSnd=!U.kpSnd;if(U.kpSnd){U.kpLast[kpKey(b)]=kpMax(b);kpCtx();kpBeep();}kpSave();break;
  case "kprint":{if(!can("kitchen"))break;var kx=b.kds.filter(function(x){return String(x.id)===d.id;})[0];if(kx)kpPrint([kx]);break;}
  case "kadv":{var kk=b.kds.filter(function(x){return String(x.id)===d.id;})[0];if(kk){kk.status=kk.status==="new"?"prep":kk.status==="prep"?"ready":"done";}break;}
