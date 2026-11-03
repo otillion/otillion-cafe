@@ -796,7 +796,7 @@ function viewOrder(){
  '<aside class="ticket"><div class="th"><h3>'+t("ticketTab")+'</h3><span class="muted num">'+hm(tk.ts)+' · '+mins(tk.ts)+' '+t("min")+'</span></div><ul class="lines">'+lines+'</ul>'+
  '<dl class="sum"><div class="big"><dt>'+t("total")+'</dt><dd style="margin:0" class="num">'+money(total)+'</dd></div>'+(paid>0?'<div class="muted"><dt>'+t("paid")+'</dt><dd style="margin:0" class="num">'+money(paid)+'</dd></div><div><dt>'+t("remaining")+'</dt><dd style="margin:0" class="num">'+money(rem)+'</dd></div>':'')+'</dl>'+
  (hasSent&&!can("void")?'<p class="note">'+t("needVoid")+'</p>':'')+
- '<button class="btn sm" data-act="kpLocal" aria-pressed="'+!!U.kpLocal+'" style="margin-bottom:8px">'+t("kpLocal")+': '+t(U.kpLocal?"kpOn":"kpOff")+'</button><div class="tact"><button class="btn" data-act="send"'+(unsent?"":" disabled")+'>'+ic("send","flip")+t("send")+(unsent?" ("+unsent+")":"")+'</button>'+(can("pay")?'<button class="btn pri" data-act="openPay"'+(tk.lines.length&&rem>0?"":" disabled")+'>'+t("pay")+'</button>':'')+'</div></aside></div>';
+ '<div class="tact"><button class="btn" data-act="send"'+(unsent?"":" disabled")+'>'+ic("send","flip")+t("send")+(unsent?" ("+unsent+")":"")+'</button>'+(can("pay")?'<button class="btn pri" data-act="openPay"'+(tk.lines.length&&rem>0?"":" disabled")+'>'+t("pay")+'</button>':'')+'</div></aside></div>';
 }
 function modalHtml(){
  var m=U.modal;if(!m||!S.tid||U.locked)return "";var b=B(),h="",title="";
@@ -839,7 +839,7 @@ function viewKitchen(){
 }
 /* kitchen / bar ticket printing (print station) */
 var KPK="otillion-kp";
-function kpLoad(){try{var o=JSON.parse(localStorage.getItem(KPK)||"{}");U.kpOn=!!o.on;U.kpSnd=!!o.snd;U.kpLocal=!!o.loc;U.kpSt=["both","kitchen","bar"].indexOf(o.st)>=0?o.st:"both";U.kpLast=o.last&&typeof o.last==="object"?o.last:{};}catch(e){U.kpOn=false;U.kpSnd=false;U.kpLocal=false;U.kpSt="both";U.kpLast={};}}
+function kpLoad(){try{var o=JSON.parse(localStorage.getItem(KPK)||"{}");U.kpOn=!!o.on;U.kpSnd=!!o.snd;U.kpLocal=o.loc!==false;U.kpSt=["both","kitchen","bar"].indexOf(o.st)>=0?o.st:"both";U.kpLast=o.last&&typeof o.last==="object"?o.last:{};}catch(e){U.kpOn=false;U.kpSnd=false;U.kpLocal=true;U.kpSt="both";U.kpLast={};}}
 function kpSave(){try{localStorage.setItem(KPK,JSON.stringify({on:U.kpOn,snd:U.kpSnd,loc:U.kpLocal,st:U.kpSt,last:U.kpLast}));}catch(e){}}
 function kpKey(b){return S.tid+":"+b.id;}
 function kpMax(b){return b.kds.reduce(function(a,x){return Math.max(a,x.id);},0);}
@@ -1204,7 +1204,7 @@ function act(a,d,el){
  case "dec":{var tk3=b.tickets[U.posTable],l2=tk3.lines.filter(function(l){return l.lid==d.l;})[0];if(l2&&!l2.sent){l2.qty--;if(l2.qty<=0)tk3.lines.splice(tk3.lines.indexOf(l2),1);}break;}
  case "void":{if(!can("void")){toast(t("needVoid"));break;}var tk4=b.tickets[U.posTable],l3=tk4.lines.filter(function(l){return l.lid==d.l;})[0];if(l3){log("void",{tbl:U.posTable,mi:l3.item});tk4.lines.splice(tk4.lines.indexOf(l3),1);}break;}
  case "send":{var kb=kpMax(b),rs=sendTicket(U.posTable);if(rs.n){toast(t("sentToast")+(rs.lows.length?" · "+t("stockWarn")+": "+rs.lows.join("، "):""));
-   if(U.kpLocal){var nw=b.kds.filter(function(x){return x.id>kb;});U.kpLast[kpKey(b)]=kpMax(b);kpSave();kpPrint(nw);}}break;}
+   if(U.kpLocal&&!U.kpOn){var nw=b.kds.filter(function(x){return x.id>kb;});U.kpLast[kpKey(b)]=kpMax(b);kpSave();kpPrint(nw);}}break;}
  case "kpLocal":U.kpLocal=!U.kpLocal;kpSave();break;
  case "openPay":{var tk5=b.tickets[U.posTable],rem=r2(ticketTotal(tk5)-ticketPaid(tk5));U.modal={type:"pay",k:U.posTable,n:1,sel:[],amount:rem};break;}
  case "payN":{var tk6=b.tickets[U.modal.k],rm=r2(ticketTotal(tk6)-ticketPaid(tk6));U.modal.n=Math.max(1,Math.min(12,U.modal.n+parseInt(d.d,10)));U.modal.sel=[];U.modal.amount=r2(rm/U.modal.n);break;}
