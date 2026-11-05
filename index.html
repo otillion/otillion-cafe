@@ -231,11 +231,11 @@ var PERM={
 var RANK={owner:5,manager:4,accountant:3,cashier:2,waiter:1,kitchen:1};
 var DEMO_PIN="1234",AUTOLOCK=5*60*1000,STEP_MS=2*60*1000;
 /* every mutating action maps to the permission it needs; the UI hiding a button is never the only check */
-var NEED={openNote:"pos",noteSave:"pos",noteDel:"pos",decItem:"pos",openPay:"pay",payN:"pay",paySel:"pay",doPay:"pay",openRecent:"pay",reprint:"pay",printRcpt:"pay",repReset:"reports",repCsv:"reports",repOpen:"reports",repMore:"reports",catAdd:"manage",catDel:"manage",tblSet:"manage",itemAdd:"manage",itemDel:"manage",add:"pos",inc:"pos",dec:"pos",send:"pos",openMove:"pos",doMove:"pos",openMerge:"pos",doMerge:"pos",newTake:"pos",openTable:"pos",backTables:"pos",
+var NEED={resend:"pos",openNote:"pos",noteSave:"pos",noteDel:"pos",decItem:"pos",openPay:"pay",payN:"pay",paySel:"pay",doPay:"pay",openRecent:"pay",reprint:"pay",printRcpt:"pay",repReset:"reports",repCsv:"reports",repOpen:"reports",repMore:"reports",catAdd:"manage",catDel:"manage",tblSet:"manage",itemAdd:"manage",itemDel:"manage",add:"pos",inc:"pos",dec:"pos",send:"pos",openMove:"pos",doMove:"pos",openMerge:"pos",doMerge:"pos",newTake:"pos",openTable:"pos",backTables:"pos",
  void:"void",kadv:"kitchen",openRecv:"stockEdit",doRecv:"stockEdit",applyCount:"stockEdit",shift:"staffAll",lvOk:"staffAll",lvNo:"staffAll",invite:"adminOnly",setPin:"settings",toggleActive:"settings",goBranch:"overview",clock:"staff",lvReq:"staff"};
 var PINNED={void:1,applyCount:1,invite:1,toggleActive:1};
 var MODALA={noteSave:"note",reprint:"recent",printRcpt:"receipt",payN:"pay",paySel:"pay",doPay:"pay",doMove:"move",doMerge:"merge",doRecv:"recv",pinSubmit:"pin"};
-var POSA={openNote:1,noteSave:1,noteDel:1,add:1,decItem:1,inc:1,dec:1,void:1,send:1,openPay:1,openMove:1,openMerge:1};
+var POSA={resend:1,openNote:1,noteSave:1,noteDel:1,add:1,decItem:1,inc:1,dec:1,void:1,send:1,openPay:1,openMove:1,openMerge:1};
 var SETK={cat:1,pane:1,kds:1,period:1,stockTab:1,staffTab:1,rt:1};
 var CNEED={itemCat:"manage",itemStn:"manage",catName:"manage",itemPrice:"manage",itemName:"manage",branch:"overview",paper:"settings",oneStn:"settings",rb:"reports",rst:"reports",rcat:"reports",rstaff:"reports",rtype:"reports",rq:"reports",rFrom:"reports",rTo:"reports",printer:"settings",staffBr:"settings",staffRole:"settings"};
 var MATRIX=["pos","pay","kitchen","stock","stockEdit","void","costView","reports","overview","staff","staffAll","manage","settings"];
@@ -303,7 +303,7 @@ google:"Google ile devam et",
  sh_m:"08–16",sh_e:"15–23",sh_o:"İzin",shHint:"Hücreye tıklayarak vardiyayı değiştirin.",
  lvType:"Tür",lvFrom:"Başlangıç",lvTo:"Bitiş",lvReq:"Talep et",lv_annual:"Yıllık izin",lv_sick:"Hastalık",lv_other:"Diğer",lvPending:"Bekliyor",lvApproved:"Onaylandı",lvRejected:"Reddedildi",approve:"Onayla",reject:"Reddet",lvSent:"İzin talebi gönderildi",
  colRevH:"Ciro / saat",invite:"Davet et",emailPh:"ornek@gmail.com",invited:"davet edildi",colRole:"Rol",colStart:"Başlangıç",
- paperW:"Fiş kağıdı genişliği",kpAuto:"Otomatik mutfak/bar fişi",kpOn:"Açık",kpOff:"Kapalı",kpSnd:"Sesli uyarı",kpLocal:"Gönderince bu cihazdan yazdır",kpRaw:"RawBT ile yazdır",noteB:"Not",noteTitle:"Sipariş notu",notePh:"Not yazın",noteAdd:"Ekle",oneStnL:"Sipariş fişi",oneStn0:"Bar ve mutfak ayrı",oneStn1:"Tek fiş (Bar)",kpNew:"Yeni sipariş · {tbl}",kpSt:"İstasyon",printers:"Yazıcı yönlendirme",printersHint:"Bu şubede her istasyonun siparişleri seçilen yazıcıya gider.",rcpt:"Adisyon yazıcısı",
+ paperW:"Fiş kağıdı genişliği",kpAuto:"Otomatik mutfak/bar fişi",kpOn:"Açık",kpOff:"Kapalı",kpSnd:"Sesli uyarı",kpLocal:"Gönderince bu cihazdan yazdır",kpRaw:"RawBT ile yazdır",noteB:"Not",resend:"Tekrar gönder",resent:"Tekrar gönderildi",noResend:"Tekrar gönderilecek fiş yok",noteTitle:"Sipariş notu",notePh:"Not yazın",noteAdd:"Ekle",oneStnL:"Sipariş fişi",oneStn0:"Bar ve mutfak ayrı",oneStn1:"Tek fiş (Bar)",kpNew:"Yeni sipariş · {tbl}",kpSt:"İstasyon",printers:"Yazıcı yönlendirme",printersHint:"Bu şubede her istasyonun siparişleri seçilen yazıcıya gider.",rcpt:"Adisyon yazıcısı",
  audit:"İşlem geçmişi",noLog:"Kayıt yok.",security:"Güvenlik",sec1:"Google ile giriş, şifre yok",sec2:"İşletmeler arası tam veri ayrımı",sec3:"Role ve şubeye göre yetki",sec4:"Her işlem kayıt altında",
  secDemo:"Demo'da bunlar tarayıcıda simüle edilir; canlı sürümde sunucu tarafında uygulanır.",
  l_send:"Siparişler gönderildi · {tbl}",l_pay:"Ödeme {amt} ({m}) · {tbl}",l_close:"Hesap kapandı · {tbl}",l_move:"{a} → {b} taşındı",l_merge:"{a} → {b} birleştirildi",l_void:"İptal: {mi} · {tbl}",
@@ -362,7 +362,7 @@ google:"المتابعة عبر Google",
  sh_m:"08–16",sh_e:"15–23",sh_o:"إجازة",shHint:"اضغط على الخلية لتغيير الوردية.",
  lvType:"النوع",lvFrom:"من",lvTo:"إلى",lvReq:"إرسال الطلب",lv_annual:"إجازة سنوية",lv_sick:"مرضية",lv_other:"أخرى",lvPending:"قيد الانتظار",lvApproved:"موافق عليها",lvRejected:"مرفوضة",approve:"موافقة",reject:"رفض",lvSent:"تم إرسال طلب الإجازة",
  colRevH:"إيراد / ساعة",invite:"دعوة",emailPh:"example@gmail.com",invited:"مدعو",colRole:"الدور",colStart:"تاريخ البدء",
- paperW:"عرض ورق الفاتورة",kpAuto:"طباعة الطلبات تلقائياً",kpOn:"تشغيل",kpOff:"إيقاف",kpSnd:"تنبيه صوتي",kpLocal:"طباعة من هذا الجهاز عند الإرسال",kpRaw:"الطباعة عبر RawBT",noteB:"ملاحظة",noteTitle:"ملاحظة على الطلب",notePh:"اكتب الملاحظة",noteAdd:"إضافة",oneStnL:"ورقة الطلب",oneStn0:"البار والمطبخ منفصلان",oneStn1:"ورقة واحدة (البار)",kpNew:"طلب جديد · {tbl}",kpSt:"القسم",printers:"توجيه الطابعات",printersHint:"في هذا الفرع، طلبات كل محطة تُرسل إلى الطابعة المختارة.",rcpt:"طابعة الفواتير",
+ paperW:"عرض ورق الفاتورة",kpAuto:"طباعة الطلبات تلقائياً",kpOn:"تشغيل",kpOff:"إيقاف",kpSnd:"تنبيه صوتي",kpLocal:"طباعة من هذا الجهاز عند الإرسال",kpRaw:"الطباعة عبر RawBT",noteB:"ملاحظة",resend:"إعادة الإرسال",resent:"أُعيد إرسال الطلب",noResend:"لا توجد ورقة لإعادة إرسالها",noteTitle:"ملاحظة على الطلب",notePh:"اكتب الملاحظة",noteAdd:"إضافة",oneStnL:"ورقة الطلب",oneStn0:"البار والمطبخ منفصلان",oneStn1:"ورقة واحدة (البار)",kpNew:"طلب جديد · {tbl}",kpSt:"القسم",printers:"توجيه الطابعات",printersHint:"في هذا الفرع، طلبات كل محطة تُرسل إلى الطابعة المختارة.",rcpt:"طابعة الفواتير",
  audit:"سجل العمليات",noLog:"لا توجد سجلات.",security:"الأمان",sec1:"الدخول عبر Google بدون كلمات سر",sec2:"فصل كامل للبيانات بين المنشآت",sec3:"صلاحيات حسب الدور والفرع",sec4:"كل عملية مسجّلة",
  secDemo:"في النسخة التجريبية هذه الأمور محاكاة داخل المتصفح، وفي النسخة الفعلية تُطبّق من جهة الخادم.",
  l_send:"تم إرسال الطلبات · {tbl}",l_pay:"دفعة {amt} ({m}) · {tbl}",l_close:"إغلاق حساب · {tbl}",l_move:"نقل {a} ← {b}",l_merge:"دمج {a} ← {b}",l_void:"إلغاء: {mi} · {tbl}",
@@ -782,7 +782,7 @@ function viewTables(){
 }
 function viewOrder(){
  var b=B(),k=U.posTable,tk=b.tickets[k];if(!tk){U.posTable=null;return viewTables();}
- var total=ticketTotal(tk),paid=ticketPaid(tk),rem=r2(total-paid),unsent=tk.lines.filter(function(l){return !l.sent;}).length+(tk.notes||[]).filter(function(x){return !x.sent;}).length,hasSent=tk.lines.some(function(l){return l.sent;});
+ var total=ticketTotal(tk),paid=ticketPaid(tk),rem=r2(total-paid),unsent=tk.lines.filter(function(l){return !l.sent;}).length+(tk.notes||[]).filter(function(x){return !x.sent;}).length,hasSent=tk.lines.some(function(l){return l.sent;})||(tk.notes||[]).some(function(x){return x.sent;});
  if(U.cat!=="all"&&catIds().indexOf(U.cat)<0)U.cat="all";var cats=[["all",t("all")]].concat(catIds().map(function(c){return [c,catNm(c)];}));
  var items=T().menu.filter(function(m){return U.cat==="all"||m.cat===U.cat;});
  var take=k.indexOf("TA")===0,cnt=tk.lines.reduce(function(a,l){return a+l.qty;},0);
@@ -798,7 +798,7 @@ function viewOrder(){
  '<aside class="ticket"><div class="th"><h3>'+t("ticketTab")+'</h3><span class="muted num">'+hm(tk.ts)+' · '+mins(tk.ts)+' '+t("min")+'</span></div><ul class="lines">'+lines+'</ul>'+
  '<dl class="sum"><div class="big"><dt>'+t("total")+'</dt><dd style="margin:0" class="num">'+money(total)+'</dd></div>'+(paid>0?'<div class="muted"><dt>'+t("paid")+'</dt><dd style="margin:0" class="num">'+money(paid)+'</dd></div><div><dt>'+t("remaining")+'</dt><dd style="margin:0" class="num">'+money(rem)+'</dd></div>':'')+'</dl>'+
  (hasSent&&!can("void")?'<p class="note">'+t("needVoid")+'</p>':'')+
- '<div class="tact"><button class="btn" data-act="send"'+(unsent?"":" disabled")+'>'+ic("send","flip")+t("send")+(unsent?" ("+unsent+")":"")+'</button>'+(can("pay")?'<button class="btn pri" data-act="openPay"'+(tk.lines.length&&rem>0?"":" disabled")+'>'+t("pay")+'</button>':'')+'</div></aside></div>';
+ '<div class="tact"><button class="btn" data-act="'+(unsent||!hasSent?"send":"resend")+'"'+(unsent||hasSent?"":" disabled")+'>'+ic("send","flip")+(unsent||!hasSent?t("send")+(unsent?" ("+unsent+")":""):t("resend"))+'</button>'+(can("pay")?'<button class="btn pri" data-act="openPay"'+(tk.lines.length&&rem>0?"":" disabled")+'>'+t("pay")+'</button>':'')+'</div></aside></div>';
 }
 function modalHtml(){
  var m=U.modal;if(!m||!S.tid||U.locked)return "";var b=B(),h="",title="";
@@ -1234,6 +1234,7 @@ function act(a,d,el){
  case "printRcpt":try{var pw=(B().paper==="58"?"58":"80"),ps=document.getElementById("pgStyle");if(!ps){ps=document.createElement("style");ps.id="pgStyle";document.head.appendChild(ps);}ps.textContent="@page{size:"+pw+"mm auto;margin:2mm}@media print{.modal{--paperw:"+pw+"mm}.rcpt{font-size:"+(pw==="58"?"11":"12")+"px}}";}catch(e0){}try{window.print();}catch(e1){}break;
  case "openMove":U.modal={type:"move",k:U.posTable};break;
  case "doMove":{if(!/^\d{1,2}$/.test(d.to)||+d.to<1||+d.to>b.tables||b.tickets[d.to])break;var from=U.modal.k,tk9=b.tickets[from];delete b.tickets[from];tk9.key=d.to;b.tickets[d.to]=tk9;b.kds.forEach(function(x){if(x.key===from)x.key=d.to;});log("move",{a:from,b:d.to});U.posTable=d.to;U.modal=null;break;}
+ case "resend":{var ks=b.kds.filter(function(x){return x.key===U.posTable;});if(!ks.length){toast(t("noResend"));break;}var mx=Math.max.apply(null,ks.map(function(x){return x.ts;}));toast(t("resent"));kpPrint(ks.filter(function(x){return mx-x.ts<3000;}));break;}
  case "openNote":U.modal={type:"note"};break;
  case "noteSave":{var nt=String((($("#noteIn")||{}).value)||"").replace(/\s+/g," ").trim().slice(0,120),tkn=b.tickets[U.posTable];if(nt&&tkn){(tkn.notes=tkn.notes||[]).push({id:b.lid++,t:nt,sent:false});}U.modal=null;break;}
  case "noteDel":{var tkd=b.tickets[U.posTable];if(tkd&&tkd.notes)tkd.notes=tkd.notes.filter(function(x){return x.id!=d.n||x.sent;});break;}
