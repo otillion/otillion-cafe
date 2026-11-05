@@ -231,11 +231,11 @@ var PERM={
 var RANK={owner:5,manager:4,accountant:3,cashier:2,waiter:1,kitchen:1};
 var DEMO_PIN="1234",AUTOLOCK=5*60*1000,STEP_MS=2*60*1000;
 /* every mutating action maps to the permission it needs; the UI hiding a button is never the only check */
-var NEED={decItem:"pos",openPay:"pay",payN:"pay",paySel:"pay",doPay:"pay",openRecent:"pay",reprint:"pay",printRcpt:"pay",repReset:"reports",repCsv:"reports",repOpen:"reports",repMore:"reports",catAdd:"manage",catDel:"manage",tblSet:"manage",itemAdd:"manage",itemDel:"manage",add:"pos",inc:"pos",dec:"pos",send:"pos",openMove:"pos",doMove:"pos",openMerge:"pos",doMerge:"pos",newTake:"pos",openTable:"pos",backTables:"pos",
+var NEED={openNote:"pos",noteSave:"pos",noteDel:"pos",decItem:"pos",openPay:"pay",payN:"pay",paySel:"pay",doPay:"pay",openRecent:"pay",reprint:"pay",printRcpt:"pay",repReset:"reports",repCsv:"reports",repOpen:"reports",repMore:"reports",catAdd:"manage",catDel:"manage",tblSet:"manage",itemAdd:"manage",itemDel:"manage",add:"pos",inc:"pos",dec:"pos",send:"pos",openMove:"pos",doMove:"pos",openMerge:"pos",doMerge:"pos",newTake:"pos",openTable:"pos",backTables:"pos",
  void:"void",kadv:"kitchen",openRecv:"stockEdit",doRecv:"stockEdit",applyCount:"stockEdit",shift:"staffAll",lvOk:"staffAll",lvNo:"staffAll",invite:"adminOnly",setPin:"settings",toggleActive:"settings",goBranch:"overview",clock:"staff",lvReq:"staff"};
 var PINNED={void:1,applyCount:1,invite:1,toggleActive:1};
-var MODALA={reprint:"recent",printRcpt:"receipt",payN:"pay",paySel:"pay",doPay:"pay",doMove:"move",doMerge:"merge",doRecv:"recv",pinSubmit:"pin"};
-var POSA={add:1,decItem:1,inc:1,dec:1,void:1,send:1,openPay:1,openMove:1,openMerge:1};
+var MODALA={noteSave:"note",reprint:"recent",printRcpt:"receipt",payN:"pay",paySel:"pay",doPay:"pay",doMove:"move",doMerge:"merge",doRecv:"recv",pinSubmit:"pin"};
+var POSA={openNote:1,noteSave:1,noteDel:1,add:1,decItem:1,inc:1,dec:1,void:1,send:1,openPay:1,openMove:1,openMerge:1};
 var SETK={cat:1,pane:1,kds:1,period:1,stockTab:1,staffTab:1,rt:1};
 var CNEED={itemCat:"manage",itemStn:"manage",catName:"manage",itemPrice:"manage",itemName:"manage",branch:"overview",paper:"settings",oneStn:"settings",rb:"reports",rst:"reports",rcat:"reports",rstaff:"reports",rtype:"reports",rq:"reports",rFrom:"reports",rTo:"reports",printer:"settings",staffBr:"settings",staffRole:"settings"};
 var MATRIX=["pos","pay","kitchen","stock","stockEdit","void","costView","reports","overview","staff","staffAll","manage","settings"];
@@ -303,7 +303,7 @@ google:"Google ile devam et",
  sh_m:"08–16",sh_e:"15–23",sh_o:"İzin",shHint:"Hücreye tıklayarak vardiyayı değiştirin.",
  lvType:"Tür",lvFrom:"Başlangıç",lvTo:"Bitiş",lvReq:"Talep et",lv_annual:"Yıllık izin",lv_sick:"Hastalık",lv_other:"Diğer",lvPending:"Bekliyor",lvApproved:"Onaylandı",lvRejected:"Reddedildi",approve:"Onayla",reject:"Reddet",lvSent:"İzin talebi gönderildi",
  colRevH:"Ciro / saat",invite:"Davet et",emailPh:"ornek@gmail.com",invited:"davet edildi",colRole:"Rol",colStart:"Başlangıç",
- paperW:"Fiş kağıdı genişliği",kpAuto:"Otomatik mutfak/bar fişi",kpOn:"Açık",kpOff:"Kapalı",kpSnd:"Sesli uyarı",kpLocal:"Gönderince bu cihazdan yazdır",kpRaw:"RawBT ile yazdır",oneStnL:"Sipariş fişi",oneStn0:"Bar ve mutfak ayrı",oneStn1:"Tek fiş (Mutfak)",kpNew:"Yeni sipariş · {tbl}",kpSt:"İstasyon",printers:"Yazıcı yönlendirme",printersHint:"Bu şubede her istasyonun siparişleri seçilen yazıcıya gider.",rcpt:"Adisyon yazıcısı",
+ paperW:"Fiş kağıdı genişliği",kpAuto:"Otomatik mutfak/bar fişi",kpOn:"Açık",kpOff:"Kapalı",kpSnd:"Sesli uyarı",kpLocal:"Gönderince bu cihazdan yazdır",kpRaw:"RawBT ile yazdır",noteB:"Not",noteTitle:"Sipariş notu",notePh:"Not yazın",noteAdd:"Ekle",oneStnL:"Sipariş fişi",oneStn0:"Bar ve mutfak ayrı",oneStn1:"Tek fiş (Bar)",kpNew:"Yeni sipariş · {tbl}",kpSt:"İstasyon",printers:"Yazıcı yönlendirme",printersHint:"Bu şubede her istasyonun siparişleri seçilen yazıcıya gider.",rcpt:"Adisyon yazıcısı",
  audit:"İşlem geçmişi",noLog:"Kayıt yok.",security:"Güvenlik",sec1:"Google ile giriş, şifre yok",sec2:"İşletmeler arası tam veri ayrımı",sec3:"Role ve şubeye göre yetki",sec4:"Her işlem kayıt altında",
  secDemo:"Demo'da bunlar tarayıcıda simüle edilir; canlı sürümde sunucu tarafında uygulanır.",
  l_send:"Siparişler gönderildi · {tbl}",l_pay:"Ödeme {amt} ({m}) · {tbl}",l_close:"Hesap kapandı · {tbl}",l_move:"{a} → {b} taşındı",l_merge:"{a} → {b} birleştirildi",l_void:"İptal: {mi} · {tbl}",
@@ -362,7 +362,7 @@ google:"المتابعة عبر Google",
  sh_m:"08–16",sh_e:"15–23",sh_o:"إجازة",shHint:"اضغط على الخلية لتغيير الوردية.",
  lvType:"النوع",lvFrom:"من",lvTo:"إلى",lvReq:"إرسال الطلب",lv_annual:"إجازة سنوية",lv_sick:"مرضية",lv_other:"أخرى",lvPending:"قيد الانتظار",lvApproved:"موافق عليها",lvRejected:"مرفوضة",approve:"موافقة",reject:"رفض",lvSent:"تم إرسال طلب الإجازة",
  colRevH:"إيراد / ساعة",invite:"دعوة",emailPh:"example@gmail.com",invited:"مدعو",colRole:"الدور",colStart:"تاريخ البدء",
- paperW:"عرض ورق الفاتورة",kpAuto:"طباعة الطلبات تلقائياً",kpOn:"تشغيل",kpOff:"إيقاف",kpSnd:"تنبيه صوتي",kpLocal:"طباعة من هذا الجهاز عند الإرسال",kpRaw:"الطباعة عبر RawBT",oneStnL:"ورقة الطلب",oneStn0:"البار والمطبخ منفصلان",oneStn1:"ورقة واحدة (المطبخ)",kpNew:"طلب جديد · {tbl}",kpSt:"القسم",printers:"توجيه الطابعات",printersHint:"في هذا الفرع، طلبات كل محطة تُرسل إلى الطابعة المختارة.",rcpt:"طابعة الفواتير",
+ paperW:"عرض ورق الفاتورة",kpAuto:"طباعة الطلبات تلقائياً",kpOn:"تشغيل",kpOff:"إيقاف",kpSnd:"تنبيه صوتي",kpLocal:"طباعة من هذا الجهاز عند الإرسال",kpRaw:"الطباعة عبر RawBT",noteB:"ملاحظة",noteTitle:"ملاحظة على الطلب",notePh:"اكتب الملاحظة",noteAdd:"إضافة",oneStnL:"ورقة الطلب",oneStn0:"البار والمطبخ منفصلان",oneStn1:"ورقة واحدة (البار)",kpNew:"طلب جديد · {tbl}",kpSt:"القسم",printers:"توجيه الطابعات",printersHint:"في هذا الفرع، طلبات كل محطة تُرسل إلى الطابعة المختارة.",rcpt:"طابعة الفواتير",
  audit:"سجل العمليات",noLog:"لا توجد سجلات.",security:"الأمان",sec1:"الدخول عبر Google بدون كلمات سر",sec2:"فصل كامل للبيانات بين المنشآت",sec3:"صلاحيات حسب الدور والفرع",sec4:"كل عملية مسجّلة",
  secDemo:"في النسخة التجريبية هذه الأمور محاكاة داخل المتصفح، وفي النسخة الفعلية تُطبّق من جهة الخادم.",
  l_send:"تم إرسال الطلبات · {tbl}",l_pay:"دفعة {amt} ({m}) · {tbl}",l_close:"إغلاق حساب · {tbl}",l_move:"نقل {a} ← {b}",l_merge:"دمج {a} ← {b}",l_void:"إلغاء: {mi} · {tbl}",
@@ -644,11 +644,12 @@ function canMake(m,q){return m.recipe.every(function(r){return invItem(r[0]).sto
 function toast(m){U.toast=m;clearTimeout(tt);tt=setTimeout(function(){U.toast=null;render();},2800);}
 function ensureTicket(k){var b=B();if(!b.tickets[k])b.tickets[k]={key:k,lines:[],payments:[],ts:Date.now()};return b.tickets[k];}
 function sendTicket(key){
- var b=B(),tk=b.tickets[key],un=tk.lines.filter(function(l){return !l.sent;}),lows=[];if(!un.length)return {n:0,lows:lows};
- var by={};un.forEach(function(l){var m=menuItem(l.item);var sn=b.oneStn?"kitchen":m.station;(by[sn]=by[sn]||[]).push(l);});
- Object.keys(by).forEach(function(st){b.kds.push({id:b.sid++,key:key,station:st,status:"new",ts:Date.now(),lines:by[st].map(function(l){return {item:l.item,qty:l.qty};})});});
+ var b=B(),tk=b.tickets[key],un=tk.lines.filter(function(l){return !l.sent;}),unn=(tk.notes||[]).filter(function(x){return !x.sent;}),lows=[];if(!un.length&&!unn.length)return {n:0,lows:lows};
+ var by={};un.forEach(function(l){var m=menuItem(l.item);var sn=b.oneStn?"bar":m.station;(by[sn]=by[sn]||[]).push(l);});
+ var nts=unn.map(function(x){return x.t;});if(!Object.keys(by).length)by[b.oneStn?"bar":"kitchen"]=[];
+ Object.keys(by).forEach(function(st){var kd={id:b.sid++,key:key,station:st,status:"new",ts:Date.now(),lines:by[st].map(function(l){return {item:l.item,qty:l.qty};})};if(nts.length)kd.notes=nts.slice();b.kds.push(kd);});unn.forEach(function(x){x.sent=true;});
  un.forEach(function(l){menuItem(l.item).recipe.forEach(function(r){var inv=invItem(r[0]),before=inv.stock;inv.stock=Math.max(0,r2(inv.stock-r[1]*l.qty));if(before>inv.min&&inv.stock<=inv.min)lows.push(nm(inv));});l.sent=true;});
- log("send",{tbl:key});return {n:un.length,lows:lows};
+ log("send",{tbl:key});return {n:un.length+unn.length,lows:lows};
 }
 function closeTicket(key){
  var b=B(),tk=b.tickets[key],agg={};
@@ -775,22 +776,23 @@ function chartHtml(b){
 function viewPOS(){return U.posTable?viewOrder():viewTables();}
 function viewTables(){
  var b=B(),keys=[];for(var i=1;i<=b.tables;i++)keys.push(String(i));Object.keys(b.tickets).filter(function(k){return k.indexOf("TA")===0;}).forEach(function(k){keys.push(k);});
- return '<div class="bar"><h2>'+t("tables")+'</h2><span style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn'+(U.kpOn?" pri":"")+'" data-act="kpToggle" aria-pressed="'+!!U.kpOn+'">'+t("kpAuto")+': '+t(U.kpOn?"kpOn":"kpOff")+'</button>'+'<button class="btn'+(U.kpSnd?" pri":"")+'" data-act="kpSnd" aria-pressed="'+!!U.kpSnd+'">'+t("kpSnd")+': '+t(U.kpSnd?"kpOn":"kpOff")+'</button>'+'<button class="btn'+(U.kpRaw?" pri":"")+'" data-act="kpRaw" aria-pressed="'+!!U.kpRaw+'">'+t("kpRaw")+': '+t(U.kpRaw?"kpOn":"kpOff")+'</button>'+''+(can("pay")?'<button class="btn" data-act="openRecent">'+t("rc_recent")+'</button>':'')+'<button class="btn pri" data-act="newTake">'+ic("plus")+t("newTake")+'</button></span></div><div class="tables">'+keys.map(function(k){
+ return '<div class="bar"><h2>'+t("tables")+'</h2><span style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn'+(U.kpOn?" pri":"")+'" data-act="kpToggle" aria-pressed="'+!!U.kpOn+'">'+t("kpAuto")+': '+t(U.kpOn?"kpOn":"kpOff")+'</button>'+'<button class="btn'+(U.kpSnd?" pri":"")+'" data-act="kpSnd" aria-pressed="'+!!U.kpSnd+'">'+t("kpSnd")+': '+t(U.kpSnd?"kpOn":"kpOff")+'</button>'+''+(can("pay")?'<button class="btn" data-act="openRecent">'+t("rc_recent")+'</button>':'')+'<button class="btn pri" data-act="newTake">'+ic("plus")+t("newTake")+'</button></span></div><div class="tables">'+keys.map(function(k){
   var tk=b.tickets[k],rd=b.kds.some(function(x){return x.key===k&&x.status==="ready";}),cls=!tk?"free":rd?"ready":tk.lines.length?"busy":"open",tk2=k.indexOf("TA")===0;
   return '<button class="tbl '+cls+'" data-act="openTable" data-k="'+k+'"><span class="tn">'+(tk2?"#"+k.slice(2):k)+'</span><span class="tk">'+(tk2?t("take"):t("tableN"))+'</span>'+(tk?'<span class="tm">'+money0(ticketTotal(tk))+'</span><span class="tt">'+mins(tk.ts)+' '+t("min")+'</span>':'<span class="tm muted">'+t("free")+'</span>')+(rd?'<span class="badge">'+t("ready")+'</span>':'')+'</button>';}).join("")+'</div>';
 }
 function viewOrder(){
  var b=B(),k=U.posTable,tk=b.tickets[k];if(!tk){U.posTable=null;return viewTables();}
- var total=ticketTotal(tk),paid=ticketPaid(tk),rem=r2(total-paid),unsent=tk.lines.filter(function(l){return !l.sent;}).length,hasSent=tk.lines.some(function(l){return l.sent;});
+ var total=ticketTotal(tk),paid=ticketPaid(tk),rem=r2(total-paid),unsent=tk.lines.filter(function(l){return !l.sent;}).length+(tk.notes||[]).filter(function(x){return !x.sent;}).length,hasSent=tk.lines.some(function(l){return l.sent;});
  if(U.cat!=="all"&&catIds().indexOf(U.cat)<0)U.cat="all";var cats=[["all",t("all")]].concat(catIds().map(function(c){return [c,catNm(c)];}));
  var items=T().menu.filter(function(m){return U.cat==="all"||m.cat===U.cat;});
  var take=k.indexOf("TA")===0,cnt=tk.lines.reduce(function(a,l){return a+l.qty;},0);
  var lines=tk.lines.length?tk.lines.map(function(l){var m=menuItem(l.item);
   return '<li>'+(l.sent?'<span class="qty"><span>'+l.qty+'×</span></span>':'<span class="qty"><button data-act="dec" data-l="'+l.lid+'" aria-label="−">'+ic("minus")+'</button><span>'+l.qty+'</span><button data-act="inc" data-l="'+l.lid+'" aria-label="+">'+ic("plus")+'</button></span>')+
-  '<span>'+esc(nm(m))+(l.sent?' <span class="pill ok">'+t("sent")+'</span>':'')+'</span><span class="num">'+money0(lineTotal(l))+(l.sent&&can("void")?' <button class="icon" style="width:28px;height:28px;margin-inline-start:6px" data-act="void" data-l="'+l.lid+'" aria-label="'+t("voidB")+'" title="'+t("voidB")+'">'+ic("x")+'</button>':'')+'</span></li>';}).join(""):'<li style="display:block" class="muted">'+t("noLines")+'</li>';
+  '<span>'+esc(nm(m))+(l.sent?' <span class="pill ok">'+t("sent")+'</span>':'')+'</span><span class="num">'+money0(lineTotal(l))+(l.sent&&can("void")?' <button class="icon" style="width:28px;height:28px;margin-inline-start:6px" data-act="void" data-l="'+l.lid+'" aria-label="'+t("voidB")+'" title="'+t("voidB")+'">'+ic("x")+'</button>':'')+'</span></li>';}).join(""):((tk.notes||[]).length?'':'<li style="display:block" class="muted">'+t("noLines")+'</li>');
+ lines+=(tk.notes||[]).map(function(x){return '<li><span class="qty"><span>*</span></span><span>'+esc(x.t)+(x.sent?' <span class="pill ok">'+t("sent")+'</span>':'')+'</span><span class="num">'+(x.sent?'':'<button class="icon" style="width:28px;height:28px" data-act="noteDel" data-n="'+x.id+'" aria-label="x">'+ic("x")+'</button>')+'</span></li>';}).join("");
  return '<div class="bar"><div style="display:flex;gap:12px;align-items:center"><button class="btn" data-act="backTables">'+ic("back","flip")+t("backTables")+'</button><h2>'+tblLabel(k)+'</h2></div><div style="display:flex;gap:8px"><button class="btn" data-act="openMove"'+(take?" disabled":"")+'>'+ic("move","flip")+t("move")+'</button><button class="btn" data-act="openMerge">'+ic("merge")+t("merge")+'</button></div></div>'+
  '<div class="panes">'+seg("pane",U.pane,[["menu",t("menuTab")],["ticket",t("ticketTab")+" ("+cnt+" · "+money0(total)+")"]])+'</div>'+
- '<div class="order" data-pane="'+U.pane+'"><div class="menu-pane"><div class="chips">'+cats.map(function(c){return '<button class="chip" data-act="set" data-g="cat" data-v="'+c[0]+'" aria-pressed="'+(U.cat===c[0])+'">'+c[1]+'</button>';}).join("")+'</div><div class="items">'+items.map(function(m){var ok=canMake(m,1);
+ '<div class="order" data-pane="'+U.pane+'"><div class="menu-pane"><div class="chips">'+cats.map(function(c){return '<button class="chip" data-act="set" data-g="cat" data-v="'+c[0]+'" aria-pressed="'+(U.cat===c[0])+'">'+c[1]+'</button>';}).join("")+'</div><div class="items"><div class="iw"><button class="item" data-act="openNote"><span class="in">'+t("noteB")+'</span><span class="is">+</span></button></div>'+items.map(function(m){var ok=canMake(m,1);
   var nq=tk.lines.filter(function(l){return l.item===m.id&&!l.sent;}).reduce(function(s,l){return s+l.qty;},0);
   return '<div class="iw'+(nq?" sel":"")+'"><button class="item" data-act="add" data-id="'+m.id+'"'+(ok?"":" disabled")+'><span class="in">'+esc(nm(m))+'</span><span class="ip">'+money0(m.price)+'</span><span class="is">'+t(m.station==="bar"?"st_bar":"st_kitchen")+'</span>'+(ok?'':'<span class="sold">'+t("soldOut")+'</span>')+(nq?'<span class="iq">+'+nq+'</span>':'')+'</button>'+(nq?'<button class="imin" data-act="decItem" data-id="'+m.id+'" aria-label="-1">&minus;</button>':'')+'</div>';}).join("")+'</div></div>'+
  '<aside class="ticket"><div class="th"><h3>'+t("ticketTab")+'</h3><span class="muted num">'+hm(tk.ts)+' · '+mins(tk.ts)+' '+t("min")+'</span></div><ul class="lines">'+lines+'</ul>'+
@@ -812,6 +814,7 @@ function modalHtml(){
   h='<p class="muted" style="margin:0">'+t("moveHint")+'</p>'+(em.length?'<div class="pgrid">'+em.map(function(x){return '<button class="btn" data-act="doMove" data-to="'+x+'">'+x+'</button>';}).join("")+'</div>':'<p>'+t("noEmpty")+'</p>');
  }else if(m.type==="merge"){title=t("mergeTitle");var ot=Object.keys(b.tickets).filter(function(x){return x!==m.k;});
   h='<p class="muted" style="margin:0">'+t("mergeHint")+'</p>'+(ot.length?'<div class="pgrid">'+ot.map(function(x){return '<button class="btn" data-act="doMerge" data-to="'+x+'"><span>'+tblLabel(x)+'<br><small class="muted">'+money0(ticketTotal(b.tickets[x]))+'</small></span></button>';}).join("")+'</div>':'<p>'+t("noOpen")+'</p>');
+ }else if(m.type==="note"){title=t("noteTitle");h='<div class="field"><label for="noteIn">'+t("notePh")+'</label><input id="noteIn" type="text" maxlength="120" autocomplete="off"></div><button class="btn pri" data-act="noteSave">'+t("noteAdd")+'</button>';
  }else if(m.type==="pin"){title=t("pinTitle");h='<p class="muted" style="margin:0">'+t("pinHint")+'</p><div class="field"><label for="pinIn">'+t("pinPh")+'</label><input id="pinIn" type="password" inputmode="numeric" autocomplete="off" maxlength="8"></div><button class="btn pri" data-act="pinSubmit">'+ic("lock")+t("pinOk")+'</button>';
  }else if(m.type==="recv"){var inv=invItem(m.id);title=t("recvTitle")+" · "+nm(inv);
   h='<div class="field"><label for="recvQty">'+t("qty")+' ('+unitL(inv.unit)+')</label><input id="recvQty" type="number" min="0" step="any" inputmode="decimal"></div><button class="btn pri" data-act="doRecv">'+ic("plus")+t("add")+'</button>';}
@@ -835,22 +838,23 @@ function viewKitchen(){
  var list=act(U.kds).sort(function(a,c){return a.ts-c.ts;}),cols=[["new",t("colNew")],["prep",t("colPrep")],["ready",t("colReady")]];
  return '<div class="bar">'+tabs+'<span style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="btn'+(U.kpOn?" pri":"")+'" data-act="kpToggle" aria-pressed="'+!!U.kpOn+'">'+t("kpAuto")+': '+t(U.kpOn?"kpOn":"kpOff")+'</button>'+'<button class="btn'+(U.kpSnd?" pri":"")+'" data-act="kpSnd" aria-pressed="'+!!U.kpSnd+'">'+t("kpSnd")+': '+t(U.kpSnd?"kpOn":"kpOff")+'</button>'+'<select data-change="kpSt" aria-label="'+t("kpSt")+'"><option value="both"'+(U.kpSt==="both"?" selected":"")+'>'+t("rp_allSt")+'</option><option value="kitchen"'+(U.kpSt==="kitchen"?" selected":"")+'>'+t("k_kitchen")+'</option><option value="bar"'+(U.kpSt==="bar"?" selected":"")+'>'+t("k_bar")+'</option></select></span></div><div class="kcols">'+cols.map(function(c){var l=list.filter(function(x){return x.status===c[0];});
   return '<div class="kcol"><h3><span>'+c[1]+'</span><span>'+l.length+'</span></h3>'+(l.map(function(x){var mn=mins(x.ts);
-   return '<div class="kcard"><div class="hd"><span>'+tblLabel(x.key)+'</span><span class="pill '+(mn>=15?"out":mn>=8?"low":"ok")+'">'+mn+' '+t("min")+'</span></div><ul>'+x.lines.map(function(l){return '<li><b>'+l.qty+'×</b> '+esc(nm(menuItem(l.item)))+'</li>';}).join("")+'</ul><div style="display:flex;gap:8px"><button class="btn sm" data-act="kprint" data-id="'+x.id+'">'+t("rc_print")+'</button></div><button class="btn'+(x.status==="prep"?" pri":"")+'" data-act="kadv" data-id="'+x.id+'">'+(x.status==="new"?t("start"):x.status==="prep"?t("markReady"):t("served"))+'</button></div>';}).join("")||'<p class="muted">'+(c[0]==="new"?t("noTickets"):"")+'</p>')+'</div>';}).join("")+'</div>';
+   return '<div class="kcard"><div class="hd"><span>'+tblLabel(x.key)+'</span><span class="pill '+(mn>=15?"out":mn>=8?"low":"ok")+'">'+mn+' '+t("min")+'</span></div><ul>'+x.lines.map(function(l){return '<li><b>'+l.qty+'×</b> '+esc(nm(menuItem(l.item)))+'</li>';}).join("")+(x.notes||[]).map(function(n0){return '<li><b>*</b> '+esc(n0)+'</li>';}).join("")+'</ul><div style="display:flex;gap:8px"><button class="btn sm" data-act="kprint" data-id="'+x.id+'">'+t("rc_print")+'</button></div><button class="btn'+(x.status==="prep"?" pri":"")+'" data-act="kadv" data-id="'+x.id+'">'+(x.status==="new"?t("start"):x.status==="prep"?t("markReady"):t("served"))+'</button></div>';}).join("")||'<p class="muted">'+(c[0]==="new"?t("noTickets"):"")+'</p>')+'</div>';}).join("")+'</div>';
 }
 /* kitchen / bar ticket printing (print station) */
 var KPK="otillion-kp";
-function kpLoad(){try{var o=JSON.parse(localStorage.getItem(KPK)||"{}");U.kpOn=!!o.on;U.kpSnd=!!o.snd;U.kpLocal=o.loc!==false;U.kpRaw=!!o.raw;U.kpSt=["both","kitchen","bar"].indexOf(o.st)>=0?o.st:"both";U.kpLast=o.last&&typeof o.last==="object"?o.last:{};}catch(e){U.kpOn=false;U.kpSnd=false;U.kpLocal=true;U.kpRaw=false;U.kpSt="both";U.kpLast={};}}
+function kpAnd(){try{return /Android/i.test(navigator.userAgent||"");}catch(e){return false;}}
+function kpLoad(){try{var o=JSON.parse(localStorage.getItem(KPK)||"{}");U.kpOn=!!o.on;U.kpSnd=!!o.snd;U.kpLocal=o.loc!==false;U.kpRaw=o.raw===undefined?kpAnd():!!o.raw;U.kpSt=["both","kitchen","bar"].indexOf(o.st)>=0?o.st:"both";U.kpLast=o.last&&typeof o.last==="object"?o.last:{};}catch(e){U.kpOn=false;U.kpSnd=false;U.kpLocal=true;U.kpRaw=kpAnd();U.kpSt="both";U.kpLast={};}}
 function kpSave(){try{localStorage.setItem(KPK,JSON.stringify({on:U.kpOn,snd:U.kpSnd,loc:U.kpLocal,raw:U.kpRaw,st:U.kpSt,last:U.kpLast}));}catch(e){}}
 function kpKey(b){return S.tid+":"+b.id;}
 function kpMax(b){return b.kds.reduce(function(a,x){return Math.max(a,x.id);},0);}
 function kpHtml(x){
  var m=x.station==="bar"?t("k_bar"):t("k_kitchen");
- return '<div class="kt"><div class="c st">'+esc(m)+'</div><div class="c big">'+esc(tblLabel(x.key))+'</div><div class="c">'+hm(x.ts)+' · #'+x.id+'</div><hr>'+x.lines.map(function(l){var mi=menuItem(l.item);return '<div class="ln">'+l.qty+'× '+esc(mi?nm(mi):l.item)+'</div>';}).join("")+'<hr></div>';
+ return '<div class="kt"><div class="c st">'+esc(m)+'</div><div class="c big">'+esc(tblLabel(x.key))+'</div><div class="c">'+hm(x.ts)+' · #'+x.id+'</div><hr>'+x.lines.map(function(l){var mi=menuItem(l.item);return '<div class="ln">'+l.qty+'× '+esc(mi?nm(mi):l.item)+'</div>';}).join("")+(x.notes||[]).map(function(n0){return '<div class="ln">* '+esc(n0)+'</div>';}).join("")+'<hr></div>';
 }
 function kpText(list){
  var b=B(),w=b&&b.paper==="58"?32:42,ln=new Array(w+1).join("-");
  return list.map(function(x){var m=x.station==="bar"?t("k_bar"):t("k_kitchen");
-  return m+"\n"+tblLabel(x.key)+"\n"+hm(x.ts)+" #"+x.id+"\n"+ln+"\n"+x.lines.map(function(l){var mi=menuItem(l.item);return l.qty+"x "+(mi?nm(mi):l.item);}).join("\n")+"\n"+ln+"\n\n\n";}).join("");
+  return m+"\n"+tblLabel(x.key)+"\n"+hm(x.ts)+" #"+x.id+"\n"+ln+"\n"+x.lines.map(function(l){var mi=menuItem(l.item);return l.qty+"x "+(mi?nm(mi):l.item);}).concat((x.notes||[]).map(function(n0){return "* "+n0;})).join("\n")+"\n"+ln+"\n"+new Array(w+1).join("=")+"\n"+ln+"\n\n\n\n\n\n";}).join("");
 }
 function kpRaw(list){
  try{var bytes=new TextEncoder().encode(kpText(list)),bin="";for(var i=0;i<bytes.length;i++)bin+=String.fromCharCode(bytes[i]);
@@ -1120,7 +1124,7 @@ function viewSettings(){
  return '<div class="rgrid"><section class="panel"><h3>'+t("pinSection")+'</h3><p class="muted" style="margin:0">'+t("pinActs")+'</p>'+pl+'<div class="inl">'+pf("pinCur","curPin")+pf("pinNew","pinNew")+pf("pinNew2","pinNew2")+'<button class="btn pri" data-act="setPin">'+t("changePin")+'</button></div><p class="note">'+t("pinRule")+'</p></section>'+
  '<section class="panel"><h3>'+t("security")+'</h3><ul class="alist">'+["sec1","sec2","sec3","sec4","sec5","sec6"].map(function(k){return '<li>'+ic("check")+'<span>'+t(k)+'</span></li>';}).join("")+'</ul><p class="note">'+t("secDemo")+'</p></section>'+
  '<section class="panel wide"><h3>'+t("matrix")+'</h3>'+mx+'</section>'+
- '<section class="panel"><h3>'+t("printers")+' · '+esc(b.name)+'</h3><p class="muted" style="margin:0">'+t("printersHint")+'</p>'+pr+'<div class="field"><label for="pr-paper">'+t("paperW")+'</label><select id="pr-paper" data-change="paper"><option value="80"'+(b.paper!=="58"?" selected":"")+'>80 mm</option><option value="58"'+(b.paper==="58"?" selected":"")+'>58 mm</option></select></div>'+'<div class="field"><label for="pr-one">'+t("oneStnL")+'</label><select id="pr-one" data-change="oneStn"><option value="0"'+(b.oneStn?"":" selected")+'>'+t("oneStn0")+'</option><option value="1"'+(b.oneStn?" selected":"")+'>'+t("oneStn1")+'</option></select></div>'+'</section>'+
+ '<section class="panel"><h3>'+t("printers")+' · '+esc(b.name)+'</h3><p class="muted" style="margin:0">'+t("printersHint")+'</p>'+pr+'<div class="field"><label for="pr-paper">'+t("paperW")+'</label><select id="pr-paper" data-change="paper"><option value="80"'+(b.paper!=="58"?" selected":"")+'>80 mm</option><option value="58"'+(b.paper==="58"?" selected":"")+'>58 mm</option></select></div>'+'<div class="field"><label for="pr-one">'+t("oneStnL")+'</label><select id="pr-one" data-change="oneStn"><option value="0"'+(b.oneStn?"":" selected")+'>'+t("oneStn0")+'</option><option value="1"'+(b.oneStn?" selected":"")+'>'+t("oneStn1")+'</option></select></div>'+'<div class="field"><button class="btn'+(U.kpRaw?" pri":"")+'" data-act="kpRaw" aria-pressed="'+!!U.kpRaw+'">'+t("kpRaw")+': '+t(U.kpRaw?"kpOn":"kpOff")+'</button></div>'+'</section>'+
  '<section class="panel wide"><h3>'+t("audit")+'</h3>'+(lg?'<ul class="alist">'+lg+'</ul>':'<p class="muted">'+t("noLog")+'</p>')+'</section></div>';
 }
 function logText(l){
@@ -1144,7 +1148,7 @@ function render(){
  if(S.theme)r.setAttribute("data-theme",S.theme);
 }
 function enter(id){S.tid=id;var T0=T(),ac=accOf();S.role=myRole();S.bid=(ac&&T0.branches[ac.br])?ac.br:T0.order[0];U.screen=SCREENS.filter(can)[0];U.posTable=null;U.modal=null;U.rb="all";U.counts={};}
-function cleanTicket(){var b=B(),k=U.posTable;if(k&&b.tickets[k]&&!b.tickets[k].lines.length&&!b.tickets[k].payments.length)delete b.tickets[k];}
+function cleanTicket(){var b=B(),k=U.posTable;if(k&&b.tickets[k]&&!b.tickets[k].lines.length&&!(b.tickets[k].notes||[]).length&&!b.tickets[k].payments.length)delete b.tickets[k];}
 
 /* ---------- actions ---------- */
 function act(a,d,el){
@@ -1230,8 +1234,11 @@ function act(a,d,el){
  case "printRcpt":try{var pw=(B().paper==="58"?"58":"80"),ps=document.getElementById("pgStyle");if(!ps){ps=document.createElement("style");ps.id="pgStyle";document.head.appendChild(ps);}ps.textContent="@page{size:"+pw+"mm auto;margin:2mm}@media print{.modal{--paperw:"+pw+"mm}.rcpt{font-size:"+(pw==="58"?"11":"12")+"px}}";}catch(e0){}try{window.print();}catch(e1){}break;
  case "openMove":U.modal={type:"move",k:U.posTable};break;
  case "doMove":{if(!/^\d{1,2}$/.test(d.to)||+d.to<1||+d.to>b.tables||b.tickets[d.to])break;var from=U.modal.k,tk9=b.tickets[from];delete b.tickets[from];tk9.key=d.to;b.tickets[d.to]=tk9;b.kds.forEach(function(x){if(x.key===from)x.key=d.to;});log("move",{a:from,b:d.to});U.posTable=d.to;U.modal=null;break;}
+ case "openNote":U.modal={type:"note"};break;
+ case "noteSave":{var nt=String((($("#noteIn")||{}).value)||"").replace(/\s+/g," ").trim().slice(0,120),tkn=b.tickets[U.posTable];if(nt&&tkn){(tkn.notes=tkn.notes||[]).push({id:b.lid++,t:nt,sent:false});}U.modal=null;break;}
+ case "noteDel":{var tkd=b.tickets[U.posTable];if(tkd&&tkd.notes)tkd.notes=tkd.notes.filter(function(x){return x.id!=d.n||x.sent;});break;}
  case "openMerge":U.modal={type:"merge",k:U.posTable};break;
- case "doMerge":{if(!b.tickets[d.to]||d.to===U.modal.k)break;var fr=U.modal.k,src=b.tickets[fr],dst=b.tickets[d.to];src.lines.forEach(function(l){dst.lines.push(l);});src.payments.forEach(function(p){dst.payments.push(p);});
+ case "doMerge":{if(!b.tickets[d.to]||d.to===U.modal.k)break;var fr=U.modal.k,src=b.tickets[fr],dst=b.tickets[d.to];src.lines.forEach(function(l){dst.lines.push(l);});if(src.notes&&src.notes.length)dst.notes=(dst.notes||[]).concat(src.notes);src.payments.forEach(function(p){dst.payments.push(p);});
   b.kds.forEach(function(x){if(x.key===fr)x.key=d.to;});delete b.tickets[fr];log("merge",{a:fr,b:d.to});U.posTable=d.to;U.modal=null;break;}
  case "closeModal":case "overlay":U.modal=null;break;
  case "kpToggle":if(!(can("kitchen")||can("pos")))break;U.kpOn=!U.kpOn;if(U.kpOn)U.kpLast[kpKey(b)]=kpMax(b);kpSave();break;
