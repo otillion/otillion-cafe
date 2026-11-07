@@ -231,7 +231,7 @@ var PERM={
 var RANK={owner:5,manager:4,accountant:3,cashier:2,waiter:1,kitchen:1};
 var DEMO_PIN="1234",AUTOLOCK=5*60*1000,STEP_MS=2*60*1000;
 /* every mutating action maps to the permission it needs; the UI hiding a button is never the only check */
-var NEED={resend:"pos",openNote:"pos",noteSave:"pos",noteDel:"pos",decItem:"pos",openPay:"pay",payN:"pay",paySel:"pay",doPay:"pay",openRecent:"pay",reprint:"pay",printRcpt:"pay",repReset:"reports",repCsv:"reports",repOpen:"reports",repMore:"reports",catAdd:"manage",catDel:"manage",tblSet:"manage",itemAdd:"manage",itemDel:"manage",add:"pos",inc:"pos",dec:"pos",send:"pos",openMove:"pos",doMove:"pos",openMerge:"pos",doMerge:"pos",newTake:"pos",openTable:"pos",backTables:"pos",
+var NEED={openNote:"pos",noteSave:"pos",noteDel:"pos",decItem:"pos",openPay:"pay",payN:"pay",paySel:"pay",doPay:"pay",openRecent:"pay",reprint:"pay",printRcpt:"pay",repReset:"reports",repCsv:"reports",repOpen:"reports",repMore:"reports",catAdd:"manage",catDel:"manage",tblSet:"manage",itemAdd:"manage",itemDel:"manage",add:"pos",inc:"pos",dec:"pos",send:"pos",openMove:"pos",doMove:"pos",openMerge:"pos",doMerge:"pos",newTake:"pos",openTable:"pos",backTables:"pos",
  void:"void",kadv:"kitchen",openRecv:"stockEdit",doRecv:"stockEdit",applyCount:"stockEdit",shift:"staffAll",lvOk:"staffAll",lvNo:"staffAll",invite:"adminOnly",setPin:"settings",toggleActive:"settings",goBranch:"overview",clock:"staff",lvReq:"staff"};
 var PINNED={void:1,applyCount:1,invite:1,toggleActive:1};
 var MODALA={noteSave:"note",reprint:"recent",printRcpt:"receipt",payN:"pay",paySel:"pay",doPay:"pay",doMove:"move",doMerge:"merge",doRecv:"recv",pinSubmit:"pin"};
